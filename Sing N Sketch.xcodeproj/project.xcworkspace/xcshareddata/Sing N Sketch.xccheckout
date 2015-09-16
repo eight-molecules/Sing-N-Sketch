@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>3378D114-6F69-4A51-A616-A138C1297A8B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Sing N Sketch</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</key>
+		<string>http://cs3060.bgsu.edu/sing-n-sketch-1002/sing-n-sketch-ios-1002.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Sing N Sketch.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://cs3060.bgsu.edu/sing-n-sketch-1002/sing-n-sketch-ios-1002.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</string>
+			<key>IDESourceControlWCCName</key>
+			<string>grant</string>
+		</dict>
+	</array>
+</dict>
+</plist>
