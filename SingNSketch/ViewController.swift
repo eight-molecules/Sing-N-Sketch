@@ -11,6 +11,11 @@ class ViewController: UIViewController {
     let userbrush = brush()
     var swiped = false
     
+    
+    @IBAction func newDrawing(sender: UIButton) {
+        self.mainImageView.image = nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -38,6 +43,10 @@ class ViewController: UIViewController {
             lastPoint = touch.locationInView(self.view)
         }
     }
+    
+    
+   
+    
     
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         
