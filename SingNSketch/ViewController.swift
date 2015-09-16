@@ -8,13 +8,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var tempImageView: UIImageView!
     var lastPoint = CGPoint.zeroPoint
 
-    let userbrush = brush()
+    let userBrush = Brush()
     var swiped = false
-    
-    
-    @IBAction func newDrawing(sender: UIButton) {
-        self.mainImageView.image = nil
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,17 +21,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // Actions
-    
-    @IBAction func reset(sender: AnyObject) {
-    }
-    
-    @IBAction func share(sender: AnyObject) {
-    }
-    
-    @IBAction func pencilPressed(sender: AnyObject) {
-    }
-    
+    // Touches Starting Action
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         swiped = false
         if let touch = touches.first as? UITouch {
@@ -44,10 +29,7 @@ class ViewController: UIViewController {
         }
     }
     
-    
-   
-    
-    
+    // Draw Line Helper
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         
         // Draw into tempImageView to handle the line being drawn
@@ -64,8 +46,8 @@ class ViewController: UIViewController {
         // Set line endcap (End shape),
         // width, color, and blend mode
         CGContextSetLineCap(context, kCGLineCapRound)
-        CGContextSetLineWidth(context, userbrush.brushWidth)
-        CGContextSetRGBStrokeColor(context, userbrush.red, userbrush.green, userbrush.blue, 1.0)
+        CGContextSetLineWidth(context, userBrush.brushWidth)
+        CGContextSetRGBStrokeColor(context, userBrush.red, userBrush.green, userBrush.blue, 1.0)
         CGContextSetBlendMode(context, kCGBlendModeNormal)
         
         // Draw the line
@@ -73,10 +55,11 @@ class ViewController: UIViewController {
         
         // End the drawing context
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        tempImageView.alpha = userbrush.opacity
+        tempImageView.alpha = userBrush.opacity
         UIGraphicsEndImageContext()
     }
     
+    // Swiped Touch Action
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         // Call the draw function as the touch
         // point moves around the view
@@ -89,6 +72,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // Touch Ends Action
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         if !swiped {
             drawLineFrom(lastPoint, toPoint: lastPoint)
@@ -96,11 +80,17 @@ class ViewController: UIViewController {
         
         UIGraphicsBeginImageContext(mainImageView.frame.size)
         mainImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
-        tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: kCGBlendModeNormal, alpha: userbrush.opacity)
+        tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: kCGBlendModeNormal, alpha: userBrush.opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         tempImageView.image = nil
     }
+    
+    // New Drawing Action
+    @IBAction func newDrawing(sender: UIButton) {
+        self.mainImageView.image = nil
+    }
+
 }
 

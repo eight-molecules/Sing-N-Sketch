@@ -1,5 +1,5 @@
 //
-//  brush.swift
+//  Brush.swift
 //  Sing N Sketch
 //
 //  Created by Emily Elizabeth Higgins on 9/16/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class brush: NSObject {
+public class Brush: NSObject {
     
     var brushWidth: CGFloat = 10.0
     var opacity: CGFloat = 1.0

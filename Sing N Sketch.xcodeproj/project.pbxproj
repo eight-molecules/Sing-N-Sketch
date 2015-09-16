@@ -13,7 +13,7 @@
 		938FBFF61BA79C5000EAFC7E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 938FBFEC1BA79C5000EAFC7E /* Images.xcassets */; };
 		938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFEF1BA79C5000EAFC7E /* ViewController.swift */; };
 		938FC0051BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */; };
-		F2FF3C3B1BA9FE5E0077FCAC /* brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* brush.swift */; };
+		F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +37,7 @@
 		938FC0031BA79C7F00EAFC7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sing_N_Sketch_Tests.swift; sourceTree = "<group>"; };
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F2FF3C3A1BA9FE5E0077FCAC /* brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = brush.swift; sourceTree = "<group>"; };
+		F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +67,7 @@
 				938FBFEC1BA79C5000EAFC7E /* Images.xcassets */,
 				938FBFED1BA79C5000EAFC7E /* Info.plist */,
 				938FBFEF1BA79C5000EAFC7E /* ViewController.swift */,
-				F2FF3C3A1BA9FE5E0077FCAC /* brush.swift */,
+				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 			);
 			name = "Sing N Sketch";
 			path = SingNSketch;
@@ -217,7 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */,
-				F2FF3C3B1BA9FE5E0077FCAC /* brush.swift in Sources */,
+				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
