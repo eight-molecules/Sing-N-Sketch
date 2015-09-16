@@ -11,7 +11,6 @@
 		938FBFF41BA79C5000EAFC7E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938FBFE81BA79C5000EAFC7E /* LaunchScreen.xib */; };
 		938FBFF51BA79C5000EAFC7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 938FBFEA1BA79C5000EAFC7E /* Main.storyboard */; };
 		938FBFF61BA79C5000EAFC7E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 938FBFEC1BA79C5000EAFC7E /* Images.xcassets */; };
-		938FBFF71BA79C5000EAFC7E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 938FBFED1BA79C5000EAFC7E /* Info.plist */; };
 		938FBFF81BA79C5000EAFC7E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFEE1BA79C5000EAFC7E /* SettingsViewController.swift */; };
 		938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFEF1BA79C5000EAFC7E /* ViewController.swift */; };
 		938FC0051BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */; };
@@ -153,7 +152,7 @@
 		EE43D4651A14A6F200311C06 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = BGSU;
 				TargetAttributes = {
 					938FBFFF1BA79C7F00EAFC7E = {
@@ -196,7 +195,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				938FBFF71BA79C5000EAFC7E /* Info.plist in Resources */,
 				938FBFF61BA79C5000EAFC7E /* Images.xcassets in Resources */,
 				938FBFF41BA79C5000EAFC7E /* LaunchScreen.xib in Resources */,
 				938FBFF51BA79C5000EAFC7E /* Main.storyboard in Resources */,
@@ -402,6 +400,7 @@
 				938FC00A1BA79C7F00EAFC7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EE43D4681A14A6F200311C06 /* Build configuration list for PBXProject "Sing N Sketch" */ = {
 			isa = XCConfigurationList;
