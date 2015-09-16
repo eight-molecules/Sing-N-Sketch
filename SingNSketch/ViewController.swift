@@ -1,15 +1,23 @@
 import UIKit
 
-
+@objc
+protocol ViewControllerDelegate {
+    optional func toggleLeftPanel()
+    optional func toggleRightPanel()
+    optional func collapseSidePanels()
+}
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var tempImageView: UIImageView!
+    
     var lastPoint = CGPoint.zeroPoint
 
     let userBrush = Brush()
     var swiped = false
+    
+    var delegate: ViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +98,11 @@ class ViewController: UIViewController {
     // New Drawing Action
     @IBAction func newDrawing(sender: UIButton) {
         self.mainImageView.image = nil
+    }
+    
+    //Menu Action
+    @IBAction func menuTapped(sender: AnyObject) {
+        delegate?.toggleLeftPanel!()
     }
 
 }
