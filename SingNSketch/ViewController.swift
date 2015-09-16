@@ -1,15 +1,14 @@
 import UIKit
 
+
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var tempImageView: UIImageView!
     var lastPoint = CGPoint.zeroPoint
-    var red: CGFloat = 0.0
-    var green: CGFloat = 0.0
-    var blue: CGFloat = 0.0
-    var brushWidth: CGFloat = 10.0
-    var opacity: CGFloat = 1.0
+
+    let userbrush = brush()
     var swiped = false
     
     override func viewDidLoad() {
@@ -56,8 +55,8 @@ class ViewController: UIViewController {
         // Set line endcap (End shape),
         // width, color, and blend mode
         CGContextSetLineCap(context, kCGLineCapRound)
-        CGContextSetLineWidth(context, brushWidth)
-        CGContextSetRGBStrokeColor(context, red, green, blue, 1.0)
+        CGContextSetLineWidth(context, userbrush.brushWidth)
+        CGContextSetRGBStrokeColor(context, userbrush.red, userbrush.green, userbrush.blue, 1.0)
         CGContextSetBlendMode(context, kCGBlendModeNormal)
         
         // Draw the line
@@ -65,7 +64,7 @@ class ViewController: UIViewController {
         
         // End the drawing context
         tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        tempImageView.alpha = opacity
+        tempImageView.alpha = userbrush.opacity
         UIGraphicsEndImageContext()
     }
     
@@ -88,7 +87,7 @@ class ViewController: UIViewController {
         
         UIGraphicsBeginImageContext(mainImageView.frame.size)
         mainImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
-        tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: kCGBlendModeNormal, alpha: opacity)
+        tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: kCGBlendModeNormal, alpha: userbrush.opacity)
         mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
