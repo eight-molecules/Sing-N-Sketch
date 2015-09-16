@@ -1,4 +1,6 @@
 import UIKit
+import AVFoundation
+//import recordSettings
 
 class ViewController: UIViewController {
     
@@ -11,10 +13,13 @@ class ViewController: UIViewController {
     var brushWidth: CGFloat = 10.0
     var opacity: CGFloat = 1.0
     var swiped = false
+    var singRecorder: AVAudioRecorder? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        //###
+        record()
     }
     
     override func didReceiveMemoryWarning() {
@@ -93,6 +98,37 @@ class ViewController: UIViewController {
         UIGraphicsEndImageContext()
         
         tempImageView.image = nil
+    }
+    
+    //funk
+    func prepareToRecord(){
+        var error: NSError?
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! NSString
+        let soundFileURL: NSURL? = NSURL.fileURLWithPath("\(documentsPath)/recording.caf")
+        let recordSettings = [
+            AVFormatIDKey: kAudioFormatAppleLossless,
+            AVEncoderAudioQualityKey : AVAudioQuality.Max.rawValue,
+            AVEncoderBitRateKey : 320000,
+            AVNumberOfChannelsKey: 2,
+            AVSampleRateKey : 44100.0
+        ]
+        self.singRecorder = AVAudioRecorder(URL: soundFileURL, settings: recordSettings as [NSObject : AnyObject], error: &error)
+        if let recorder = self.singRecorder {
+            recorder.prepareToRecord()
+        }
+    }
+    
+    func record(){
+        //self.prepareToRecord()
+        if let recorder = self.singRecorder {
+            recorder.record()
+        }
+    }
+    
+    func stop(){
+        if let recorder = self.singRecorder {
+            recorder.stop()
+        }
     }
 }
 
