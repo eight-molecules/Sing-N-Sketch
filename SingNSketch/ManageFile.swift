@@ -11,7 +11,7 @@ import UIkit
 
 class ManageFile {
     
-    func saveFile (){
+    @IBAction func saveButton (){
         
         let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let path = documents.stringByAppendingPathComponent("test.png")
@@ -21,4 +21,12 @@ class ManageFile {
             println("writeToFile error: \(error)")
     }
     
+        
+    func openFile (){
+        
+        var paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        var getImagePath = paths.stringByAppendingPathComponent("filename")
+        myImageView.image = UIImage(contentsOfFile: getImagePath)
+        
+    }
 }
