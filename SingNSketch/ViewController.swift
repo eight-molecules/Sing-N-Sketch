@@ -1,4 +1,6 @@
 import UIKit
+import AVFoundation
+//import recordSettings
 
 
 
@@ -10,10 +12,13 @@ class ViewController: UIViewController {
 
     let userBrush = Brush()
     var swiped = false
+    var singRecorder: AVAudioRecorder? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        //###
+        record()
     }
     
     override func didReceiveMemoryWarning() {
