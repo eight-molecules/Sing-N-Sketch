@@ -96,6 +96,41 @@ class ViewController: UIViewController {
     @IBAction func newDrawing(sender: UIButton) {
         self.mainImageView.image = nil
     }
+    
+    // Initialize audio stream
+    func initAudioStream() {
+        var error: NSError?
+        
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! NSString
+        
+        let soundFileURL: NSURL? = NSURL.fileURLWithPath("\(documentsPath)/recording.caf")
+        
+        let recordSettings = [
+            AVFormatIDKey: kAudioFormatAppleLossless,
+            AVEncoderAudioQualityKey : AVAudioQuality.Max.rawValue,
+            AVEncoderBitRateKey : 320000,
+            AVNumberOfChannelsKey: 2,
+            AVSampleRateKey : 44100.0
+        ]
+        
+        self.singRecorder = AVAudioRecorder(URL: soundFileURL, settings: recordSettings as [NSObject : AnyObject], error: &error)
+        
+        if let recorder = self.singRecorder {
+            recorder.prepareToRecord()
+        }
+    }
 
+    
+    func record(){
+        //self.prepareToRecord()
+        if let recorder = self.singRecorder {
+            recorder.record()
+        }
+    }
+    
+    func stop(){
+        if let recorder = self.singRecorder {
+            recorder.stop()
+        }
+    }
 }
-
