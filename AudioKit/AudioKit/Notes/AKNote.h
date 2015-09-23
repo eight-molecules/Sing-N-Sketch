@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property AKNoteProperty *duration;
 
 /// Set of properties of the note
-@property NSMutableDictionary<NSString *, AKNoteProperty *> *properties;
+@property NSMutableDictionary *properties;
 
 /// Adds the property to the list of available properties of the note
 /// @param newProperty New property to add to the note's set of properties

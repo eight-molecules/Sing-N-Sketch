@@ -14,7 +14,7 @@
 @implementation AKSegmentArrayLoop
 {
     AKParameter *loopFrequency;
-    NSMutableArray<AKParameter *> *segments;
+    NSMutableArray *segments;
 }
 
 - (instancetype)initWithFrequency:(AKParameter *)frequency

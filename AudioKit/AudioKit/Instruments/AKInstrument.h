@@ -54,11 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// Array of instrument properties available for the instrument.
-@property NSMutableArray<AKInstrumentProperty *> *properties;
+@property NSMutableArray *properties;
 
 
 /// Array of note properties available to events.
-@property NSMutableArray<AKNoteProperty *> *noteProperties;
+@property NSMutableArray *noteProperties;
 
 /// Add an instrument property explicitly (normally this happens automatically)
 /// @param newProperty New property to add to the instrument.
@@ -83,10 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
 // -----------------------------------------------------------------------------
 
 /// All UDOs that are required by the instrument are stored here and declared before the instrument block.
-@property NSMutableSet<NSString *> *userDefinedOperations;
+@property NSMutableSet *userDefinedOperations;
 
 /// Globally accessible parameters used for cross-instrument communication
-@property NSMutableSet<AKParameter *> *globalParameters;
+@property NSMutableSet *globalParameters;
 
 /// Adds the operation to the AKInstrument.
 /// @param newOperation New operation to add to the instrument.
@@ -131,8 +131,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)enableParameterLog:(NSString *)message
                  parameter:(AKParameter *)parameter
               timeInterval:(NSTimeInterval)timeInterval;
-
-- (void)logChangesToParameter:(AKParameter *)parameter withMessage:(NSString *)message;
 
 // -----------------------------------------------------------------------------
 #  pragma mark - Csound Implementation

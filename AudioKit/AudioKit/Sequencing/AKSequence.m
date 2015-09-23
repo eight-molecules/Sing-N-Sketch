@@ -46,7 +46,7 @@
 - (void)addEvent:(AKEvent *)event
           atTime:(float)timeSinceStart
 {
-    NSNumber *time = @(timeSinceStart);
+    NSNumber *time = [NSNumber numberWithFloat:timeSinceStart];
     
     int insertionIndex = 0;
     BOOL doInsertion = NO;

@@ -19,7 +19,6 @@
 @property (readonly) AKStereoAudio *output;
 
 - (instancetype)initWithInput:(AKAudio *)input;
-- (instancetype)initWithStereoInput:(AKStereoAudio *)input;
 
 // Some presets
 - (void)setPresetLargeHall;

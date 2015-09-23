@@ -71,10 +71,6 @@
 #import "AKCrossSynthesizedFFT.h"
 #import "AKFFT.h"
 #import "AKFFTProcessor.h"
-#import "AKFFTTableReader.h"
-#import "AKFFTTableWriter.h"
-#import "AKFilteredFFT.h"
-#import "AKMaskedFFT.h"
 #import "AKMixedFFT.h"
 #import "AKPhaseLockedVocoder.h"
 #import "AKResynthesizedAudio.h"
@@ -168,7 +164,6 @@
 #import "AKLog.h"
 #import "AKMP3FileInput.h"
 #import "AKMonoFileInput.h"
-#import "AKParameterChangeLog.h"
 
 // Operations - Signal Modifiers
 
@@ -264,10 +259,6 @@
 
 // Utilities - Instruments - File Players
 #import "AKAudioFilePlayer.h"
-#import "AKStereoAudioFilePlayer.h"
-
-// Utilities - Instruments - Looper
-#import "AKBeatClock.h"
 
 // Utilities - Instruments - Microphone
 #import "AKMicrophone.h"

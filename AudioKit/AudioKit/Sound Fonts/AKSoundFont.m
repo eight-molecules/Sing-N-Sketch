@@ -16,8 +16,7 @@
 @implementation AKSoundFont
 {
     BOOL _instrumentsLoaded, _presetsLoaded;
-    NSMutableArray<AKSoundFontInstrument *> *_instruments;
-    NSMutableArray<AKSoundFontPreset *> *_presets;
+    NSMutableArray *_instruments, *_presets;
     AKSoundFontCompletionBlock _completionBlock;
 }
 
@@ -29,12 +28,12 @@ static int currentID = 1;
     }
 }
 
-- (NSArray<AKSoundFontInstrument *> *)instruments
+- (NSArray *)instruments
 {
     return _instrumentsLoaded ? _instruments : nil;
 }
 
-- (NSArray<AKSoundFontPreset *> *)presets
+- (NSArray *)presets
 {
     return _presetsLoaded ? _presets : nil;
 }
@@ -76,7 +75,7 @@ static int currentID = 1;
     return self;
 }
 
-- (void)fetchPresets:(nullable AKSoundFontCompletionBlock)completionBlock
+- (void)fetchPresets:(__nullable AKSoundFontCompletionBlock)completionBlock
 {
     _instrumentsLoaded = _presetsLoaded = NO;
     _completionBlock = completionBlock;
@@ -97,7 +96,7 @@ static int currentID = 1;
 - (void)messageReceivedFromCsound:(NSNotification *)notification
 {
     NSString *type = notification.userInfo[@"type"];
-    NSArray<NSString *> *fields = [notification.userInfo[@"message"] componentsSeparatedByString:@","];
+    NSArray *fields = [notification.userInfo[@"message"] componentsSeparatedByString:@","];
     
     int number;
     NSString *name;
