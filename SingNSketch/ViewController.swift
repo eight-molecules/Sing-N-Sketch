@@ -5,14 +5,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var tempImageView: UIImageView!
     var lastPoint = CGPoint.zeroPoint
-
-    let userBrush = Brush()
+    var audio: AudioInterface!
+    var pitch: Double
+    
     var swiped = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        let userBrush = Brush()
+        let audio = AudioInterface()
     }
     
     override func didReceiveMemoryWarning() {
@@ -25,6 +27,9 @@ class ViewController: UIViewController {
         swiped = false
         if let touch = touches.first as? UITouch {
             lastPoint = touch.locationInView(self.view)
+            audio.update()
+            let pitch = audio.frequency
+            userBrush.red = pitch / 20000
         }
     }
     
