@@ -4,19 +4,16 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var tempImageView: UIImageView!
-    var userBrush: Brush!
+    var userBrush: Brush = Brush()
     var lastPoint = CGPoint.zeroPoint
     
-    var audio: AudioInterface!
-    var pitch: Double!
+    var audio: AudioInterface = AudioInterface()
     
     var swiped = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let userBrush = Brush()
-        let audio = AudioInterface()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -38,16 +35,19 @@ class ViewController: UIViewController {
         swiped = false
         if let touch = touches.first as? UITouch {
             lastPoint = touch.locationInView(self.view)
-            
             // Update Audio Interface and Pitch
-            audio.update()
-            let pitch = audio.frequency
-            userBrush.red = CGFloat(pitch % 10000)
         }
+        
     }
     
     // Draw Line Helper
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
+        // Update audio
+        audio.update()
+        
+        // Set red color
+        let r = CGFloat(audio.frequency / 5000)
+        userBrush.red = r
         
         // Draw into tempImageView to handle the line being drawn
         UIGraphicsBeginImageContext(view.frame.size)
