@@ -9,13 +9,13 @@
 import Foundation
 
 class AudioInterface {
-    var input: Microphone
-    var analyzer: AKAudioAnalyzer
-    var frequency: Double
+    var input: AKAudioInput!
+    var analyzer: AKAudioAnalyzer!
+    var frequency: Double! = 0
     
     init() {
-        let input = Microphone()
-        let analyzer = AKAudioAnalyzer(audioSource: microphone.auxilliaryOutput)
+        let input = AKAudioInput()
+        let analyzer = AKAudioAnalyzer(input: input)
         update()
     }
     
