@@ -17,10 +17,15 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         let userBrush = Brush()
         let audio = AudioInterface()
-        
-        // Update audio interface and pitch
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        audio.start()
         audio.update()
-        let pitch = audio.frequency
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        audio.stop()
     }
     
     override func didReceiveMemoryWarning() {

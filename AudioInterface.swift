@@ -9,17 +9,33 @@
 import Foundation
 
 class AudioInterface {
-    var input: AKAudioInput!
+    var input: AKMicrophone!
     var analyzer: AKAudioAnalyzer!
-    var frequency: Double! = 0
+    var frequency: Float! = 0
     
     init() {
-        let input = AKAudioInput()
-        let analyzer = AKAudioAnalyzer(input: input)
-        update()
+        let input = AKMicrophone()
+        let analyzer = AKAudioAnalyzer(input: input.output)
+        
+        AKOrchestra.addInstrument(input)
+        AKOrchestra.addInstrument(analyzer)
+        
+        input.start()
+        analyzer.start()
+        
+    }
+    
+    func start() {
+        input.start()
+        analyzer.start()
+    }
+    
+    func stop() {
+        analyzer.stop()
+        input.stop()
     }
     
     func update() {
-        let frequency = analyzer.trackedFrequency.value
+        println(analyzer.trackedFrequency.floatValue)
     }
 }
