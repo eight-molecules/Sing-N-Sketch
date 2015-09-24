@@ -34,6 +34,5 @@ class AudioInterface {
     
     func update() {
         frequency = analyzer.trackedFrequency.floatValue
-        println(analyzer.trackedFrequency.floatValue)
     }
 }
