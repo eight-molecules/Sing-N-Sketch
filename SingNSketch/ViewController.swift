@@ -1,5 +1,12 @@
 import UIKit
 
+@objc
+protocol ViewControllerDelegate {
+    optional func toggleLeftPanel()
+    optional func toggleRightPanel()
+    optional func collapseSidePanels()
+}
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var mainImageView: UIImageView!
@@ -11,6 +18,8 @@ class ViewController: UIViewController {
     let noteFrequencies = [16.35,17.32,18.35,19.45,20.6,21.83,23.12,24.5,25.96,27.5,29.14,30.87]
     let noteNamesWithSharps = ["C", "C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]
     let noteNamesWithFlats = ["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"]
+    
+    var delegate: ViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,4 +127,13 @@ class ViewController: UIViewController {
     @IBAction func newDrawing(sender: UIButton) {
         self.mainImageView.image = nil
     }
+    
+    
+    
+    @IBAction func showMenu(sender: UIButton) {
+        self.performSegueWithIdentifier("menuSegue", sender: self)
+    }
+
+
+
 }
