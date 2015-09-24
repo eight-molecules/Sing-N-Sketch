@@ -37,10 +37,7 @@ class ContainerViewController: UIViewController {
     
     var menuShown: Bool = false
     
-    @IBAction func newDrawing(sender: UIButton) {
-        
-    }
-    
+
     
     @IBAction func swipeLeft(sender: UISwipeGestureRecognizer) {
         hideMenu()

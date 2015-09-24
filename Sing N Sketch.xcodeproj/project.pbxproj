@@ -16,6 +16,7 @@
 		938FC0051BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */; };
 		F239CD1F1BB336E000FA2699 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */; };
 		F239CD211BB33B4100FA2699 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239CD201BB33B4100FA2699 /* MenuViewController.swift */; };
+		F2A7B7931BB3725400E74103 /* menuSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A7B7921BB3725400E74103 /* menuSegue.swift */; };
 		F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		F239CD201BB33B4100FA2699 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		F2A7B7921BB3725400E74103 /* menuSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = menuSegue.swift; sourceTree = "<group>"; };
 		F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +79,7 @@
 				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 				F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */,
 				F239CD201BB33B4100FA2699 /* MenuViewController.swift */,
+				F2A7B7921BB3725400E74103 /* menuSegue.swift */,
 			);
 			name = "Sing N Sketch";
 			path = SingNSketch;
@@ -243,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2A7B7931BB3725400E74103 /* menuSegue.swift in Sources */,
 				938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */,
 				F239CD211BB33B4100FA2699 /* MenuViewController.swift in Sources */,
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
