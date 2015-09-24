@@ -98,7 +98,7 @@ class ViewController: UIViewController {
     
     // New Drawing Action
     @IBAction func newDrawing(sender: UIButton) {
-        self.performSegueWithIdentifier("menuSegue", sender: self)
+        self.mainImageView.image = nil
     }
     
     
