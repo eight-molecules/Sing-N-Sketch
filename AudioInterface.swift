@@ -33,6 +33,7 @@ class AudioInterface {
     }
     
     func update() {
+        println(analyzer.trackedAmplitude.floatValue)
         frequency = analyzer.trackedFrequency.floatValue
     }
 }

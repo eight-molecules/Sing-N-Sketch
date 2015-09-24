@@ -15,6 +15,9 @@
 		938FBFF51BA79C5000EAFC7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 938FBFEA1BA79C5000EAFC7E /* Main.storyboard */; };
 		938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFEF1BA79C5000EAFC7E /* ViewController.swift */; };
 		938FC0051BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */; };
+		F239CD1F1BB336E000FA2699 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */; };
+		F239CD211BB33B4100FA2699 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239CD201BB33B4100FA2699 /* MenuViewController.swift */; };
+		F2A7B7931BB3725400E74103 /* menuSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A7B7921BB3725400E74103 /* menuSegue.swift */; };
 		9BCD80151BB3386E0092771F /* libAudioKit iOS Dynamic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BCD80101BB338360092771F /* libAudioKit iOS Dynamic.a */; };
 		9BCD801A1BB3393A0092771F /* libsndfile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BCD80161BB338DD0092771F /* libsndfile.framework */; };
 		9BCD801B1BB3393A0092771F /* libsndfile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9BCD80161BB338DD0092771F /* libsndfile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -366,9 +369,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				936E74AB1BB348C60089757A /* AudioInterface.swift in Sources */,
+				F2A7B7931BB3725400E74103 /* menuSegue.swift in Sources */,
 				938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */,
 				F239CD211BB33B4100FA2699 /* MenuViewController.swift in Sources */,
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
+				F239CD1F1BB336E000FA2699 /* ContainerViewController.swift in Sources */,
 				9BCD80221BB33A670092771F /* AudioKit.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,
 			);
