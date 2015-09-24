@@ -16,6 +16,8 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="CE2-SJ-QTP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EBI-7N-E4W"/>
+                <constraint firstAttribute="trailing" secondItem="CE2-SJ-QTP" secondAttribute="trailing" id="FXH-ra-8vi"/>
                 <constraint firstItem="CE2-SJ-QTP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yUk-9f-nty"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
