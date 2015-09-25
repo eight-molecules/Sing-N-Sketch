@@ -11,15 +11,19 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var mainImageView: UIImageView!
     @IBOutlet weak var tempImageView: UIImageView!
+    var delegate: ViewControllerDelegate?
+    
     var userBrush: Brush = Brush()
-    var lastPoint = CGPoint.zeroPoint
-    var audio: AudioInterface = AudioInterface()
     var swiped = false
+    var lastPoint = CGPoint.zeroPoint
+    
+    var audio: AudioInterface = AudioInterface()
+    
+    // Basic pitch mappings. Do not re-use, we have a framework for this.
     let noteFrequencies = [16.35,17.32,18.35,19.45,20.6,21.83,23.12,24.5,25.96,27.5,29.14,30.87]
     let noteNamesWithSharps = ["C", "C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]
     let noteNamesWithFlats = ["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"]
     
-    var delegate: ViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,27 +49,23 @@ class ViewController: UIViewController {
         swiped = false
         if let touch = touches.first as? UITouch {
             lastPoint = touch.locationInView(self.view)
-            // Update Audio Interface and Pitch
         }
-        
     }
     
     // Draw Line Helper
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         // Update audio
         audio.update()
-        var frequency = audio.frequency
         
-        while (frequency > Float(noteFrequencies[noteFrequencies.count-1])) {
-            frequency = frequency / 2.0
+        while (audio.frequency > noteFrequencies[noteFrequencies.count-1]) {
+            audio.frequency = audio.frequency / 2.0
         }
-        while (frequency < Float(noteFrequencies[0])) {
-            frequency = frequency * 2.0
+        while (audio.frequency < noteFrequencies[0]) {
+            audio.frequency = audio.frequency * 2.0
         }
         
         // Set red color
-        let r = CGFloat((frequency - 16) / 16)
-        println(frequency)
+        let r = CGFloat((audio.frequency - 16) / 16)
         userBrush.red = r
         
         // Draw into tempImageView to handle the line being drawn
