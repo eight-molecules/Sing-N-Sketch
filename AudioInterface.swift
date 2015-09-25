@@ -13,7 +13,7 @@ class AudioInterface {
     var analyzer: AKAudioAnalyzer!
     var frequency: Double = 0
     var amplitude: Double = 1
-    var noiseFloor: Double = 0.005
+    var noiseFloor: Double = 0
     
     init() {
         AKSettings.shared().audioInputEnabled = true
@@ -37,8 +37,6 @@ class AudioInterface {
     
     func update() {
         amplitude = Double(analyzer.trackedAmplitude.floatValue)
-        if (amplitude > noiseFloor) {
-            frequency = Double(analyzer.trackedFrequency.floatValue)
-        }
+        frequency = Double(analyzer.trackedFrequency.floatValue)
     }
 }
