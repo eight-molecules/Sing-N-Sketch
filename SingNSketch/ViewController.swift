@@ -56,6 +56,13 @@ class ViewController: UIViewController {
     func drawLineFrom(fromPoint: CGPoint, toPoint: CGPoint) {
         // Update audio
         audio.update()
+
+        // DEBUG
+        let f = "Frequency: " + audio.frequency.description
+        let a = "Amplitude: " + audio.amplitude.description
+        println(f)
+        println(a)
+        println("")
         
         // DEMO CODE - Changes Blue value based on frequency
         if (audio.amplitude > 0.005) {
