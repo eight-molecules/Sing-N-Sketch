@@ -57,17 +57,21 @@ class ViewController: UIViewController {
         // Update audio
         audio.update()
         
-        // DEMO CODE - Changes Red value based on frequency
-        while (audio.frequency > noteFrequencies[noteFrequencies.count-1]) {
-            audio.frequency = audio.frequency / 2.0
-        }
-        while (audio.frequency < noteFrequencies[0]) {
-            audio.frequency = audio.frequency * 2.0
+        // DEMO CODE - Changes Blue value based on frequency
+        if (audio.amplitude > 0.005) {
+            var frequency: Float = audio.frequency
+            while (frequency > Float(noteFrequencies[noteFrequencies.count-1])) {
+                frequency = frequency / 2.0
+            }
+            while (frequency < Float(noteFrequencies[0])) {
+                frequency = frequency * 2.0
+            }
+            
+            // Set red color
+            let b = CGFloat((frequency - 16) / 16)
+            userBrush.blue = b
         }
         
-        // Set red color
-        let b = CGFloat((audio.frequency - 16) / 16)
-        userBrush.blue = b
         
         // Draw into tempImageView to handle the line being drawn
         UIGraphicsBeginImageContext(view.frame.size)

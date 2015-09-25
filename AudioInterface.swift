@@ -11,9 +11,9 @@ import Foundation
 class AudioInterface {
     var input: AKMicrophone = AKMicrophone()
     var analyzer: AKAudioAnalyzer!
-    var frequency: Double = 0
-    var amplitude: Double = 1
-    var noiseFloor: Double = 0
+    var frequency: Float = 0
+    var amplitude: Float = 1
+    var noiseFloor: Float = 0
     
     init() {
         AKSettings.shared().audioInputEnabled = true
@@ -27,7 +27,7 @@ class AudioInterface {
     func start() {
         input.start()
         analyzer.start()
-        frequency = Double(analyzer.trackedFrequency.floatValue)
+        frequency = analyzer.trackedFrequency.floatValue
     }
     
     func stop() {
@@ -36,7 +36,7 @@ class AudioInterface {
     }
     
     func update() {
-        amplitude = Double(analyzer.trackedAmplitude.floatValue)
-        frequency = Double(analyzer.trackedFrequency.floatValue)
+        amplitude = analyzer.trackedAmplitude.floatValue
+        frequency = analyzer.trackedFrequency.floatValue
     }
 }
