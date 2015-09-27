@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -9,58 +10,85 @@
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                        <viewControllerLayoutGuide type="top" id="80x-P8-Tp7"/>
+                        <viewControllerLayoutGuide type="bottom" id="qDO-Zf-A9M"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                    <view key="view" contentMode="scaleToFill" id="37g-l9-HxW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VdO-SK-Y4k" userLabel="MainImageView">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lad-JC-UU1">
-                                <rect key="frame" x="16" y="20" width="31" height="30"/>
-                                <state key="normal" title="New">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="hide" destination="S0B-1d-j6v" id="2VO-Fe-TK0"/>
+                                    <outlet property="newDrawing" destination="Lad-JC-UU1" id="HxT-5R-Wdc"/>
+                                    <outlet property="show" destination="XwK-x4-01C" id="MRJ-yn-twx"/>
+                                    <outlet property="toolBar" destination="mcx-eY-ALd" id="ZwC-a8-yeY"/>
+                                </connections>
+                            </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
+                                <rect key="frame" x="13" y="33" width="39" height="30"/>
+                                <state key="normal" title="Show">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="newDrawing:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="nT1-fV-qMg"/>
+                                    <action selector="show:" destination="jme-l1-KiE" eventType="touchUpInside" id="TrF-Mf-jZ4"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6h-hY-gb4">
-                                <rect key="frame" x="76" y="20" width="39" height="30"/>
-                                <state key="normal" title="Menu">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="showMenu:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="UMz-Bf-lvE"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AyQ-rv-3rx" userLabel="TempImageView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="byQ-wH-Qh2" appends="YES" id="SQL-We-Xud"/>
-                                </connections>
-                            </imageView>
+                            <toolbar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mcx-eY-ALd">
+                                <rect key="frame" x="0.0" y="26" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" id="uyS-aq-yIV">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="S0B-1d-j6v">
+                                            <rect key="frame" x="106" y="7" width="32" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Hide">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="hide:" destination="jme-l1-KiE" eventType="touchUpInside" id="41U-9W-1VB"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" id="38m-tP-W4w">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Lad-JC-UU1">
+                                            <rect key="frame" x="16" y="20" width="31" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="New">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="newDrawing:" destination="jme-l1-KiE" eventType="touchUpInside" id="H9t-RA-q4V"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" id="q28-lJ-qId">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="n6h-hY-gb4">
+                                            <rect key="frame" x="76" y="20" width="39" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Menu">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="showMenu:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="UMz-Bf-lvE"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <gestureRecognizers/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="VdO-SK-Y4k" secondAttribute="bottom" id="00l-sa-ykp"/>
-                            <constraint firstAttribute="trailing" secondItem="VdO-SK-Y4k" secondAttribute="trailing" id="3j1-fv-xuD"/>
-                            <constraint firstItem="AyQ-rv-3rx" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="Foo-lp-p03"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="AyQ-rv-3rx" secondAttribute="bottom" id="NLd-8O-NK5"/>
-                            <constraint firstAttribute="trailing" secondItem="AyQ-rv-3rx" secondAttribute="trailing" id="ZxO-W1-0wy"/>
-                            <constraint firstItem="AyQ-rv-3rx" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="eQ2-JM-pc2"/>
-                            <constraint firstItem="VdO-SK-Y4k" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="yH5-95-7V5"/>
-                            <constraint firstItem="VdO-SK-Y4k" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="yJC-xa-J7I"/>
+                            <constraint firstItem="jme-l1-KiE" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="height" multiplier="1:1" id="Nvz-QZ-1ax"/>
+                            <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="hLj-pc-DJk"/>
+                            <constraint firstAttribute="width" secondItem="mcx-eY-ALd" secondAttribute="width" id="scO-Ds-Fwo"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="mainImageView" destination="VdO-SK-Y4k" id="TIY-mP-Myh"/>
-                        <outlet property="tempImageView" destination="AyQ-rv-3rx" id="Hd8-8f-jAc"/>
+                        <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
                         <segue destination="QuR-7Z-XaG" kind="showDetail" identifier="menuSegue" id="qqW-dw-Nfx"/>
                     </connections>
                 </viewController>
@@ -72,7 +100,7 @@
                     </connections>
                 </screenEdgePanGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="380" y="479"/>
+            <point key="canvasLocation" x="313" y="522"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="a49-5N-eYi">
