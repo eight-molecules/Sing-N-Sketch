@@ -555,6 +555,7 @@
 				PRODUCT_NAME = "Sing N Sketch";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/AudioKit/AudioKit/**";
 			};
 			name = Debug;
@@ -577,6 +578,7 @@
 				PRODUCT_NAME = "Sing N Sketch";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/AudioKit/AudioKit/**";
 			};
 			name = Release;

@@ -88,6 +88,8 @@ class SketchingView: UIView {
         
         setNeedsDisplay()
         
+        //draws the bezier path to the screen and saves the image in
+        //a temporary view to be added to the main view later
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
         drawViewHierarchyInRect(bounds, afterScreenUpdates: true)
         drawImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -96,6 +98,8 @@ class SketchingView: UIView {
         
     }
     
+    //function that gets the mid point of a line.
+    //used for bezier paths
     func getMidPoint(a: CGPoint, andB b: CGPoint) -> CGPoint{
         return CGPoint(x: (a.x + b.x)/2, y: (a.y + b.y)/2)
     }
@@ -138,12 +142,14 @@ class SketchingView: UIView {
         CGContextSetAllowsAntialiasing(currentContext, true)
         CGContextSetShouldAntialias(currentContext, true)
         
+        //creating bezier path
         let path = UIBezierPath()
         
         path.lineCapStyle = kCGLineCapRound
         path.lineJoinStyle = kCGLineJoinRound
         path.lineWidth = userBrush.brushWidth
         
+        //creates the components that update the color of the bezier path
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let components: [CGFloat] = [userBrush.red, userBrush.green, userBrush.blue, userBrush.opacity]
         let color = CGColorCreate(colorSpace, components)
@@ -151,6 +157,7 @@ class SketchingView: UIView {
         
         path.removeAllPoints()
         
+        //a temporary image view that draws the image and subsequent images to the screen.
         drawImage?.drawInRect(bounds)
         
         //draw a line between first point and mid point, then mid point and last point

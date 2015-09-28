@@ -80,7 +80,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="jme-l1-KiE" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="height" multiplier="1:1" id="Nvz-QZ-1ax"/>
+                            <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="height" multiplier="1:1" id="dGp-jX-MZP"/>
+                            <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="dTe-Am-egN"/>
                             <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="hLj-pc-DJk"/>
                             <constraint firstAttribute="width" secondItem="mcx-eY-ALd" secondAttribute="width" id="scO-Ds-Fwo"/>
                         </constraints>
