@@ -14,35 +14,11 @@ class SketchingView: UIView {
     
     //stores previously drawn path
     var drawImage: UIImage!
-    
     var userBrush: Brush = Brush()
     
-    
     @IBOutlet weak var toolBar: UIToolbar!
-    
     @IBOutlet weak var hide: UIButton!
-    
     @IBOutlet weak var show: UIButton!
-    
-    @IBAction func hide(sender: UIButton) {
-        toolBar.hidden = true
-        show.hidden = false
-    }
-    
-    @IBAction func show(sender: UIButton) {
-        toolBar.hidden = false
-        show.hidden = true
-    }
-    
-    @IBOutlet weak var newDrawing: UIButton!
-    
-    // New Drawing Action
-    @IBAction func newDrawing(sender: UIButton) {
-        drawImage = nil
-        drawImage?.drawInRect(bounds)
-        setNeedsDisplay()
-        
-    }
     
     //stores an array of points for Bezier curves
     var points = [CGPoint]()
@@ -54,6 +30,8 @@ class SketchingView: UIView {
     let noteNamesWithSharps = ["C", "C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]
     let noteNamesWithFlats = ["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"]
     
+        @IBOutlet weak var newDrawing: UIButton!
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,7 +42,6 @@ class SketchingView: UIView {
         super.init(coder: aDecoder)
         
     }
-    
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         let touch = touches.first as! UITouch
@@ -96,6 +73,23 @@ class SketchingView: UIView {
         UIGraphicsEndImageContext()
         points.removeAll()
         
+    }
+    
+    // New Drawing Action
+    @IBAction func newDrawing(sender: UIButton) {
+        drawImage = nil
+        drawImage?.drawInRect(bounds)
+        setNeedsDisplay()
+        
+    }
+    @IBAction func hide(sender: UIButton) {
+        toolBar.hidden = true
+        show.hidden = false
+    }
+    
+    @IBAction func show(sender: UIButton) {
+        toolBar.hidden = false
+        show.hidden = true
     }
     
     //function that gets the mid point of a line.

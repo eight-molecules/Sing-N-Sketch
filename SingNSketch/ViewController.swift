@@ -9,12 +9,7 @@ protocol ViewControllerDelegate {
 
 class ViewController: UIViewController {
     
-    var delegate: ViewControllerDelegate?
-    
-    //var userBrush: Brush = Brush()
-    //var swiped = false
-    //var lastPoint = CGPoint.zeroPoint
-    
+    var delegate: ViewControllerDelegate?    
     @IBOutlet weak var sketchingView: SketchingView!
     
     
