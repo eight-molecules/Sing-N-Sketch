@@ -85,11 +85,17 @@ class SketchingView: UIView {
     @IBAction func hide(sender: UIButton) {
         toolBar.hidden = true
         show.hidden = false
+        //###
+        //TODO: Raise menu to top when hiding
+        UIApplication.sharedApplication().statusBarHidden = true
     }
     
     @IBAction func show(sender: UIButton) {
         toolBar.hidden = false
         show.hidden = true
+        //###
+        //TODO: Lower menu to original position when showing
+        UIApplication.sharedApplication().statusBarHidden = false
     }
     
     //function that gets the mid point of a line.
