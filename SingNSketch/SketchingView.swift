@@ -30,7 +30,7 @@ class SketchingView: UIView {
     let noteNamesWithSharps = ["C", "C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]
     let noteNamesWithFlats = ["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"]
     
-        @IBOutlet weak var newDrawing: UIButton!
+    @IBOutlet weak var newDrawing: UIButton!
     
     
     override init(frame: CGRect) {
@@ -152,7 +152,7 @@ class SketchingView: UIView {
         path.removeAllPoints()
         
         //a temporary image view that draws the image and subsequent images to the screen.
-        drawImage?.drawInRect(bounds)
+        drawImage?.drawInRect(self.bounds)
         
         //draw a line between first point and mid point, then mid point and last point
         //quadratic bezier curves are then made
