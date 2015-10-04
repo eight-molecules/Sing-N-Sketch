@@ -16,6 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xLi-EN-JGi">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -26,15 +29,6 @@
                                     <outlet property="toolBar" destination="mcx-eY-ALd" id="ZwC-a8-yeY"/>
                                 </connections>
                             </view>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
-                                <rect key="frame" x="13" y="33" width="39" height="30"/>
-                                <state key="normal" title="Show">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="show:" destination="jme-l1-KiE" eventType="touchUpInside" id="TrF-Mf-jZ4"/>
-                                </connections>
-                            </button>
                             <toolbar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mcx-eY-ALd">
                                 <rect key="frame" x="0.0" y="26" width="600" height="44"/>
                                 <items>
@@ -74,11 +68,34 @@
                                             </connections>
                                         </button>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" id="cJn-pv-w6m">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LWX-Wg-Eiu">
+                                            <rect key="frame" x="148" y="7" width="34" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Save">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="save:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Fei-oc-EfJ"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
+                                <rect key="frame" x="13" y="33" width="39" height="30"/>
+                                <state key="normal" title="Show">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="show:" destination="jme-l1-KiE" eventType="touchUpInside" id="TrF-Mf-jZ4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="jme-l1-KiE" firstAttribute="width" secondItem="xLi-EN-JGi" secondAttribute="width" id="S8y-uQ-hQB"/>
+                            <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="xLi-EN-JGi" secondAttribute="height" id="TKw-ux-rGi"/>
                             <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="dTe-Am-egN"/>
                             <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="hLj-pc-DJk"/>
                             <constraint firstAttribute="width" secondItem="mcx-eY-ALd" secondAttribute="width" id="scO-Ds-Fwo"/>
@@ -88,6 +105,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
+                        <outlet property="wholeView" destination="xLi-EN-JGi" id="h4N-SR-3zn"/>
                         <segue destination="QuR-7Z-XaG" kind="showDetail" identifier="menuSegue" id="qqW-dw-Nfx"/>
                     </connections>
                 </viewController>
