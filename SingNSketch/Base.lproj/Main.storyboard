@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -16,8 +16,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
+                                <rect key="frame" x="6" y="0.0" width="39" height="30"/>
+                                <state key="normal" title="Show">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="show:" destination="jme-l1-KiE" eventType="touchUpInside" id="TrF-Mf-jZ4"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="38" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="hide" destination="S0B-1d-j6v" id="2VO-Fe-TK0"/>
@@ -26,16 +35,7 @@
                                     <outlet property="toolBar" destination="mcx-eY-ALd" id="ZwC-a8-yeY"/>
                                 </connections>
                             </view>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
-                                <rect key="frame" x="13" y="33" width="39" height="30"/>
-                                <state key="normal" title="Show">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="show:" destination="jme-l1-KiE" eventType="touchUpInside" id="TrF-Mf-jZ4"/>
-                                </connections>
-                            </button>
-                            <toolbar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mcx-eY-ALd">
+                            <toolbar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mcx-eY-ALd">
                                 <rect key="frame" x="0.0" y="26" width="600" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" id="uyS-aq-yIV">
@@ -81,7 +81,6 @@
                         <constraints>
                             <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="dTe-Am-egN"/>
                             <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="hLj-pc-DJk"/>
-                            <constraint firstAttribute="width" secondItem="mcx-eY-ALd" secondAttribute="width" id="scO-Ds-Fwo"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -99,7 +98,7 @@
                     </connections>
                 </screenEdgePanGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="313" y="522"/>
+            <point key="canvasLocation" x="369" y="617"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="a49-5N-eYi">
