@@ -140,10 +140,17 @@ class SketchingView: UIView {
         
         //creating bezier path
         let path = UIBezierPath()
+        let _shapeLayer = CAShapeLayer()
         
         path.lineCapStyle = kCGLineCapRound
         path.lineJoinStyle = kCGLineJoinRound
         path.lineWidth = userBrush.brushWidth
+        //_shapeLayer.strokeColor = color//UIColor.greenColor().CGColor
+        _shapeLayer.fillColor = nil
+        _shapeLayer.lineWidth = 3
+        //_shapeLayer.path = path.CGPath
+        //_shapeLayer.lineCap = kCALineCapRound
+        //layer.addSublayer(_shapeLayer)
         
         //creates the components that update the color of the bezier path
         let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -161,16 +168,29 @@ class SketchingView: UIView {
         if !points.isEmpty {
             path.moveToPoint(points.first!)
             path.addLineToPoint(getMidPoint(points.first!, andB: points[1]))
-            
+            var x = Int()
             for index in 1..<points.count - 1 {
                 let midPoint = getMidPoint(points[index], andB: points[index+1])
                 path.addQuadCurveToPoint(midPoint, controlPoint: points[index])
+                x = index
             }
             
             path.addLineToPoint(points.last!)
             
+            if(x % 2 ~= 0){
+                //_shapeLayer.strokeColor = UIColor.redColor().CGColor
+                _shapeLayer.strokeColor = color
+            }
             
+            _shapeLayer.path = path.CGPath
+            _shapeLayer.lineCap = kCALineCapRound
+            _shapeLayer.strokeStart = 0.9
+            //path.stroke()
+            layer.addSublayer(_shapeLayer)
             path.stroke()
+            _shapeLayer.strokeEnd = 1.0
+            //path.closePath()
+            //_shapeLayer.path = path.CGPath
         }
         
     }
