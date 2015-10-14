@@ -14,35 +14,34 @@ class SketchingView: UIView {
     
     //stores previously drawn path
     var drawImage: UIImage!
-    var userBrush: Brush = Brush()
+    var brush: Brush = Brush()
+    var palette: Palette = Palette()
+    var audio: AudioInterface = AudioInterface()
     
     @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var hide: UIButton!
     @IBOutlet weak var show: UIButton!
+    @IBOutlet weak var newDrawing: UIButton!
     
     //stores an array of points for Bezier curves
     var points = [CGPoint]()
-    
-    var audio: AudioInterface = AudioInterface()
-    
-    // Basic pitch mappings.
-    let noteFrequencies = [16.35,17.32,18.35,19.45,20.6,21.83,23.12,24.5,25.96,27.5,29.14,30.87]
-    let noteNamesWithSharps = ["C", "C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"]
-    let noteNamesWithFlats = ["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"]
-    
-    @IBOutlet weak var newDrawing: UIButton!
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .whiteColor()
     }
-    
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
+        palette = Palette()
+        palette.addColor(16.35, color: UIColor.redColor())
+        palette.addColor(32.70, color: UIColor.orangeColor())
+        palette.addColor(65.40, color: UIColor.yellowColor())
+        palette.addColor(130.8, color: UIColor.greenColor())
+        palette.addColor(261.6, color: UIColor.blueColor())
+        palette.addColor(523.2, color: UIColor.purpleColor())
     }
-    
+
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         let touch = touches.first as! UITouch
         points.append(touch.locationInView(self))
@@ -82,6 +81,8 @@ class SketchingView: UIView {
         setNeedsDisplay()
         
     }
+    
+    // Interface view/hide actions
     @IBAction func hide(sender: UIButton) {
         toolBar.hidden = true
         show.hidden = false
@@ -92,8 +93,13 @@ class SketchingView: UIView {
         show.hidden = true
     }
     
-    //function that gets the mid point of a line.
-    //used for bezier paths
+    // Update Palette - Includes update of Brush
+    func updatePalette(newPalette: Palette) {
+        palette = newPalette
+    }
+    
+    // Function that gets the mid point of 
+    // a line used for bezier paths.
     func getMidPoint(a: CGPoint, andB b: CGPoint) -> CGPoint{
         return CGPoint(x: (a.x + b.x)/2, y: (a.y + b.y)/2)
     }
@@ -105,7 +111,7 @@ class SketchingView: UIView {
         // Update audio
         audio.update()
         
-        let currentContext = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         
         // DEBUG
         let f = "Frequency: " + audio.frequency.description
@@ -116,38 +122,23 @@ class SketchingView: UIView {
         
         // DEMO CODE - Changes Blue value based on frequency
         if (audio.amplitude > 0.005) {
-            var frequency: Float = audio.frequency
-            while (frequency > Float(noteFrequencies[noteFrequencies.count-1])) {
-                frequency = frequency / 2.0
-            }
-            while (frequency < Float(noteFrequencies[0])) {
-                frequency = frequency * 2.0
-            }
-            
-            // Set red color
-            let b = CGFloat((frequency - 16) / 16)
-            userBrush.blue = b
-            
-            
+            brush.color = palette.getColor(audio.frequency)
         }
         
         //Drawing code
         //enabling antialiasing
-        CGContextSetAllowsAntialiasing(currentContext, true)
-        CGContextSetShouldAntialias(currentContext, true)
+        CGContextSetAllowsAntialiasing(context, true)
+        CGContextSetShouldAntialias(context, true)
         
         //creating bezier path
         let path = UIBezierPath()
         
         path.lineCapStyle = kCGLineCapRound
         path.lineJoinStyle = kCGLineJoinRound
-        path.lineWidth = userBrush.brushWidth
+        path.lineWidth = brush.brushWidth
         
-        //creates the components that update the color of the bezier path
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let components: [CGFloat] = [userBrush.red, userBrush.green, userBrush.blue, userBrush.opacity]
-        let color = CGColorCreate(colorSpace, components)
-        CGContextSetStrokeColorWithColor(currentContext, color)
+        // Update color of bezier path
+        CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
         
         path.removeAllPoints()
         

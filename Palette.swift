@@ -10,15 +10,17 @@ import Foundation
 
 class Palette {
     class Channel {
+        // Dictionary storage of the frequency mappings
         var values = [Float: CGFloat]()
         
+        // Init the channel and add a Zero Hertz mapping
         required init() {
             addMapping(0, value: CGFloat(0))
         }
         
-        
+        // Map a frequency to a color
         func addMapping(frequency: Float, value: CGFloat) {
-            
+            values[frequency] = value
         }
         
         // Return a value unique to the given frequency
@@ -53,7 +55,7 @@ class Palette {
                 // Generate the next frequency
                 // then break to return
                 else if frequency > f + 0.05 {
-                        // Interpolate the value of the color channel
+                        // Interpolate the value of the channel
                         var ratio: CGFloat = CGFloat((frequency - lastFrequency) / (f - lastFrequency))
                         val = lastValue + ((v - lastValue) * ratio)
                         break;
@@ -70,15 +72,11 @@ class Palette {
         }
     }
     
-    var red: Channel!
-    var green: Channel!
-    var blue: Channel!
+    var red: Channel = Channel()
+    var green: Channel  = Channel()
+    var blue: Channel  = Channel()
     
     required init() {
-        // Color channels
-        let red = Channel()
-        let green = Channel()
-        let blue = Channel()
     }
     
     // Return a mapped UIColor
@@ -87,16 +85,25 @@ class Palette {
         let r = red.getValue(frequency)
         let g = green.getValue(frequency)
         let b = blue.getValue(frequency)
-        
         let color = UIColor(red: r, green: g, blue: b, alpha: 1.0)
         
         return color
     }
     
-    func addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat) {
+    // Private function to handle individual color channels
+    private func addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat) {
         red.addMapping(frequency, value: r)
         green.addMapping(frequency, value: g)
         blue.addMapping(frequency, value: b)
     }
     
+    // Function to add color from a UIColor
+    func addColor(frequency: Float, color: UIColor) {
+        let c = CIColor(color: color)!
+        let r = c.red()
+        let g = c.green()
+        let b = c.blue()
+        
+        addColor(frequency, r: r, g: g, b: b)
+    }
 }
