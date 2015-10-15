@@ -16,10 +16,6 @@ class SketchingView: UIView {
     var drawImage: UIImage!
     var userBrush: Brush = Brush()
     
-    @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var hide: UIButton!
-    @IBOutlet weak var show: UIButton!
-    
     //stores an array of points for Bezier curves
     var points = [CGPoint]()
     
@@ -81,15 +77,6 @@ class SketchingView: UIView {
         drawImage?.drawInRect(bounds)
         setNeedsDisplay()
         
-    }
-    @IBAction func hide(sender: UIButton) {
-        toolBar.hidden = true
-        show.hidden = false
-    }
-    
-    @IBAction func show(sender: UIButton) {
-        toolBar.hidden = false
-        show.hidden = true
     }
     
     //function that gets the mid point of a line.

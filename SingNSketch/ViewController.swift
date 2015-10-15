@@ -14,6 +14,11 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var wholeView: UIImageView!
     
+    @IBOutlet weak var hide: UIButton!
+    @IBOutlet weak var show: UIButton!
+    
+    @IBOutlet weak var navBarLabel: UINavigationItem!
+    
     var audio: AudioInterface = AudioInterface()
     
     // Basic pitch mappings. Do not re-use, we have a framework for this.
@@ -65,5 +70,15 @@ class ViewController: UIViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
             presentViewController(ac, animated: true, completion: nil)
         }
+    }
+    
+    @IBAction func hide(sender: UIButton) {
+        navigationController!.navigationBarHidden = true
+        show.hidden = false
+    }
+    
+    @IBAction func show(sender: UIButton) {
+        navigationController!.navigationBarHidden = false
+        show.hidden = true
     }
 }
