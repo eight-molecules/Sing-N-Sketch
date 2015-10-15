@@ -84,11 +84,13 @@ class SketchingView: UIView {
     @IBAction func hide(sender: UIButton) {
         toolBar.hidden = true
         show.hidden = false
+        UIApplication.sharedApplication().statusBarHidden = true
     }
     
     @IBAction func show(sender: UIButton) {
         toolBar.hidden = false
         show.hidden = true
+        UIApplication.sharedApplication().statusBarHidden = false
     }
 
     // Update Palette - Includes update of Brush
@@ -125,6 +127,7 @@ class SketchingView: UIView {
         
         //creating bezier path
         let path = UIBezierPath()
+        let _shapeLayer = CAShapeLayer()
         
         path.lineCapStyle = kCGLineCapRound
         path.lineJoinStyle = kCGLineJoinRound
@@ -143,16 +146,29 @@ class SketchingView: UIView {
         if !points.isEmpty {
             path.moveToPoint(points.first!)
             path.addLineToPoint(getMidPoint(points.first!, andB: points[1]))
-            
+            var x = Int()
             for index in 1..<points.count - 1 {
                 let midPoint = getMidPoint(points[index], andB: points[index+1])
                 path.addQuadCurveToPoint(midPoint, controlPoint: points[index])
+                x = index
             }
             
             path.addLineToPoint(points.last!)
             
+            if(x % 2 ~= 0){
+                //_shapeLayer.strokeColor = UIColor.redColor().CGColor
+                _shapeLayer.strokeColor = color
+            }
             
+            _shapeLayer.path = path.CGPath
+            _shapeLayer.lineCap = kCALineCapRound
+            _shapeLayer.strokeStart = 0.9
+            //path.stroke()
+            layer.addSublayer(_shapeLayer)
             path.stroke()
+            _shapeLayer.strokeEnd = 1.0
+            //path.closePath()
+            //_shapeLayer.path = path.CGPath
         }
         
     }
