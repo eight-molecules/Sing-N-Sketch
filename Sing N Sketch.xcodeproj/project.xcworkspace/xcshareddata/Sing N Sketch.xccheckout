@@ -22,7 +22,7 @@
 		<key>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</key>
 		<string>../..</string>
 		<key>5D7AE6F26A6D7E393D8CA002FDE5D0D8ABCDAE62</key>
-		<string>../..AudioKit/</string>
+		<string>../..AudioKit</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>http://cs3060.bgsu.edu/sing-n-sketch-1002/sing-n-sketch-ios-1002.git</string>
@@ -36,17 +36,17 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>5D7AE6F26A6D7E393D8CA002FDE5D0D8ABCDAE62</string>
+			<string>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</string>
 			<key>IDESourceControlWCCName</key>
-			<string>AudioKit</string>
+			<string>sing-n-sketch-ios-1002</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>12ED5EEE015D85BE9F6764D096B3FA7598FEA432</string>
+			<string>5D7AE6F26A6D7E393D8CA002FDE5D0D8ABCDAE62</string>
 			<key>IDESourceControlWCCName</key>
-			<string>sing-n-sketch-ios-1002</string>
+			<string>sing-n-sketch-ios-1002AudioKit</string>
 		</dict>
 	</array>
 </dict>
