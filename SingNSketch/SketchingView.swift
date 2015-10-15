@@ -34,12 +34,10 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         palette = Palette()
-        palette.addColor(16.35, color: UIColor.redColor())
-        palette.addColor(32.70, color: UIColor.orangeColor())
-        palette.addColor(65.40, color: UIColor.yellowColor())
-        palette.addColor(130.8, color: UIColor.greenColor())
-        palette.addColor(261.6, color: UIColor.blueColor())
-        palette.addColor(523.2, color: UIColor.purpleColor())
+        palette.addColor(440, color: UIColor.yellowColor())
+        palette.addColor(880, color: UIColor.purpleColor())
+        palette.addColor(1760, color: UIColor.redColor())
+        palette.addColor(3520, color: UIColor.blueColor())
     }
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -113,16 +111,11 @@ class SketchingView: UIView {
         
         let context = UIGraphicsGetCurrentContext()
         
-        // DEBUG
-        let f = "Frequency: " + audio.frequency.description
-        let a = "Amplitude: " + audio.amplitude.description
-        println(f)
-        println(a)
-        println("")
-        
         // DEMO CODE - Changes Blue value based on frequency
-        if (audio.amplitude > 0.005) {
+        if (audio.amplitude > 0.05) {
             brush.color = palette.getColor(audio.frequency)
+            var colorSpace = CGColorGetColorSpace(brush.color.CGColor)
+            var colorSpaceModel = CGColorSpaceGetModel(colorSpace)
         }
         
         //Drawing code

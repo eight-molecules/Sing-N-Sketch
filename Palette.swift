@@ -43,32 +43,30 @@ class Palette {
             
             // Find the matching target value, or interpolate the value from
             // the surrounding frequencies.
-            for (f, v) in values {
-                if f < frequency - 0.05 {
+            let sortedKeys = Array(values.keys).sorted(<)
+            for f in sortedKeys {
+                if f < frequency - 1 {
                     // Store the last frequency and
                     // the last color value checked
                     // then continue
                     lastFrequency = f
-                    lastValue = v
-                    continue;
+                    lastValue = values[f]!
+                    continue
                 }
                 // Generate the next frequency
                 // then break to return
-                else if frequency > f + 0.05 {
-                        // Interpolate the value of the channel
-                        var ratio: CGFloat = CGFloat((frequency - lastFrequency) / (f - lastFrequency))
-                        val = lastValue + ((v - lastValue) * ratio)
-                        break;
+                else {
+                    if (frequency < lastFrequency + 1) {
+                        return values[f]!
                     }
-                    // Return the mapped value for the
-                    // given frequency +/- 0.05
-                    else {
-                        return v;
-                    }
-                
+                    
+                    // Interpolate the value of the channel
+                    var ratio: CGFloat = CGFloat((frequency - lastFrequency) / (f - lastFrequency))
+                    val = lastValue + ((values[f]! - lastValue) * ratio)
+                    return val
+                }
             }
-            
-            return val
+            return CGFloat(0)
         }
     }
     
@@ -85,12 +83,13 @@ class Palette {
         let r = red.getValue(frequency)
         let g = green.getValue(frequency)
         let b = blue.getValue(frequency)
+
         let color = UIColor(red: r, green: g, blue: b, alpha: 1.0)
         
         return color
     }
     
-    // Private function to handle individual color channels
+    // Privadte function to handle individual color channels
     private func addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat) {
         red.addMapping(frequency, value: r)
         green.addMapping(frequency, value: g)
@@ -99,11 +98,11 @@ class Palette {
     
     // Function to add color from a UIColor
     func addColor(frequency: Float, color: UIColor) {
-        let c = CIColor(color: color)!
-        let r = c.red()
-        let g = c.green()
-        let b = c.blue()
-        
-        addColor(frequency, r: r, g: g, b: b)
+        if let c = CIColor(color: color) {
+            let r = c.red()
+            let g = c.green()
+            let b = c.blue()
+            addColor(frequency, r: r, g: g, b: b)
+        }
     }
 }
