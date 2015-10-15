@@ -23,6 +23,7 @@
 		9BCD801C1BB3393A0092771F /* CsoundLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BCD80171BB338DD0092771F /* CsoundLib.framework */; };
 		9BCD801D1BB3393A0092771F /* CsoundLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9BCD80171BB338DD0092771F /* CsoundLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9BCD80221BB33A670092771F /* AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCD80211BB33A670092771F /* AudioKit.swift */; };
+		9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBF5B91BC5DA33007117F4 /* Palette.swift */; };
 		F239CD1F1BB336E000FA2699 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */; };
 		F239CD211BB33B4100FA2699 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F239CD201BB33B4100FA2699 /* MenuViewController.swift */; };
 		F2A7B7931BB3725400E74103 /* menuSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A7B7921BB3725400E74103 /* menuSegue.swift */; };
@@ -101,6 +102,7 @@
 		9BCD80171BB338DD0092771F /* CsoundLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CsoundLib.framework; path = AudioKit/AudioKit/Platforms/iOS/CsoundLib.framework; sourceTree = "<group>"; };
 		9BCD80211BB33A670092771F /* AudioKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioKit.swift; path = AudioKit/AudioKit/Platforms/Swift/AudioKit.swift; sourceTree = "<group>"; };
 		9BCD80241BB33DD90092771F /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		9BFBF5B91BC5DA33007117F4 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Palette.swift; path = ../Palette.swift; sourceTree = "<group>"; };
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		F239CD201BB33B4100FA2699 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		938FBFE61BA79C5000EAFC7E /* Sing N Sketch */ = {
 			isa = PBXGroup;
 			children = (
+				9BFBF5B91BC5DA33007117F4 /* Palette.swift */,
 				936E74AA1BB348C60089757A /* AudioInterface.swift */,
 				938FBFE81BA79C5000EAFC7E /* LaunchScreen.xib */,
 				1D7DBCAF1BB88FC300C85633 /* Main.storyboard */,
@@ -381,6 +384,7 @@
 				F239CD211BB33B4100FA2699 /* MenuViewController.swift in Sources */,
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
 				F239CD1F1BB336E000FA2699 /* ContainerViewController.swift in Sources */,
+				9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */,
 				9BCD80221BB33A670092771F /* AudioKit.swift in Sources */,
 				1DE3B9F61BCF3B6A008EA98E /* NavigationViewController.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,

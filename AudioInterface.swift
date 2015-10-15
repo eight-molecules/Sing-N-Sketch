@@ -14,7 +14,7 @@ class AudioInterface {
     var frequency: Float = 0
     var amplitude: Float = 1
     var noiseFloor: Float = 0
-    
+    var bufferSize: Int = 200
     init() {
         AKSettings.shared().audioInputEnabled = true
         
@@ -36,7 +36,12 @@ class AudioInterface {
     }
     
     func update() {
-        amplitude = analyzer.trackedAmplitude.floatValue
-        frequency = analyzer.trackedFrequency.floatValue
+        for(var i = 0; i < bufferSize; i++) {
+            amplitude += analyzer.trackedAmplitude.floatValue
+            frequency += analyzer.trackedFrequency.floatValue
+        }
+        amplitude /= Float(bufferSize)
+        frequency /= Float(bufferSize)
     }
+        
 }
