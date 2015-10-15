@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */; };
 		1D7DBCB11BB88FC300C85633 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAF1BB88FC300C85633 /* Main.storyboard */; };
-		5DAD21901BCF138C0054A381 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD218F1BCF138C0054A381 /* NavigationViewController.swift */; };
+		1DE3B9F61BCF3B6A008EA98E /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE3B9F51BCF3B6A008EA98E /* NavigationViewController.swift */; };
 		9341A56E1BB0D35000D6BCB0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56C1BB0D35000D6BCB0 /* Fabric.framework */; };
 		9341A56F1BB0D35000D6BCB0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */; };
 		936E74AB1BB348C60089757A /* AudioInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E74AA1BB348C60089757A /* AudioInterface.swift */; };
@@ -85,7 +85,7 @@
 /* Begin PBXFileReference section */
 		1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchingView.swift; sourceTree = "<group>"; };
 		1D7DBCB01BB88FC300C85633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SingNSketch/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5DAD218F1BCF138C0054A381 /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
+		1DE3B9F51BCF3B6A008EA98E /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		9341A56C1BB0D35000D6BCB0 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		936E74AA1BB348C60089757A /* AudioInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioInterface.swift; path = ../AudioInterface.swift; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 				F239CD1E1BB336E000FA2699 /* ContainerViewController.swift */,
 				F239CD201BB33B4100FA2699 /* MenuViewController.swift */,
 				F2A7B7921BB3725400E74103 /* menuSegue.swift */,
-				5DAD218F1BCF138C0054A381 /* NavigationViewController.swift */,
+				1DE3B9F51BCF3B6A008EA98E /* NavigationViewController.swift */,
 			);
 			name = "Sing N Sketch";
 			path = SingNSketch;
@@ -382,7 +382,7 @@
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
 				F239CD1F1BB336E000FA2699 /* ContainerViewController.swift in Sources */,
 				9BCD80221BB33A670092771F /* AudioKit.swift in Sources */,
-				5DAD21901BCF138C0054A381 /* NavigationViewController.swift in Sources */,
+				1DE3B9F61BCF3B6A008EA98E /* NavigationViewController.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
