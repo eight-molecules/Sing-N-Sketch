@@ -34,10 +34,11 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         palette = Palette()
-        palette.addColor(440, color: UIColor.yellowColor())
-        palette.addColor(880, color: UIColor.purpleColor())
-        palette.addColor(1760, color: UIColor.redColor())
-        palette.addColor(3520, color: UIColor.blueColor())
+        palette.addColor(440, color: UIColor.redColor())
+        palette.addColor(660, color: UIColor.orangeColor())
+        palette.addColor(880, color: UIColor.greenColor())
+        palette.addColor(1320, color: UIColor.blueColor())
+        palette.addColor(1760, color: UIColor.purpleColor())
     }
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -155,20 +156,7 @@ class SketchingView: UIView {
             
             path.addLineToPoint(points.last!)
             
-            if(x % 2 ~= 0){
-                //_shapeLayer.strokeColor = UIColor.redColor().CGColor
-                _shapeLayer.strokeColor = color
-            }
-            
-            _shapeLayer.path = path.CGPath
-            _shapeLayer.lineCap = kCALineCapRound
-            _shapeLayer.strokeStart = 0.9
-            //path.stroke()
-            layer.addSublayer(_shapeLayer)
             path.stroke()
-            _shapeLayer.strokeEnd = 1.0
-            //path.closePath()
-            //_shapeLayer.path = path.CGPath
         }
         
     }
