@@ -34,6 +34,20 @@
                ReferencedContainer = "container:AudioKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "938FBFFF1BA79C7F00EAFC7E"
+               BuildableName = "Sing N Sketch Tests.xctest"
+               BlueprintName = "Sing N Sketch Tests"
+               ReferencedContainer = "container:../Sing N Sketch.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -50,6 +64,16 @@
                BuildableName = "AudioKitTests.xctest"
                BlueprintName = "AudioKitTests"
                ReferencedContainer = "container:AudioKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "938FBFFF1BA79C7F00EAFC7E"
+               BuildableName = "Sing N Sketch Tests.xctest"
+               BlueprintName = "Sing N Sketch Tests"
+               ReferencedContainer = "container:../Sing N Sketch.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
