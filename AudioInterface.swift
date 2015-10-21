@@ -22,6 +22,14 @@ class AudioInterface {
         
         AKOrchestra.addInstrument(input)
         AKOrchestra.addInstrument(analyzer)
+        
+        for(var i = 0; i < bufferSize; i++) {
+            amplitude += analyzer.trackedAmplitude.floatValue
+        }
+        
+        amplitude /= Float(bufferSize)
+        noiseFloor = amplitude
+        amplitude = 0
     }
     
     func start() {

@@ -113,12 +113,10 @@ class SketchingView: UIView {
         audio.update()
         
         let context = UIGraphicsGetCurrentContext()
-        
+        println(audio.amplitude)
         // DEMO CODE - Changes Blue value based on frequency
-        if (audio.amplitude > 0.05) {
+        if (audio.amplitude > audio.noiseFloor) {
             brush.color = palette.getColor(audio.frequency)
-            var colorSpace = CGColorGetColorSpace(brush.color.CGColor)
-            var colorSpaceModel = CGColorSpaceGetModel(colorSpace)
         }
         
         //Drawing code
