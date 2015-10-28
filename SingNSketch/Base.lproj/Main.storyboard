@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Sing N' Sketch-->
@@ -16,18 +17,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xLi-EN-JGi">
-                                <rect key="frame" x="-1" y="7" width="601" height="587"/>
-                            </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9q-yX-M5h">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9q-yX-M5h">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </scrollView>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="mainImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="tempImageView">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                    </imageView>
                                 </subviews>
-                            </scrollView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="mainImageView" destination="qIa-Kk-11Z" id="ODh-Eg-HUz"/>
+                                    <outlet property="tempImageView" destination="Hqa-mn-DMK" id="xun-tR-D7g"/>
+                                </connections>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekV-O9-ilh">
                                 <rect key="frame" x="63" y="72" width="31" height="30"/>
                                 <state key="normal" title="New">
@@ -57,6 +65,17 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="q9q-yX-M5h" secondAttribute="height" multiplier="1:1" id="5yL-GG-yMe"/>
+                            <constraint firstAttribute="width" secondItem="Hqa-mn-DMK" secondAttribute="width" id="D7P-UX-aNz"/>
+                            <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="L9O-Z6-r0j"/>
+                            <constraint firstAttribute="height" secondItem="jme-l1-KiE" secondAttribute="height" id="YGm-DT-Iw7"/>
+                            <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
+                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="cLL-Yg-NMk"/>
+                            <constraint firstAttribute="width" secondItem="q9q-yX-M5h" secondAttribute="width" id="ef0-Em-Tkj"/>
+                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="lBi-I1-4FQ"/>
+                            <constraint firstAttribute="height" secondItem="q9q-yX-M5h" secondAttribute="height" id="zOT-CG-y7Y"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Sing N' Sketch" id="x1h-l8-JK5">
@@ -76,11 +95,11 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="hide" destination="0Q7-dJ-3vJ" id="7Sf-wr-yUX"/>
+                        <outlet property="mainImageView" destination="qIa-Kk-11Z" id="Lqu-Qc-vnc"/>
                         <outlet property="navBarLabel" destination="x1h-l8-JK5" id="KtO-z6-JPY"/>
                         <outlet property="scrollView" destination="q9q-yX-M5h" id="Y2d-RX-UuI"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
-                        <outlet property="wholeView" destination="xLi-EN-JGi" id="h4N-SR-3zn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

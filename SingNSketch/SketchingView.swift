@@ -23,8 +23,13 @@ class SketchingView: UIView {
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var newDrawing: UIButton!
     
-    //stores an array of points for Bezier curves
-    var points = [CGPoint]()
+    @IBOutlet weak var tempImageView: UIImageView!
+    @IBOutlet weak var mainImageView: UIImageView!
+    //variables for points of the quadratic curve
+    var lastPoint = CGPoint.zeroPoint
+    var prevPoint1 = CGPoint.zeroPoint
+    var prevPoint2 = CGPoint.zeroPoint
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,13 +47,57 @@ class SketchingView: UIView {
     }
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = touches.first as! UITouch
-        points.append(touch.locationInView(self))
+        if let touch = touches.first as? UITouch {
+            prevPoint1 = touch.previousLocationInView(self)
+            
+            prevPoint2 = touch.previousLocationInView(self)
+            
+            lastPoint = touch.previousLocationInView(self)
+        }
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = touches.first as! UITouch
-        points.append(touch.locationInView(self))
+        if let touch = touches.first as? UITouch{
+        
+            let currentPoint = touch.locationInView(self)
+            
+            prevPoint2 = prevPoint1
+            
+            prevPoint1 = touch.previousLocationInView(self)
+            
+            UIGraphicsBeginImageContext(frame.size)
+            
+            let context = UIGraphicsGetCurrentContext()
+            
+            CGContextSetAllowsAntialiasing(context, true)
+            CGContextSetShouldAntialias(context, true)
+            
+            CGContextSetLineCap(context, kCGLineCapRound)
+            CGContextSetLineWidth(context, brush.brushWidth)
+            audio.update()
+            CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
+            CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+            
+            
+            tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
+            
+            var mid1 = CGPointMake((prevPoint1.x + prevPoint2.x)*0.5, (prevPoint1.y + prevPoint2.y)*0.5)
+            var mid2 = CGPointMake((currentPoint.x + prevPoint1.x)*0.5, (currentPoint.y + prevPoint1.y)*0.5)
+            
+            CGContextMoveToPoint(context, mid1.x, mid1.y)
+            
+            CGContextAddQuadCurveToPoint(context, prevPoint1.x, prevPoint1.y, mid2.x, mid2.y)
+            
+            CGContextStrokePath(context)
+            
+            tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+            
+            tempImageView.alpha = brush.opacity
+            
+            UIGraphicsEndImageContext()
+            
+            lastPoint = currentPoint
+        }
         
         setNeedsDisplay()
     }
@@ -58,25 +107,25 @@ class SketchingView: UIView {
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        let touch = touches.first as! UITouch
-        points.append(touch.locationInView(self))
+        
+        UIGraphicsBeginImageContext(mainImageView.frame.size)
+
+        mainImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
+        
+        tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
+        
+        mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        tempImageView.image = nil
         
         setNeedsDisplay()
-        
-        //draws the bezier path to the screen and saves the image in
-        //a temporary view to be added to the main view later
-        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
-        drawViewHierarchyInRect(bounds, afterScreenUpdates: true)
-        drawImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        points.removeAll()
-        
     }
     
     // New Drawing Action
     @IBAction func newDrawing(sender: UIButton) {
-        drawImage = nil
-        drawImage?.drawInRect(bounds)
+        mainImageView.image = nil
         setNeedsDisplay()
         
     }
@@ -99,63 +148,4 @@ class SketchingView: UIView {
         palette = newPalette
     }
     
-    // Function that gets the mid point of 
-    // a line used for bezier paths.
-    func getMidPoint(a: CGPoint, andB b: CGPoint) -> CGPoint{
-        return CGPoint(x: (a.x + b.x)/2, y: (a.y + b.y)/2)
-    }
-    
-    
-    //Only override drawRect: if you perform custom drawing.
-    //An empty implementation adversly affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Update audio
-        audio.update()
-        
-        let context = UIGraphicsGetCurrentContext()
-        println(audio.amplitude)
-        // DEMO CODE - Changes Blue value based on frequency
-        if (audio.amplitude > audio.noiseFloor) {
-            brush.color = palette.getColor(audio.frequency)
-        }
-        
-        //Drawing code
-        //enabling antialiasing
-        CGContextSetAllowsAntialiasing(context, true)
-        CGContextSetShouldAntialias(context, true)
-        
-        //creating bezier path
-        let path = UIBezierPath()
-        let _shapeLayer = CAShapeLayer()
-        
-        path.lineCapStyle = kCGLineCapRound
-        path.lineJoinStyle = kCGLineJoinRound
-        path.lineWidth = brush.brushWidth
-        
-        // Update color of bezier path
-        CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
-        
-        path.removeAllPoints()
-        
-        //a temporary image view that draws the image and subsequent images to the screen.
-        drawImage?.drawInRect(self.bounds)
-        
-        //draw a line between first point and mid point, then mid point and last point
-        //quadratic bezier curves are then made
-        if !points.isEmpty {
-            path.moveToPoint(points.first!)
-            path.addLineToPoint(getMidPoint(points.first!, andB: points[1]))
-            var x = Int()
-            for index in 1..<points.count - 1 {
-                let midPoint = getMidPoint(points[index], andB: points[index+1])
-                path.addQuadCurveToPoint(midPoint, controlPoint: points[index])
-                x = index
-            }
-            
-            path.addLineToPoint(points.last!)
-            
-            path.stroke()
-        }
-        
-    }
 }
