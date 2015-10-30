@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     var delegate: ViewControllerDelegate?
     @IBOutlet weak var sketchingView: SketchingView!
     
-    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet weak var canvasView: UIImageView!
     
     @IBOutlet weak var hide: UIButton!
     @IBOutlet weak var show: UIButton!
@@ -92,7 +92,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func save(sender: UIButton) {
-        UIImageWriteToSavedPhotosAlbum(mainImageView.image, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        UIImageWriteToSavedPhotosAlbum(canvasView.image, self, "image:didFinishSavingWithError:contextInfo:", nil)
     }
     
     

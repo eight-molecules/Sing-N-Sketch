@@ -18,13 +18,13 @@ class SketchingView: UIView {
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
 
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var hide: UIButton!
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var newDrawing: UIButton!
     
-    @IBOutlet weak var tempImageView: UIImageView!
-    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet weak var drawView: UIImageView!
+    @IBOutlet weak var canvasView: UIImageView!
+    
     //variables for points of the quadratic curve
     var lastPoint = CGPoint.zeroPoint
     var prevPoint1 = CGPoint.zeroPoint
@@ -79,7 +79,7 @@ class SketchingView: UIView {
             CGContextSetBlendMode(context, kCGBlendModeSoftLight)
             
             
-            tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
+            drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
             
             var mid1 = CGPointMake((prevPoint1.x + prevPoint2.x)*0.5, (prevPoint1.y + prevPoint2.y)*0.5)
             var mid2 = CGPointMake((currentPoint.x + prevPoint1.x)*0.5, (currentPoint.y + prevPoint1.y)*0.5)
@@ -90,9 +90,9 @@ class SketchingView: UIView {
             
             CGContextStrokePath(context)
             
-            tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+            drawView.image = UIGraphicsGetImageFromCurrentImageContext()
             
-            tempImageView.alpha = brush.opacity
+            drawView.alpha = brush.opacity
             
             UIGraphicsEndImageContext()
             
@@ -108,37 +108,44 @@ class SketchingView: UIView {
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         
-        UIGraphicsBeginImageContext(mainImageView.frame.size)
+        UIGraphicsBeginImageContext(canvasView.frame.size)
 
-        mainImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
+        canvasView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
         
-        tempImageView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
+        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
         
-        mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
         
-        tempImageView.image = nil
+        drawView.image = nil
         
         setNeedsDisplay()
     }
     
+    override func drawRect(rect: CGRect) {
+        //Update audio
+        audio.update()
+        println(audio.amplitude)
+        if (audio.amplitude > audio.noiseFloor) {
+            brush.color = palette.getColor(audio.frequency)
+        }
+    }
+    
     // New Drawing Action
     @IBAction func newDrawing(sender: UIButton) {
-        mainImageView.image = nil
+        canvasView.image = nil
         setNeedsDisplay()
         
     }
 
     // Interface view/hide actions
     @IBAction func hide(sender: UIButton) {
-        toolBar.hidden = true
         show.hidden = false
         UIApplication.sharedApplication().statusBarHidden = true
     }
     
     @IBAction func show(sender: UIButton) {
-        toolBar.hidden = false
         show.hidden = true
         UIApplication.sharedApplication().statusBarHidden = false
     }

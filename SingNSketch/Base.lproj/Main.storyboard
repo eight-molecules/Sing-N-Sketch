@@ -23,17 +23,17 @@
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="mainImageView">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="tempImageView">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="mainImageView" destination="qIa-Kk-11Z" id="ODh-Eg-HUz"/>
-                                    <outlet property="tempImageView" destination="Hqa-mn-DMK" id="xun-tR-D7g"/>
+                                    <outlet property="canvasView" destination="qIa-Kk-11Z" id="btj-K1-Kpi"/>
+                                    <outlet property="drawView" destination="Hqa-mn-DMK" id="n16-Jn-f6s"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekV-O9-ilh">
@@ -94,8 +94,8 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="canvasView" destination="qIa-Kk-11Z" id="Avx-na-fXJ"/>
                         <outlet property="hide" destination="0Q7-dJ-3vJ" id="7Sf-wr-yUX"/>
-                        <outlet property="mainImageView" destination="qIa-Kk-11Z" id="Lqu-Qc-vnc"/>
                         <outlet property="navBarLabel" destination="x1h-l8-JK5" id="KtO-z6-JPY"/>
                         <outlet property="scrollView" destination="q9q-yX-M5h" id="Y2d-RX-UuI"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
