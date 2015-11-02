@@ -26,9 +26,8 @@ class SketchingView: UIView {
     @IBOutlet weak var canvasView: UIImageView!
     
     //variables for points of the quadratic curve
-    var lastPoint = CGPoint.zeroPoint
-    var prevPoint1 = CGPoint.zeroPoint
-    var prevPoint2 = CGPoint.zeroPoint
+    
+    var points = (prevPoint1: CGPoint.zeroPoint, prevPoint2: CGPoint.zeroPoint, lastPoint: CGPoint.zeroPoint)
     
     
     override init(frame: CGRect) {
@@ -48,11 +47,11 @@ class SketchingView: UIView {
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if let touch = touches.first as? UITouch {
-            prevPoint1 = touch.previousLocationInView(self)
+            points.prevPoint1 = touch.previousLocationInView(self)
             
-            prevPoint2 = touch.previousLocationInView(self)
+            points.prevPoint2 = touch.previousLocationInView(self)
             
-            lastPoint = touch.previousLocationInView(self)
+            points.lastPoint = touch.previousLocationInView(self)
         }
     }
     
@@ -61,9 +60,9 @@ class SketchingView: UIView {
         
             let currentPoint = touch.locationInView(self)
             
-            prevPoint2 = prevPoint1
+            points.prevPoint2 = points.prevPoint1
             
-            prevPoint1 = touch.previousLocationInView(self)
+            points.prevPoint1 = touch.previousLocationInView(self)
             
             UIGraphicsBeginImageContext(frame.size)
             
@@ -74,19 +73,18 @@ class SketchingView: UIView {
             
             CGContextSetLineCap(context, kCGLineCapRound)
             CGContextSetLineWidth(context, brush.brushWidth)
-            audio.update()
             CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
-            CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+            CGContextSetBlendMode(context, kCGBlendModeNormal)
             
             
             drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
             
-            var mid1 = CGPointMake((prevPoint1.x + prevPoint2.x)*0.5, (prevPoint1.y + prevPoint2.y)*0.5)
-            var mid2 = CGPointMake((currentPoint.x + prevPoint1.x)*0.5, (currentPoint.y + prevPoint1.y)*0.5)
+            var mid1 = CGPointMake((points.prevPoint1.x + points.prevPoint2.x)*0.5, (points.prevPoint1.y + points.prevPoint2.y)*0.5)
+            var mid2 = CGPointMake((currentPoint.x + points.prevPoint1.x)*0.5, (currentPoint.y + points.prevPoint1.y)*0.5)
             
             CGContextMoveToPoint(context, mid1.x, mid1.y)
             
-            CGContextAddQuadCurveToPoint(context, prevPoint1.x, prevPoint1.y, mid2.x, mid2.y)
+            CGContextAddQuadCurveToPoint(context, points.prevPoint1.x, points.prevPoint1.y, mid2.x, mid2.y)
             
             CGContextStrokePath(context)
             
@@ -96,7 +94,7 @@ class SketchingView: UIView {
             
             UIGraphicsEndImageContext()
             
-            lastPoint = currentPoint
+            points.lastPoint = currentPoint
         }
         
         setNeedsDisplay()
