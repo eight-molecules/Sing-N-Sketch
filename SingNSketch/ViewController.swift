@@ -116,5 +116,19 @@ class ViewController: UIViewController {
     @IBAction func show(sender: UIButton) {
         navigationController!.navigationBarHidden = false
         show.hidden = true
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+        show.addGestureRecognizer(longPress)
+    }
+    
+    func handleLongPress(longPress: UILongPressGestureRecognizer) {
+        switch longPress.state {
+        case .Changed:
+            let point = longPress.locationInView(view)
+            show.center = point
+        default:
+            break
+        }
     }
 }
+
