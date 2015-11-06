@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -29,6 +29,33 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     </imageView>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
+                                        <rect key="frame" x="13" y="42" width="39" height="70"/>
+                                        <state key="normal" title="Show">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="show:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="NEK-fJ-KCg"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekV-O9-ilh">
+                                        <rect key="frame" x="60" y="62" width="31" height="30"/>
+                                        <state key="normal" title="New">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="newDrawing:" destination="jme-l1-KiE" eventType="touchUpInside" id="jk1-cL-6vZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAY-uD-cgs">
+                                        <rect key="frame" x="18" y="62" width="34" height="30"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="save:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ej8-5v-E7l"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -36,33 +63,6 @@
                                     <outlet property="drawView" destination="Hqa-mn-DMK" id="n16-Jn-f6s"/>
                                 </connections>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekV-O9-ilh">
-                                <rect key="frame" x="63" y="72" width="31" height="30"/>
-                                <state key="normal" title="New">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="newDrawing:" destination="jme-l1-KiE" eventType="touchUpInside" id="jk1-cL-6vZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAY-uD-cgs">
-                                <rect key="frame" x="18" y="72" width="34" height="30"/>
-                                <state key="normal" title="Save">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="save:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ej8-5v-E7l"/>
-                                </connections>
-                            </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
-                                <rect key="frame" x="16" y="7" width="39" height="70"/>
-                                <state key="normal" title="Show">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="show:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="NEK-fJ-KCg"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -97,6 +97,8 @@
                         <outlet property="canvasView" destination="qIa-Kk-11Z" id="Avx-na-fXJ"/>
                         <outlet property="hide" destination="0Q7-dJ-3vJ" id="7Sf-wr-yUX"/>
                         <outlet property="navBarLabel" destination="x1h-l8-JK5" id="KtO-z6-JPY"/>
+                        <outlet property="new" destination="ekV-O9-ilh" id="JF5-dN-7HG"/>
+                        <outlet property="save" destination="SAY-uD-cgs" id="USq-Si-hqu"/>
                         <outlet property="scrollView" destination="q9q-yX-M5h" id="Y2d-RX-UuI"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
@@ -104,7 +106,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1125" y="522"/>
+            <point key="canvasLocation" x="1153" y="538"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0qb-E8-GVr">

@@ -16,6 +16,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var hide: UIButton!
     @IBOutlet weak var show: UIButton!
+    @IBOutlet weak var save: UIButton!
+    @IBOutlet weak var new: UIButton!
+
     
     @IBOutlet weak var navBarLabel: UINavigationItem!
     
@@ -111,11 +114,18 @@ class ViewController: UIViewController {
     @IBAction func hide(sender: UIButton) {
         navigationController!.navigationBarHidden = true
         show.hidden = false
+        save.hidden = true
+        new.hidden = true
+
+        
     }
     
     @IBAction func show(sender: UIButton) {
         navigationController!.navigationBarHidden = false
         show.hidden = true
+        save.hidden = false
+        new.hidden = false
+        
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -128,6 +138,7 @@ class ViewController: UIViewController {
             show.center = point
         default:
             break
+            
         }
     }
 }
