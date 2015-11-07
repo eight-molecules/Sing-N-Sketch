@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Sing N' Sketch-->
@@ -17,20 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9q-yX-M5h">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </scrollView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <animations/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <animations/>
                                     </imageView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
                                         <rect key="frame" x="13" y="42" width="39" height="70"/>
+                                        <animations/>
                                         <state key="normal" title="Show">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -40,6 +39,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekV-O9-ilh">
                                         <rect key="frame" x="60" y="62" width="31" height="30"/>
+                                        <animations/>
                                         <state key="normal" title="New">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -49,6 +49,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAY-uD-cgs">
                                         <rect key="frame" x="18" y="62" width="34" height="30"/>
+                                        <animations/>
                                         <state key="normal" title="Save">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -57,6 +58,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="canvasView" destination="qIa-Kk-11Z" id="btj-K1-Kpi"/>
@@ -64,17 +66,15 @@
                                 </connections>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="q9q-yX-M5h" secondAttribute="height" multiplier="1:1" id="5yL-GG-yMe"/>
                             <constraint firstAttribute="width" secondItem="Hqa-mn-DMK" secondAttribute="width" id="D7P-UX-aNz"/>
                             <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="L9O-Z6-r0j"/>
                             <constraint firstAttribute="height" secondItem="jme-l1-KiE" secondAttribute="height" id="YGm-DT-Iw7"/>
                             <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
                             <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="cLL-Yg-NMk"/>
-                            <constraint firstAttribute="width" secondItem="q9q-yX-M5h" secondAttribute="width" id="ef0-Em-Tkj"/>
                             <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="lBi-I1-4FQ"/>
-                            <constraint firstAttribute="height" secondItem="q9q-yX-M5h" secondAttribute="height" id="zOT-CG-y7Y"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -83,6 +83,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Q7-dJ-3vJ">
                                 <rect key="frame" x="106" y="7" width="32" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
                                 <state key="normal" title="Hide">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -99,7 +100,6 @@
                         <outlet property="navBarLabel" destination="x1h-l8-JK5" id="KtO-z6-JPY"/>
                         <outlet property="new" destination="ekV-O9-ilh" id="JF5-dN-7HG"/>
                         <outlet property="save" destination="SAY-uD-cgs" id="USq-Si-hqu"/>
-                        <outlet property="scrollView" destination="q9q-yX-M5h" id="Y2d-RX-UuI"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
                     </connections>
@@ -116,6 +116,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1kD-DU-loy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

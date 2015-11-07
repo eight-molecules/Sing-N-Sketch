@@ -18,60 +18,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
-
-    
     @IBOutlet weak var navBarLabel: UINavigationItem!
-    
-    // Outlet used in storyboard
-    @IBOutlet var scrollView: UIScrollView?;
     
     var audio: AudioInterface = AudioInterface()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        scrollView?.panGestureRecognizer.minimumNumberOfTouches = 2
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
-        
-        // 1) Create the three views used in the swipe container view
-        var AVc :AViewController =  AViewController(nibName: "AViewController", bundle: nil);
-        var BVc :MenuViewController = MenuViewController(nibName: "MenuViewController", bundle: nil)
-        
-        
-        // 2) Add in each view to the container view hierarchy
-        //    Add them in opposite order since the view hieracrhy is a stack
-        
-        
-        self.addChildViewController(BVc);
-        self.scrollView!.addSubview(BVc.view);
-        BVc.didMoveToParentViewController(self);
-        
-        self.addChildViewController(AVc);
-        self.scrollView!.addSubview(AVc.view);
-        AVc.didMoveToParentViewController(self);
-        
-        
-        // 3) Set up the frames of the view controllers to align
-        //    with eachother inside the container view
-        var adminFrame :CGRect = AVc.view.frame;
-        adminFrame.origin.x = adminFrame.width;
-        BVc.view.frame = adminFrame;
-        
-        var BFrame :CGRect = BVc.view.frame;
-        BFrame.origin.x = 2*BFrame.width;
-        AVc.view.frame = BFrame;
-        
-        
-        // 4) Finally set the size of the scroll view that contains the frames
-        var scrollWidth: CGFloat  = 3 * self.view.frame.width
-        var scrollHeight: CGFloat  = self.view.frame.size.height
-        self.scrollView!.contentSize = CGSizeMake(scrollWidth, scrollHeight);
-        
-        //shadows
-        scrollView!.layer.shadowColor = UIColor.grayColor().CGColor;
-        scrollView!.layer.shadowOpacity = 0.5;
-
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -115,9 +69,7 @@ class ViewController: UIViewController {
         navigationController!.navigationBarHidden = true
         show.hidden = false
         save.hidden = true
-        new.hidden = true
-
-        
+        new.hidden = true        
     }
     
     @IBAction func show(sender: UIButton) {

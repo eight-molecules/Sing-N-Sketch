@@ -9,7 +9,7 @@
 import UIKit
 
 public class Brush: NSObject {
-    var brushWidth: CGFloat = 5.0
+    var width: CGFloat = 10.0
     var opacity: CGFloat = 1.0
     var color: UIColor = UIColor(red: CGFloat(0), green: CGFloat(0), blue: CGFloat(0), alpha: CGFloat(1))
 }

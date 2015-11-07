@@ -17,17 +17,14 @@ class SketchingView: UIView {
     var brush: Brush = Brush()
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
+    var multiplier: Float = 0;
 
-    @IBOutlet weak var hide: UIButton!
-    @IBOutlet weak var show: UIButton!
-    @IBOutlet weak var newDrawing: UIButton!
-    
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!
     
     //variables for points of the quadratic curve
     
-    var points = (prevPoint1: CGPoint.zeroPoint, prevPoint2: CGPoint.zeroPoint, lastPoint: CGPoint.zeroPoint)
+    var points = (CGPoint.zeroPoint, CGPoint.zeroPoint, last: CGPoint.zeroPoint)
     
     
     override init(frame: CGRect) {
@@ -47,11 +44,11 @@ class SketchingView: UIView {
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if let touch = touches.first as? UITouch {
-            points.prevPoint1 = touch.previousLocationInView(self)
+            points.0 = touch.previousLocationInView(self)
             
-            points.prevPoint2 = touch.previousLocationInView(self)
+            points.1 = touch.previousLocationInView(self)
             
-            points.lastPoint = touch.previousLocationInView(self)
+            points.last = touch.previousLocationInView(self)
         }
     }
     
@@ -60,9 +57,9 @@ class SketchingView: UIView {
         
             let currentPoint = touch.locationInView(self)
             
-            points.prevPoint2 = points.prevPoint1
+            points.1 = points.0
             
-            points.prevPoint1 = touch.previousLocationInView(self)
+            points.0 = touch.previousLocationInView(self)
             
             UIGraphicsBeginImageContext(frame.size)
             
@@ -72,19 +69,19 @@ class SketchingView: UIView {
             CGContextSetShouldAntialias(context, true)
             
             CGContextSetLineCap(context, kCGLineCapRound)
-            CGContextSetLineWidth(context, brush.brushWidth)
+            CGContextSetLineWidth(context, brush.width * CGFloat(multiplier))
             CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
             CGContextSetBlendMode(context, kCGBlendModeNormal)
             
             
             drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
             
-            var mid1 = CGPointMake((points.prevPoint1.x + points.prevPoint2.x)*0.5, (points.prevPoint1.y + points.prevPoint2.y)*0.5)
-            var mid2 = CGPointMake((currentPoint.x + points.prevPoint1.x)*0.5, (currentPoint.y + points.prevPoint1.y)*0.5)
+            let mid = ( CGPointMake((points.0.x + points.1.x) * 0.5, (points.0.y + points.1.y) * 0.5),
+                        CGPointMake((currentPoint.x + points.0.x)*0.5, (currentPoint.y + points.0.y)*0.5)
+            )
             
-            CGContextMoveToPoint(context, mid1.x, mid1.y)
-            
-            CGContextAddQuadCurveToPoint(context, points.prevPoint1.x, points.prevPoint1.y, mid2.x, mid2.y)
+            CGContextMoveToPoint(context, mid.0.x, mid.0.y)
+            CGContextAddQuadCurveToPoint(context, points.0.x, points.0.y, mid.1.x, mid.1.y)
             
             CGContextStrokePath(context)
             
@@ -94,7 +91,7 @@ class SketchingView: UIView {
             
             UIGraphicsEndImageContext()
             
-            points.lastPoint = currentPoint
+            points.last = currentPoint
         }
         
         setNeedsDisplay()
@@ -122,6 +119,8 @@ class SketchingView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
+        multiplier = audio.amplitude * 10 + 1;
+        
         //Update audio
         audio.update()
         println(audio.amplitude)
@@ -135,17 +134,6 @@ class SketchingView: UIView {
         canvasView.image = nil
         setNeedsDisplay()
         
-    }
-
-    // Interface view/hide actions
-    @IBAction func hide(sender: UIButton) {
-        show.hidden = false
-        UIApplication.sharedApplication().statusBarHidden = true
-    }
-    
-    @IBAction func show(sender: UIButton) {
-        show.hidden = true
-        UIApplication.sharedApplication().statusBarHidden = false
     }
 
     // Update Palette - Includes update of Brush

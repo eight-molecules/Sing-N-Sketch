@@ -44,12 +44,18 @@ class AudioInterface {
     }
     
     func update() {
-        for(var i = 0; i < bufferSize; i++) {
-            amplitude += analyzer.trackedAmplitude.floatValue
-            frequency += analyzer.trackedFrequency.floatValue
-        }
-        amplitude /= Float(bufferSize)
-        frequency /= Float(bufferSize)
-    }
+        amplitude = analyzer.trackedAmplitude.floatValue
+        frequency = analyzer.trackedFrequency.floatValue
         
+        amplitude += analyzer.trackedAmplitude.floatValue
+        frequency += analyzer.trackedFrequency.floatValue
+        amplitude -= analyzer.trackedAmplitude.floatValue
+        frequency -= analyzer.trackedFrequency.floatValue
+        amplitude -= analyzer.trackedAmplitude.floatValue
+        frequency -= analyzer.trackedFrequency.floatValue
+        amplitude += analyzer.trackedAmplitude.floatValue
+        frequency += analyzer.trackedFrequency.floatValue
+
+    }
+    
 }
