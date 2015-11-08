@@ -14,10 +14,10 @@ class SketchingView: UIView {
     
     //stores previously drawn path
     var drawImage: UIImage!
-    var brush: Brush = Brush()
+    var userBrush: Brush = Brush()
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
-
+    
     @IBOutlet weak var hide: UIButton!
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var newDrawing: UIButton!
@@ -25,16 +25,21 @@ class SketchingView: UIView {
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!
     
+    @IBOutlet weak var opacitySlider: UISlider!
+    @IBOutlet weak var opacityLabel: UILabel!
+    @IBOutlet weak var brushSlider: UISlider!
+    @IBOutlet weak var brushLabel: UILabel!
+    
     //variables for points of the quadratic curve
     
-    var points = (prevPoint1: CGPoint.zeroPoint, prevPoint2: CGPoint.zeroPoint, lastPoint: CGPoint.zeroPoint)
+    var points = (CGPoint.zeroPoint, CGPoint.zeroPoint, CGPoint.zeroPoint)
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .whiteColor()
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         palette = Palette()
@@ -44,25 +49,25 @@ class SketchingView: UIView {
         palette.addColor(1320, color: UIColor.blueColor())
         palette.addColor(1760, color: UIColor.purpleColor())
     }
-
+    
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         if let touch = touches.first as? UITouch {
-            points.prevPoint1 = touch.previousLocationInView(self)
+            points.0 = touch.previousLocationInView(self)
             
-            points.prevPoint2 = touch.previousLocationInView(self)
+            points.1 = touch.previousLocationInView(self)
             
-            points.lastPoint = touch.previousLocationInView(self)
+            points.2 = touch.previousLocationInView(self)
         }
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         if let touch = touches.first as? UITouch{
-        
+            
             let currentPoint = touch.locationInView(self)
             
-            points.prevPoint2 = points.prevPoint1
+            points.1 = points.0
             
-            points.prevPoint1 = touch.previousLocationInView(self)
+            points.0 = touch.previousLocationInView(self)
             
             UIGraphicsBeginImageContext(frame.size)
             
@@ -72,29 +77,29 @@ class SketchingView: UIView {
             CGContextSetShouldAntialias(context, true)
             
             CGContextSetLineCap(context, kCGLineCapRound)
-            CGContextSetLineWidth(context, brush.brushWidth)
-            CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
+            CGContextSetLineWidth(context, userBrush.brushWidth)
+            CGContextSetStrokeColorWithColor(context, userBrush.color.CGColor)
             CGContextSetBlendMode(context, kCGBlendModeNormal)
             
             
             drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
             
-            var mid1 = CGPointMake((points.prevPoint1.x + points.prevPoint2.x)*0.5, (points.prevPoint1.y + points.prevPoint2.y)*0.5)
-            var mid2 = CGPointMake((currentPoint.x + points.prevPoint1.x)*0.5, (currentPoint.y + points.prevPoint1.y)*0.5)
+            var mid1 = CGPointMake((points.0.x + points.1.x)*0.5, (points.0.y + points.1.y)*0.5)
+            var mid2 = CGPointMake((currentPoint.x + points.0.x)*0.5, (currentPoint.y + points.0.y)*0.5)
             
             CGContextMoveToPoint(context, mid1.x, mid1.y)
             
-            CGContextAddQuadCurveToPoint(context, points.prevPoint1.x, points.prevPoint1.y, mid2.x, mid2.y)
+            CGContextAddQuadCurveToPoint(context, points.0.x, points.0.y, mid2.x, mid2.y)
             
             CGContextStrokePath(context)
             
             drawView.image = UIGraphicsGetImageFromCurrentImageContext()
             
-            drawView.alpha = brush.opacity
+            drawView.alpha = userBrush.opacity
             
             UIGraphicsEndImageContext()
             
-            points.lastPoint = currentPoint
+            points.2 = currentPoint
         }
         
         setNeedsDisplay()
@@ -107,10 +112,10 @@ class SketchingView: UIView {
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         UIGraphicsBeginImageContext(canvasView.frame.size)
-
+        
         canvasView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
         
-        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
+        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: userBrush.opacity)
         
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
         
@@ -126,7 +131,7 @@ class SketchingView: UIView {
         audio.update()
         println(audio.amplitude)
         if (audio.amplitude > audio.noiseFloor) {
-            brush.color = palette.getColor(audio.frequency)
+            userBrush.color = palette.getColor(audio.frequency)
         }
     }
     
@@ -136,18 +141,18 @@ class SketchingView: UIView {
         setNeedsDisplay()
         
     }
-
-    // Interface view/hide actions
-    @IBAction func hide(sender: UIButton) {
-        show.hidden = false
-        UIApplication.sharedApplication().statusBarHidden = true
+    
+    // Interface slider actions
+    @IBAction func opacityManipulator(sender: UISlider) {
+        userBrush.opacity = CGFloat(sender.value)
+        opacityLabel.text = NSString(format: "%.2f", userBrush.opacity.native) as String
     }
     
-    @IBAction func show(sender: UIButton) {
-        show.hidden = true
-        UIApplication.sharedApplication().statusBarHidden = false
+    @IBAction func brushWidthManipulator(sender: UISlider) {
+        userBrush.brushWidth = CGFloat(sender.value)
+        brushLabel.text = NSString(format: "%.0f", userBrush.brushWidth.native) as String
     }
-
+    
     // Update Palette - Includes update of Brush
     func updatePalette(newPalette: Palette) {
         palette = newPalette

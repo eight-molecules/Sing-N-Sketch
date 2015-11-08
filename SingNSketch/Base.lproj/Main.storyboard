@@ -2,10 +2,9 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Sing N' Sketch-->
+        <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,17 +19,17 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9q-yX-M5h">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </scrollView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                     </imageView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
-                                        <rect key="frame" x="13" y="42" width="39" height="70"/>
+                                        <rect key="frame" x="18" y="47" width="39" height="70"/>
                                         <state key="normal" title="Show">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -39,7 +38,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ekV-O9-ilh">
-                                        <rect key="frame" x="60" y="62" width="31" height="30"/>
+                                        <rect key="frame" x="60" y="67" width="31" height="30"/>
                                         <state key="normal" title="New">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -47,8 +46,26 @@
                                             <action selector="newDrawing:" destination="jme-l1-KiE" eventType="touchUpInside" id="jk1-cL-6vZ"/>
                                         </connections>
                                     </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6HS-6w-TCT" userLabel="opacitySlider">
+                                        <rect key="frame" x="134" y="67" width="118" height="31"/>
+                                        <connections>
+                                            <action selector="opacityManipulator:" destination="jme-l1-KiE" eventType="valueChanged" id="Z6x-cd-Q8F"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOz-FS-Zl1" userLabel="opacityLabel">
+                                        <rect key="frame" x="263" y="71" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uZ9-7J-WF9" userLabel="brushLabel">
+                                        <rect key="frame" x="263" y="96" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SAY-uD-cgs">
-                                        <rect key="frame" x="18" y="62" width="34" height="30"/>
+                                        <rect key="frame" x="18" y="67" width="34" height="30"/>
                                         <state key="normal" title="Save">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -59,43 +76,42 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
+                                    <outlet property="brushLabel" destination="uZ9-7J-WF9" id="eb3-vj-MSS"/>
+                                    <outlet property="brushSlider" destination="E9T-2f-WKg" id="DBM-D3-zII"/>
                                     <outlet property="canvasView" destination="qIa-Kk-11Z" id="btj-K1-Kpi"/>
                                     <outlet property="drawView" destination="Hqa-mn-DMK" id="n16-Jn-f6s"/>
+                                    <outlet property="opacityLabel" destination="yOz-FS-Zl1" id="y4i-gL-nGx"/>
+                                    <outlet property="opacitySlider" destination="6HS-6w-TCT" id="gDg-e7-FPA"/>
                                 </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="q9q-yX-M5h" secondAttribute="height" multiplier="1:1" id="5yL-GG-yMe"/>
-                            <constraint firstAttribute="width" secondItem="Hqa-mn-DMK" secondAttribute="width" id="D7P-UX-aNz"/>
-                            <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="L9O-Z6-r0j"/>
-                            <constraint firstAttribute="height" secondItem="jme-l1-KiE" secondAttribute="height" id="YGm-DT-Iw7"/>
-                            <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
-                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="cLL-Yg-NMk"/>
-                            <constraint firstAttribute="width" secondItem="q9q-yX-M5h" secondAttribute="width" id="ef0-Em-Tkj"/>
-                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="lBi-I1-4FQ"/>
-                            <constraint firstAttribute="height" secondItem="q9q-yX-M5h" secondAttribute="height" id="zOT-CG-y7Y"/>
+                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="Byu-FF-fMX"/>
+                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="D8P-ci-yS6"/>
+                            <constraint firstItem="q9q-yX-M5h" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="Ev6-WF-9Ul"/>
+                            <constraint firstItem="Hqa-mn-DMK" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="HrB-7U-rd8"/>
+                            <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="K8U-MA-U9Z"/>
+                            <constraint firstItem="Hqa-mn-DMK" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="Oq6-fe-x0B"/>
+                            <constraint firstItem="q9q-yX-M5h" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="TUA-S2-NjE"/>
+                            <constraint firstItem="jme-l1-KiE" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="sSI-mI-zEI"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Sing N' Sketch" id="x1h-l8-JK5">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="rRY-uI-4Rw">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Q7-dJ-3vJ">
-                                <rect key="frame" x="106" y="7" width="32" height="30"/>
+                    <navigationItem key="navigationItem" id="x1h-l8-JK5">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="V69-1I-s92">
+                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="0.0" maxValue="50" id="E9T-2f-WKg" userLabel="brushSlider">
+                                <rect key="frame" x="14" y="7" width="200" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Hide">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
                                 <connections>
-                                    <action selector="hide:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="rgU-JM-R0w"/>
+                                    <action selector="brushWidthManipulator:" destination="jme-l1-KiE" eventType="valueChanged" id="c4m-Ix-Aqh"/>
                                 </connections>
-                            </button>
+                            </slider>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="canvasView" destination="qIa-Kk-11Z" id="Avx-na-fXJ"/>
-                        <outlet property="hide" destination="0Q7-dJ-3vJ" id="7Sf-wr-yUX"/>
                         <outlet property="navBarLabel" destination="x1h-l8-JK5" id="KtO-z6-JPY"/>
                         <outlet property="new" destination="ekV-O9-ilh" id="JF5-dN-7HG"/>
                         <outlet property="save" destination="SAY-uD-cgs" id="USq-Si-hqu"/>

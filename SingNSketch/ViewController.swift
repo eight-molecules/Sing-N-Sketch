@@ -14,13 +14,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var canvasView: UIImageView!
     
-    @IBOutlet weak var hide: UIButton!
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
 
     
     @IBOutlet weak var navBarLabel: UINavigationItem!
+    
+    var navTitle: String = "Sing N' Sketch"
     
     // Outlet used in storyboard
     @IBOutlet var scrollView: UIScrollView?;
@@ -77,6 +78,11 @@ class ViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         sketchingView.audio.start()
         sketchingView.audio.update()
+        
+        var hideButtonItem:UIBarButtonItem = UIBarButtonItem(title: "Hide", style: UIBarButtonItemStyle.Plain, target: self, action: "hide:")
+        var sliderButtonItem:UIBarButtonItem = UIBarButtonItem(customView: sketchingView.brushSlider)
+        self.navigationItem.setLeftBarButtonItems([hideButtonItem,sliderButtonItem], animated: true)
+        self.title = navTitle
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -111,11 +117,14 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func hide(sender: UIButton) {
+    func hide(sender: UIButton) {
         navigationController!.navigationBarHidden = true
         show.hidden = false
         save.hidden = true
         new.hidden = true
+        sketchingView.opacityLabel.hidden = true
+        sketchingView.opacitySlider.hidden = true
+        sketchingView.brushLabel.hidden = true
 
         
     }
@@ -125,6 +134,9 @@ class ViewController: UIViewController {
         show.hidden = true
         save.hidden = false
         new.hidden = false
+        sketchingView.opacityLabel.hidden = false
+        sketchingView.opacitySlider.hidden = false
+        sketchingView.brushLabel.hidden = false
         
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
