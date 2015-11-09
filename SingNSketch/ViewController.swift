@@ -97,8 +97,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showMenuView(sender: UIBarButtonItem) {
-        if let viewWithTag = self.view.viewWithTag(100) {
-            viewWithTag.removeFromSuperview()
+        if let menuView = self.view.viewWithTag(100) {
+            UIView.animateWithDuration(0.7, animations: {
+                var menuFrame = menuView.frame
+                menuFrame.origin.x -= menuFrame.size.width
+                
+                menuView.frame = menuFrame
+                }, completion: { finished in
+                    menuView.removeFromSuperview()
+            }
+            )
         }
         else {
             
