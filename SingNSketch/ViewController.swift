@@ -2,8 +2,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
     @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var canvasView: UIImageView!
+    @IBOutlet weak var menuView: MenuView!
     
     @IBOutlet weak var hide: UIBarButtonItem!
     @IBOutlet weak var show: UIButton!
@@ -13,10 +15,8 @@ class ViewController: UIViewController {
     
     var navTitle: String = "Sing N' Sketch"
     
-    // Outlet used in storyboard
-    @IBOutlet var scrollView: UIScrollView?;
-    
     var audio: AudioInterface = AudioInterface()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +28,19 @@ class ViewController: UIViewController {
         sketchingView.audio.start()
         sketchingView.audio.update()
         
+        // This is bad. All of this is bad, and will be updated to be better.
+        var barView = UIView(frame: CGRectMake(0, 30, 250, 1000))
+        barView.backgroundColor = UIColor.clearColor()
+        barView.alpha = 1
+        
+        let navBarItems = UIBarButtonItem() as UIBarButtonItem!
+        navBarItems.customView = barView
+        
         var hideButtonItem:UIBarButtonItem = UIBarButtonItem(title: "Hide", style: UIBarButtonItemStyle.Plain, target: self, action: "hide:")
         self.title = navTitle
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+        show.addGestureRecognizer(longPress)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -66,14 +77,12 @@ class ViewController: UIViewController {
         }
         navigationController!.navigationBarHidden = true
         show.hidden = false
+        
     }
     
     @IBAction func show(sender: UIButton) {
         navigationController!.navigationBarHidden = false
         show.hidden = true
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
-        show.addGestureRecognizer(longPress)
     }
     
     func handleLongPress(longPress: UILongPressGestureRecognizer) {
@@ -94,7 +103,7 @@ class ViewController: UIViewController {
         else {
             
             // This is bad. All of this is bad, and will be updated to be better.
-            var menuView = MenuView(frame: CGRectMake(0, 30, 250, 1000))
+            let menuView = MenuView(frame: CGRectMake(-250, 30, 250, 1000))
             menuView.backgroundColor = UIColor.grayColor()
             menuView.alpha = 1
             menuView.tag = 100
@@ -103,6 +112,14 @@ class ViewController: UIViewController {
             menuView.layer.shadowOpacity = 0.7
             menuView.layer.shadowRadius = 2
             self.view.addSubview(menuView)
+            
+            UIView.animateWithDuration(0.7, animations: {
+                var menuFrame = menuView.frame
+                menuFrame.origin.x += menuFrame.size.width
+                
+                menuView.frame = menuFrame
+                }
+            )
         
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
@@ -170,5 +187,12 @@ class ViewController: UIViewController {
         sketchingView.brush.width = CGFloat(sender.value)
     }
 
+    @IBAction func mute(sender: UIButton) {
+        AKSettings.shared().audioInputEnabled = false
+    }
+    
+    @IBAction func unmute(sender: UIButton) {
+        AKSettings.shared().audioInputEnabled = true
+    }
 }
 
