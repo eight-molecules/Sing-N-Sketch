@@ -1,24 +1,13 @@
 import UIKit
 
-@objc
-protocol ViewControllerDelegate {
-    optional func toggleLeftPanel()
-    optional func toggleRightPanel()
-    optional func collapseSidePanels()
-}
-
 class ViewController: UIViewController {
     
-    var delegate: ViewControllerDelegate?
     @IBOutlet weak var sketchingView: SketchingView!
-    
     @IBOutlet weak var canvasView: UIImageView!
     
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
-
-    
     @IBOutlet weak var navBarLabel: UINavigationItem!
     
     var navTitle: String = "Sing N' Sketch"
@@ -30,49 +19,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        scrollView?.panGestureRecognizer.minimumNumberOfTouches = 2
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
-        
-        // 1) Create the three views used in the swipe container view
-        var AVc :AViewController =  AViewController(nibName: "AViewController", bundle: nil);
-        var BVc :MenuViewController = MenuViewController(nibName: "MenuViewController", bundle: nil)
-        
-        
-        // 2) Add in each view to the container view hierarchy
-        //    Add them in opposite order since the view hieracrhy is a stack
-        
-        
-        self.addChildViewController(BVc);
-        self.scrollView!.addSubview(BVc.view);
-        BVc.didMoveToParentViewController(self);
-        
-        self.addChildViewController(AVc);
-        self.scrollView!.addSubview(AVc.view);
-        AVc.didMoveToParentViewController(self);
-        
-        
-        // 3) Set up the frames of the view controllers to align
-        //    with eachother inside the container view
-        var adminFrame :CGRect = AVc.view.frame;
-        adminFrame.origin.x = adminFrame.width;
-        BVc.view.frame = adminFrame;
-        
-        var BFrame :CGRect = BVc.view.frame;
-        BFrame.origin.x = 2*BFrame.width;
-        AVc.view.frame = BFrame;
-        
-        
-        // 4) Finally set the size of the scroll view that contains the frames
-        var scrollWidth: CGFloat  = 3 * self.view.frame.width
-        var scrollHeight: CGFloat  = self.view.frame.size.height
-        self.scrollView!.contentSize = CGSizeMake(scrollWidth, scrollHeight);
-        
-        //shadows
-        scrollView!.layer.shadowColor = UIColor.grayColor().CGColor;
-        scrollView!.layer.shadowOpacity = 0.5;
-
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -93,10 +41,6 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    @IBAction func showMenu(sender: UIButton) {
-        self.performSegueWithIdentifier("menuSegue", sender: self)
-    }
     
     @IBAction func save(sender: UIButton) {
         UIImageWriteToSavedPhotosAlbum(canvasView.image, self, "image:didFinishSavingWithError:contextInfo:", nil)
@@ -137,6 +81,41 @@ class ViewController: UIViewController {
             break
             
         }
+    }
+    
+    @IBAction func showMenuView(sender: UIBarButtonItem) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        } else {
+            var menuView = MenuView(frame: CGRectMake(0, 0, 250, 1000))
+            menuView.backgroundColor = UIColor.blackColor()
+            menuView.alpha = 1
+            menuView.tag = 100
+            menuView.userInteractionEnabled = true
+            
+            self.view.addSubview(menuView)
+        
+            let save   = UIButton() as UIButton
+            save.frame = CGRectMake(10, 75, 110, 110)
+            save.backgroundColor = UIColor.darkGrayColor()
+            save.setTitle("Save", forState: UIControlState.Normal)
+            save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
+            menuView.addSubview(save)
+            
+            let new   = UIButton() as UIButton
+            new.frame = CGRectMake(130, 75, 110, 110)
+            new.backgroundColor = UIColor.darkGrayColor()
+            new.setTitle("Clear", forState: UIControlState.Normal)
+            new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
+            menuView.addSubview(new)
+        }
+    }
+    
+    @IBAction func new(sender: UIButton) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }
+        sketchingView.newDrawing()
     }
 }
 

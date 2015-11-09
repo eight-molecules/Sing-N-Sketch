@@ -43,10 +43,11 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         palette = Palette()
-        palette.addColor(440, color: UIColor.redColor())
-        palette.addColor(660, color: UIColor.orangeColor())
-        palette.addColor(880, color: UIColor.greenColor())
-        palette.addColor(1320, color: UIColor.blueColor())
+        palette.addColor(55, color: UIColor.redColor())
+        palette.addColor(110, color: UIColor.orangeColor())
+        palette.addColor(220, color: UIColor.yellowColor())
+        palette.addColor(440, color: UIColor.greenColor())
+        palette.addColor(880, color: UIColor.blueColor())
         palette.addColor(1760, color: UIColor.purpleColor())
     }
     
@@ -127,6 +128,8 @@ class SketchingView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
+        multiplier = audio.amplitude * 100 + 1;
+        
         //Update audio
         audio.update()
         println(audio.amplitude)
@@ -136,7 +139,7 @@ class SketchingView: UIView {
     }
     
     // New Drawing Action
-    @IBAction func newDrawing(sender: UIButton) {
+    func newDrawing() {
         canvasView.image = nil
         setNeedsDisplay()
         

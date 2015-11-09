@@ -66,7 +66,13 @@ class Palette {
                     return val
                 }
             }
+            
+            
             return CGFloat(0)
+        }
+        
+        func getFrequencies() -> [Float] {
+            return values.keys.array
         }
     }
     
@@ -89,7 +95,7 @@ class Palette {
         return color
     }
     
-    // Privadte function to handle individual color channels
+    // Private function to handle individual color channels
     private func addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat) {
         red.addMapping(frequency, value: r)
         green.addMapping(frequency, value: g)
