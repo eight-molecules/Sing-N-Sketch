@@ -6,6 +6,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var canvasView: UIImageView!
     @IBOutlet weak var menuView: MenuView!
+    var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
     @IBOutlet weak var hide: UIBarButtonItem!
     @IBOutlet weak var show: UIButton!
@@ -22,6 +23,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
+        
+        screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self,
+            action: "swipeMenu:")
+        screenEdgeRecognizer.edges = .Left
+        view.addGestureRecognizer(screenEdgeRecognizer)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -97,6 +103,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showMenuView(sender: UIBarButtonItem) {
+        showMenu()
+    }
+    
+    func showMenu() {
         if let menuView = self.view.viewWithTag(100) {
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
@@ -105,7 +115,7 @@ class ViewController: UIViewController {
                 menuView.frame = menuFrame
                 }, completion: { finished in
                     menuView.removeFromSuperview()
-            }
+                }
             )
         }
         else {
@@ -128,7 +138,7 @@ class ViewController: UIViewController {
                 menuView.frame = menuFrame
                 }
             )
-        
+            
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
             save.frame = CGRectMake(10, self.navigationController!.navigationBar.frame.height, 110, 50)
@@ -177,7 +187,22 @@ class ViewController: UIViewController {
             opacity.layer.shadowRadius = 2
             menuView.addSubview(opacity)
         }
+
     }
+    
+    func swipeMenu(sender: UIScreenEdgePanGestureRecognizer) {
+        if sender.state == .Ended {
+            
+            // So this works. What in the hell?
+            if let menuView = self.view.viewWithTag(100) {
+                
+            }
+            else {
+                showMenu()
+            }
+        }
+    }
+    
     
     @IBAction func new(sender: UIButton) {
         if let viewWithTag = self.view.viewWithTag(100) {
