@@ -121,7 +121,7 @@ class ViewController: UIViewController {
             new.layer.shadowRadius = 2
             menuView.addSubview(new)
             
-            var width = UISlider(frame:CGRectMake(10, 70, 230, 50))
+            let width = UISlider(frame:CGRectMake(10, 70, 230, 50))
             width.minimumValue = 0
             width.maximumValue = 100
             width.continuous = true
@@ -132,7 +132,18 @@ class ViewController: UIViewController {
             width.layer.shadowOpacity = 0.7
             width.layer.shadowRadius = 2
             menuView.addSubview(width)
-           
+            
+            let opacity = UISlider(frame:CGRectMake(10, 130, 230, 50))
+            opacity.minimumValue = 0
+            opacity.maximumValue = 1
+            opacity.continuous = true
+            opacity.backgroundColor = UIColor.darkGrayColor()
+            opacity.value = 50
+            opacity.addTarget(self, action: "opacityManipulator:", forControlEvents: .ValueChanged)
+            opacity.layer.shadowOffset = CGSize(width: 0, height: 2)
+            opacity.layer.shadowOpacity = 0.7
+            opacity.layer.shadowRadius = 2
+            menuView.addSubview(opacity)
         }
     }
     
