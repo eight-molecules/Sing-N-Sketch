@@ -7,7 +7,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var canvasView: UIImageView!
     @IBOutlet weak var menuView: MenuView!
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
-    var menuSwipeRecognizer: UISwipeGestureRecognizer!
     
     @IBOutlet weak var hide: UIBarButtonItem!
     @IBOutlet weak var show: UIButton!
@@ -85,7 +84,9 @@ class ViewController: UIViewController {
         }
         navigationController!.navigationBarHidden = true
         show.hidden = false
-        
+        if let menuView = self.view.viewWithTag(100) {
+            closeMenu()
+        }
     }
     
     @IBAction func show(sender: UIButton) {
@@ -104,11 +105,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func showMenuView(sender: UIBarButtonItem) {
-        showMenu()
-    }
-    
-    func showMenu() {
+    func drawMenu() {
         if let menuView = self.view.viewWithTag(100) {
             closeMenu()
         }
@@ -122,10 +119,6 @@ class ViewController: UIViewController {
             menuView.layer.shadowOffset = CGSize(width: 3, height: 0)
             menuView.layer.shadowOpacity = 0.7
             menuView.layer.shadowRadius = 2
-            
-            menuSwipeRecognizer = UISwipeGestureRecognizer(target: menuView, action: "closeMenu:")
-            menuSwipeRecognizer.numberOfTouchesRequired = 2
-            menuView.addGestureRecognizer(menuSwipeRecognizer)
             
             
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
@@ -189,15 +182,24 @@ class ViewController: UIViewController {
 
     }
     
+    @IBAction func showMenuView(sender: UIBarButtonItem) {
+        if let menuView = self.view.viewWithTag(100) {
+            closeMenu()
+        }
+        else {
+            drawMenu()
+        }
+    }
+    
     func swipeMenu(sender: UIScreenEdgePanGestureRecognizer) {
         if sender.state == .Ended {
-            
-            // So this works. What in the hell?
-            if let menuView = self.view.viewWithTag(100) {
-                
-            }
-            else {
-                showMenu()
+            if show.hidden {
+                if let menuView = self.view.viewWithTag(100) {
+                    // Nothing happens if we swipe and the menu is open
+                }
+                else {
+                    drawMenu()
+                }
             }
         }
     }
@@ -214,8 +216,6 @@ class ViewController: UIViewController {
                 }
             )
         }
-        
-        menuSwipeRecognizer.enabled = false
     }
     
     @IBAction func new(sender: UIButton) {
