@@ -16,19 +16,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceHorizontal="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9q-yX-M5h">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                            </scrollView>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                         <animations/>
                                     </imageView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
-                                        <rect key="frame" x="18" y="47" width="39" height="70"/>
+                                        <rect key="frame" x="13" y="42" width="64" height="64"/>
                                         <animations/>
                                         <state key="normal" title="Show">
                                             <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -53,18 +49,35 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="Byu-FF-fMX"/>
-                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="D8P-ci-yS6"/>
-                            <constraint firstItem="q9q-yX-M5h" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="Ev6-WF-9Ul"/>
-                            <constraint firstItem="Hqa-mn-DMK" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="HrB-7U-rd8"/>
-                            <constraint firstItem="jme-l1-KiE" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="K8U-MA-U9Z"/>
-                            <constraint firstItem="Hqa-mn-DMK" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="Oq6-fe-x0B"/>
-                            <constraint firstItem="q9q-yX-M5h" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="TUA-S2-NjE"/>
-                            <constraint firstItem="jme-l1-KiE" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="sSI-mI-zEI"/>
+                            <constraint firstAttribute="width" secondItem="Hqa-mn-DMK" secondAttribute="width" id="D7P-UX-aNz"/>
+                            <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="L9O-Z6-r0j"/>
+                            <constraint firstAttribute="height" secondItem="jme-l1-KiE" secondAttribute="height" id="YGm-DT-Iw7"/>
+                            <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
+                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="cLL-Yg-NMk"/>
+                            <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="lBi-I1-4FQ"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="x1h-l8-JK5"/>
+                    <navigationItem key="navigationItem" title="Sing N' Sketch" id="x1h-l8-JK5">
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="caW-B7-iqS">
+                            <connections>
+                                <action selector="showMenuView:" destination="vXZ-lx-hvc" id="6hw-2h-e0K"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="rRY-uI-4Rw">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Q7-dJ-3vJ">
+                                <rect key="frame" x="106" y="7" width="32" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <animations/>
+                                <state key="normal" title="Hide">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="hide:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="rgU-JM-R0w"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="canvasView" destination="qIa-Kk-11Z" id="Avx-na-fXJ"/>

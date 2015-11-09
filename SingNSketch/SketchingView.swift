@@ -14,25 +14,18 @@ class SketchingView: UIView {
     
     //stores previously drawn path
     var drawImage: UIImage!
-    var userBrush: Brush = Brush()
+    var brush: Brush = Brush()
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
-    
-    @IBOutlet weak var hide: UIButton!
-    @IBOutlet weak var show: UIButton!
-    @IBOutlet weak var newDrawing: UIButton!
-    
+    var multiplier: Float = 0
+
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!
-    
-    @IBOutlet weak var opacitySlider: UISlider!
-    @IBOutlet weak var opacityLabel: UILabel!
-    @IBOutlet weak var brushSlider: UISlider!
-    @IBOutlet weak var brushLabel: UILabel!
+
     
     //variables for points of the quadratic curve
     
-    var points = (CGPoint.zeroPoint, CGPoint.zeroPoint, CGPoint.zeroPoint)
+    var points = (CGPoint.zeroPoint, CGPoint.zeroPoint, last: CGPoint.zeroPoint)
     
     
     override init(frame: CGRect) {
@@ -57,7 +50,7 @@ class SketchingView: UIView {
             
             points.1 = touch.previousLocationInView(self)
             
-            points.2 = touch.previousLocationInView(self)
+            points.last = touch.previousLocationInView(self)
         }
     }
     
@@ -78,29 +71,30 @@ class SketchingView: UIView {
             CGContextSetShouldAntialias(context, true)
             
             CGContextSetLineCap(context, kCGLineCapRound)
-            CGContextSetLineWidth(context, userBrush.brushWidth)
-            CGContextSetStrokeColorWithColor(context, userBrush.color.CGColor)
+            CGContextSetLineWidth(context, brush.width * CGFloat(multiplier))
+            CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
             CGContextSetBlendMode(context, kCGBlendModeNormal)
             
             
             drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
             
-            var mid1 = CGPointMake((points.0.x + points.1.x)*0.5, (points.0.y + points.1.y)*0.5)
-            var mid2 = CGPointMake((currentPoint.x + points.0.x)*0.5, (currentPoint.y + points.0.y)*0.5)
+            let mid = ( CGPointMake((points.0.x + points.1.x) * 0.5, (points.0.y + points.1.y) * 0.5),
+                        CGPointMake((currentPoint.x + points.0.x)*0.5, (currentPoint.y + points.0.y)*0.5)
+            )
             
-            CGContextMoveToPoint(context, mid1.x, mid1.y)
-            
-            CGContextAddQuadCurveToPoint(context, points.0.x, points.0.y, mid2.x, mid2.y)
+            CGContextMoveToPoint(context, mid.0.x, mid.0.y)
+            CGContextAddQuadCurveToPoint(context, points.0.x, points.0.y, mid.0.x, mid.0.y)
+            CGContextAddQuadCurveToPoint(context, points.0.x, points.0.y, mid.1.x, mid.1.y)
             
             CGContextStrokePath(context)
             
             drawView.image = UIGraphicsGetImageFromCurrentImageContext()
             
-            drawView.alpha = userBrush.opacity
+            drawView.alpha = brush.opacity
             
             UIGraphicsEndImageContext()
             
-            points.2 = currentPoint
+            points.last = currentPoint
         }
         
         setNeedsDisplay()
@@ -116,7 +110,7 @@ class SketchingView: UIView {
         
         canvasView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
         
-        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: userBrush.opacity)
+        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
         
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
         
@@ -134,7 +128,7 @@ class SketchingView: UIView {
         audio.update()
         println(audio.amplitude)
         if (audio.amplitude > audio.noiseFloor) {
-            userBrush.color = palette.getColor(audio.frequency)
+            brush.color = palette.getColor(audio.frequency)
         }
     }
     
@@ -147,13 +141,11 @@ class SketchingView: UIView {
     
     // Interface slider actions
     @IBAction func opacityManipulator(sender: UISlider) {
-        userBrush.opacity = CGFloat(sender.value)
-        opacityLabel.text = NSString(format: "%.2f", userBrush.opacity.native) as String
+        brush.opacity = CGFloat(sender.value)
     }
     
     @IBAction func brushWidthManipulator(sender: UISlider) {
-        userBrush.brushWidth = CGFloat(sender.value)
-        brushLabel.text = NSString(format: "%.0f", userBrush.brushWidth.native) as String
+        brush.width = CGFloat(sender.value)
     }
     
     // Update Palette - Includes update of Brush

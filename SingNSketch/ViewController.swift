@@ -5,6 +5,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var canvasView: UIImageView!
     
+    @IBOutlet weak var hide: UIBarButtonItem!
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
