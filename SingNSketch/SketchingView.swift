@@ -139,15 +139,7 @@ class SketchingView: UIView {
         
     }
     
-    // Interface slider actions
-    @IBAction func opacityManipulator(sender: UISlider) {
-        brush.opacity = CGFloat(sender.value)
-    }
-    
-    @IBAction func brushWidthManipulator(sender: UISlider) {
-        brush.width = CGFloat(sender.value)
-    }
-    
+        
     // Update Palette - Includes update of Brush
     func updatePalette(newPalette: Palette) {
         palette = newPalette

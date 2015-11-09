@@ -61,6 +61,9 @@ class ViewController: UIViewController {
     }
     
     func hide(sender: UIButton) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }
         navigationController!.navigationBarHidden = true
         show.hidden = false
     }
@@ -88,27 +91,48 @@ class ViewController: UIViewController {
         if let viewWithTag = self.view.viewWithTag(100) {
             viewWithTag.removeFromSuperview()
         } else {
-            var menuView = MenuView(frame: CGRectMake(0, 0, 250, 1000))
-            menuView.backgroundColor = UIColor.blackColor()
+            var menuView = MenuView(frame: CGRectMake(0, 30, 250, 1000))
+            menuView.backgroundColor = UIColor.grayColor()
             menuView.alpha = 1
             menuView.tag = 100
             menuView.userInteractionEnabled = true
-            
+            menuView.layer.shadowOffset = CGSize(width: 3, height: 0)
+            menuView.layer.shadowOpacity = 0.7
+            menuView.layer.shadowRadius = 2
             self.view.addSubview(menuView)
         
             let save   = UIButton() as UIButton
-            save.frame = CGRectMake(10, 75, 110, 110)
+            save.frame = CGRectMake(10, 10, 110, 50)
             save.backgroundColor = UIColor.darkGrayColor()
             save.setTitle("Save", forState: UIControlState.Normal)
             save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
+            save.layer.shadowOffset = CGSize(width: 0, height: 2)
+            save.layer.shadowOpacity = 0.7
+            save.layer.shadowRadius = 2
             menuView.addSubview(save)
             
             let new   = UIButton() as UIButton
-            new.frame = CGRectMake(130, 75, 110, 110)
+            new.frame = CGRectMake(130, 10, 110, 50)
             new.backgroundColor = UIColor.darkGrayColor()
             new.setTitle("Clear", forState: UIControlState.Normal)
             new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
+            new.layer.shadowOffset = CGSize(width: 0, height: 2)
+            new.layer.shadowOpacity = 0.7
+            new.layer.shadowRadius = 2
             menuView.addSubview(new)
+            
+            var width = UISlider(frame:CGRectMake(10, 70, 230, 50))
+            width.minimumValue = 0
+            width.maximumValue = 100
+            width.continuous = true
+            width.backgroundColor = UIColor.darkGrayColor()
+            width.value = 50
+            width.addTarget(self, action: "widthManipulator:", forControlEvents: .ValueChanged)
+            width.layer.shadowOffset = CGSize(width: 0, height: 2)
+            width.layer.shadowOpacity = 0.7
+            width.layer.shadowRadius = 2
+            menuView.addSubview(width)
+           
         }
     }
     
@@ -118,5 +142,15 @@ class ViewController: UIViewController {
         }
         sketchingView.newDrawing()
     }
+    
+    // Interface slider actions
+    @IBAction func opacityManipulator(sender: UISlider) {
+        sketchingView.brush.opacity = CGFloat(sender.value)
+    }
+    
+    @IBAction func widthManipulator(sender: UISlider) {
+        sketchingView.brush.width = CGFloat(sender.value)
+    }
+
 }
 
