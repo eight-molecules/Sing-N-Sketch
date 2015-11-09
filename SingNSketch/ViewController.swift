@@ -131,7 +131,7 @@ class ViewController: UIViewController {
         
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
-            save.frame = CGRectMake(10, 10, 110, 50)
+            save.frame = CGRectMake(10, self.navigationController!.navigationBar.frame.height, 110, 50)
             save.backgroundColor = UIColor.darkGrayColor()
             save.setTitle("Save", forState: UIControlState.Normal)
             save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -142,7 +142,7 @@ class ViewController: UIViewController {
             
             // This could totally be embedded in a class. MenuItem.item -> UIView?
             let new   = UIButton() as UIButton
-            new.frame = CGRectMake(130, 10, 110, 50)
+            new.frame = CGRectMake(130, self.navigationController!.navigationBar.frame.height, 110, 50)
             new.backgroundColor = UIColor.darkGrayColor()
             new.setTitle("Clear", forState: UIControlState.Normal)
             new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -152,7 +152,7 @@ class ViewController: UIViewController {
             menuView.addSubview(new)
             
             // Can you just call MenuItem.item as UIButton if you know it's a button?
-            let width = UISlider(frame:CGRectMake(10, 70, 230, 50))
+            let width = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 60, 230, 50))
             width.minimumValue = 0
             width.maximumValue = 100
             width.continuous = true
@@ -165,7 +165,7 @@ class ViewController: UIViewController {
             menuView.addSubview(width)
             
             // TODO: Look up generic storage and type checking
-            let opacity = UISlider(frame:CGRectMake(10, 130, 230, 50))
+            let opacity = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 120, 230, 50))
             opacity.minimumValue = 0
             opacity.maximumValue = 1
             opacity.continuous = true
