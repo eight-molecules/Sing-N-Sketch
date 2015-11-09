@@ -17,7 +17,7 @@ class SketchingView: UIView {
     var brush: Brush = Brush()
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
-    var multiplier: Float = 0;
+    var multiplier: Float = 0
 
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!

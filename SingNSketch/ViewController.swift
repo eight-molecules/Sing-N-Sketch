@@ -5,7 +5,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var canvasView: UIImageView!
     
-    @IBOutlet weak var hide: UIButton!
+    @IBOutlet weak var hide: UIBarButtonItem!
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
@@ -35,10 +35,6 @@ class ViewController: UIViewController {
     }
     
     
-    @IBAction func showMenu(sender: UIButton) {
-        self.performSegueWithIdentifier("menuSegue", sender: self)
-    }
-    
     @IBAction func save(sender: UIButton) {
         UIImageWriteToSavedPhotosAlbum(canvasView.image, self, "image:didFinishSavingWithError:contextInfo:", nil)
     }
@@ -59,16 +55,11 @@ class ViewController: UIViewController {
     @IBAction func hide(sender: UIButton) {
         navigationController!.navigationBarHidden = true
         show.hidden = false
-        save.hidden = true
-        new.hidden = true        
     }
     
     @IBAction func show(sender: UIButton) {
         navigationController!.navigationBarHidden = false
         show.hidden = true
-        save.hidden = false
-        new.hidden = false
-        
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -85,7 +76,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func infoView(sender: UIBarButtonItem) {
+    @IBAction func showMenuView(sender: UIBarButtonItem) {
         if let viewWithTag = self.view.viewWithTag(100) {
             viewWithTag.removeFromSuperview()
         } else {
