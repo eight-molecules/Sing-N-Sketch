@@ -90,7 +90,10 @@ class ViewController: UIViewController {
     @IBAction func showMenuView(sender: UIBarButtonItem) {
         if let viewWithTag = self.view.viewWithTag(100) {
             viewWithTag.removeFromSuperview()
-        } else {
+        }
+        else {
+            
+            // This is bad. All of this is bad, and will be updated to be better.
             var menuView = MenuView(frame: CGRectMake(0, 30, 250, 1000))
             menuView.backgroundColor = UIColor.grayColor()
             menuView.alpha = 1
@@ -101,6 +104,7 @@ class ViewController: UIViewController {
             menuView.layer.shadowRadius = 2
             self.view.addSubview(menuView)
         
+            // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
             save.frame = CGRectMake(10, 10, 110, 50)
             save.backgroundColor = UIColor.darkGrayColor()
@@ -111,6 +115,7 @@ class ViewController: UIViewController {
             save.layer.shadowRadius = 2
             menuView.addSubview(save)
             
+            // This could totally be embedded in a class. MenuItem.item -> UIView?
             let new   = UIButton() as UIButton
             new.frame = CGRectMake(130, 10, 110, 50)
             new.backgroundColor = UIColor.darkGrayColor()
@@ -121,6 +126,7 @@ class ViewController: UIViewController {
             new.layer.shadowRadius = 2
             menuView.addSubview(new)
             
+            // Can you just call MenuItem.item as UIButton if you know it's a button?
             let width = UISlider(frame:CGRectMake(10, 70, 230, 50))
             width.minimumValue = 0
             width.maximumValue = 100
@@ -133,6 +139,7 @@ class ViewController: UIViewController {
             width.layer.shadowRadius = 2
             menuView.addSubview(width)
             
+            // TODO: Look up generic storage and type checking
             let opacity = UISlider(frame:CGRectMake(10, 130, 230, 50))
             opacity.minimumValue = 0
             opacity.maximumValue = 1
