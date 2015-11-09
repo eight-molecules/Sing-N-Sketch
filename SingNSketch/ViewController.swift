@@ -80,8 +80,6 @@ class ViewController: UIViewController {
         sketchingView.audio.update()
         
         var hideButtonItem:UIBarButtonItem = UIBarButtonItem(title: "Hide", style: UIBarButtonItemStyle.Plain, target: self, action: "hide:")
-        var sliderButtonItem:UIBarButtonItem = UIBarButtonItem(customView: sketchingView.brushSlider)
-        self.navigationItem.setLeftBarButtonItems([hideButtonItem,sliderButtonItem], animated: true)
         self.title = navTitle
     }
     
@@ -120,24 +118,11 @@ class ViewController: UIViewController {
     func hide(sender: UIButton) {
         navigationController!.navigationBarHidden = true
         show.hidden = false
-        save.hidden = true
-        new.hidden = true
-        sketchingView.opacityLabel.hidden = true
-        sketchingView.opacitySlider.hidden = true
-        sketchingView.brushLabel.hidden = true
-
-        
     }
     
     @IBAction func show(sender: UIButton) {
         navigationController!.navigationBarHidden = false
         show.hidden = true
-        save.hidden = false
-        new.hidden = false
-        sketchingView.opacityLabel.hidden = false
-        sketchingView.opacitySlider.hidden = false
-        sketchingView.brushLabel.hidden = false
-        
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
