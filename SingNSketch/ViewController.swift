@@ -7,6 +7,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var canvasView: UIImageView!
     @IBOutlet weak var menuView: MenuView!
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
+    var menuSwipeRecognizer: UISwipeGestureRecognizer!
     
     @IBOutlet weak var hide: UIBarButtonItem!
     @IBOutlet weak var show: UIButton!
@@ -28,6 +29,7 @@ class ViewController: UIViewController {
             action: "swipeMenu:")
         screenEdgeRecognizer.edges = .Left
         view.addGestureRecognizer(screenEdgeRecognizer)
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -108,18 +110,9 @@ class ViewController: UIViewController {
     
     func showMenu() {
         if let menuView = self.view.viewWithTag(100) {
-            UIView.animateWithDuration(0.7, animations: {
-                var menuFrame = menuView.frame
-                menuFrame.origin.x -= menuFrame.size.width
-                
-                menuView.frame = menuFrame
-                }, completion: { finished in
-                    menuView.removeFromSuperview()
-                }
-            )
+            closeMenu()
         }
         else {
-            
             // This is bad. All of this is bad, and will be updated to be better.
             let menuView = MenuView(frame: CGRectMake(-250, 30, 250, 1000))
             menuView.backgroundColor = UIColor.grayColor()
@@ -129,15 +122,11 @@ class ViewController: UIViewController {
             menuView.layer.shadowOffset = CGSize(width: 3, height: 0)
             menuView.layer.shadowOpacity = 0.7
             menuView.layer.shadowRadius = 2
-            self.view.addSubview(menuView)
             
-            UIView.animateWithDuration(0.7, animations: {
-                var menuFrame = menuView.frame
-                menuFrame.origin.x += menuFrame.size.width
-                
-                menuView.frame = menuFrame
-                }
-            )
+            menuSwipeRecognizer = UISwipeGestureRecognizer(target: menuView, action: "closeMenu:")
+            menuSwipeRecognizer.numberOfTouchesRequired = 2
+            menuView.addGestureRecognizer(menuSwipeRecognizer)
+            
             
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
@@ -186,6 +175,16 @@ class ViewController: UIViewController {
             opacity.layer.shadowOpacity = 0.7
             opacity.layer.shadowRadius = 2
             menuView.addSubview(opacity)
+            
+            self.view.addSubview(menuView)
+            
+            UIView.animateWithDuration(0.7, animations: {
+                var menuFrame = menuView.frame
+                menuFrame.origin.x += menuFrame.size.width
+                
+                menuView.frame = menuFrame
+                }
+            )
         }
 
     }
@@ -203,6 +202,21 @@ class ViewController: UIViewController {
         }
     }
     
+    func closeMenu() {
+        if let menuView = self.view.viewWithTag(100) {
+            UIView.animateWithDuration(0.7, animations: {
+                var menuFrame = menuView.frame
+                menuFrame.origin.x -= menuFrame.size.width
+            
+                menuView.frame = menuFrame
+                }, completion: { finished in
+                    menuView.removeFromSuperview()
+                }
+            )
+        }
+        
+        menuSwipeRecognizer.enabled = false
+    }
     
     @IBAction func new(sender: UIButton) {
         if let viewWithTag = self.view.viewWithTag(100) {
