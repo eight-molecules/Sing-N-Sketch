@@ -131,7 +131,7 @@ class SketchingView: UIView {
     }
     
     // New Drawing Action
-    @IBAction func newDrawing(sender: UIButton) {
+    func newDrawing() {
         canvasView.image = nil
         setNeedsDisplay()
         

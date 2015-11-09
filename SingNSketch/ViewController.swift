@@ -1,17 +1,8 @@
 import UIKit
 
-@objc
-protocol ViewControllerDelegate {
-    optional func toggleLeftPanel()
-    optional func toggleRightPanel()
-    optional func collapseSidePanels()
-}
-
 class ViewController: UIViewController {
     
-    var delegate: ViewControllerDelegate?
     @IBOutlet weak var sketchingView: SketchingView!
-    
     @IBOutlet weak var canvasView: UIImageView!
     
     @IBOutlet weak var hide: UIButton!
@@ -92,6 +83,41 @@ class ViewController: UIViewController {
             break
             
         }
+    }
+    
+    @IBAction func infoView(sender: UIBarButtonItem) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        } else {
+            var menuView = MenuView(frame: CGRectMake(0, 0, 250, 1000))
+            menuView.backgroundColor = UIColor.blackColor()
+            menuView.alpha = 1
+            menuView.tag = 100
+            menuView.userInteractionEnabled = true
+            
+            self.view.addSubview(menuView)
+        
+            let save   = UIButton() as UIButton
+            save.frame = CGRectMake(10, 75, 110, 110)
+            save.backgroundColor = UIColor.darkGrayColor()
+            save.setTitle("Save", forState: UIControlState.Normal)
+            save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
+            menuView.addSubview(save)
+            
+            let new   = UIButton() as UIButton
+            new.frame = CGRectMake(130, 75, 110, 110)
+            new.backgroundColor = UIColor.darkGrayColor()
+            new.setTitle("Clear", forState: UIControlState.Normal)
+            new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
+            menuView.addSubview(new)
+        }
+    }
+    
+    @IBAction func new(sender: UIButton) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }
+        sketchingView.newDrawing()
     }
 }
 

@@ -24,6 +24,7 @@
 		9BCD801D1BB3393A0092771F /* CsoundLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9BCD80171BB338DD0092771F /* CsoundLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9BCD80221BB33A670092771F /* AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCD80211BB33A670092771F /* AudioKit.swift */; };
 		9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBF5B91BC5DA33007117F4 /* Palette.swift */; };
+		C3BB7AA51BF04E6300C53C49 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BB7AA41BF04E6300C53C49 /* MenuView.swift */; };
 		F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		9BCD80211BB33A670092771F /* AudioKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioKit.swift; path = AudioKit/AudioKit/Platforms/Swift/AudioKit.swift; sourceTree = "<group>"; };
 		9BCD80241BB33DD90092771F /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		9BFBF5B91BC5DA33007117F4 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Palette.swift; path = ../Palette.swift; sourceTree = "<group>"; };
+		C3BB7AA41BF04E6300C53C49 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 				938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */,
 				938FBFED1BA79C5000EAFC7E /* Info.plist */,
 				938FBFEF1BA79C5000EAFC7E /* ViewController.swift */,
+				C3BB7AA41BF04E6300C53C49 /* MenuView.swift */,
 				1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */,
 				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 				1DE3B9F51BCF3B6A008EA98E /* NavigationViewController.swift */,
@@ -372,6 +375,7 @@
 				1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */,
 				938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */,
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
+				C3BB7AA51BF04E6300C53C49 /* MenuView.swift in Sources */,
 				9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */,
 				9BCD80221BB33A670092771F /* AudioKit.swift in Sources */,
 				1DE3B9F61BCF3B6A008EA98E /* NavigationViewController.swift in Sources */,
