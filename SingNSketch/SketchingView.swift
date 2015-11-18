@@ -18,6 +18,12 @@ class SketchingView: UIView {
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
     var multiplier: Float = 0
+    
+    //###
+    var undoArray = [UIImage] () //: UIImage = []
+    var redoArray = [UIImage] ()
+    //var undoStack: Stack!// = UIGraphicsGetImageFromCurrentImageContext()
+    //var redoStack: Stack?//
 
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!
@@ -113,6 +119,11 @@ class SketchingView: UIView {
         drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
         
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        //###
+        //var undoStack: Stack = UIGraphicsGetImageFromCurrentImageContext()
+        undoArray.append(UIGraphicsGetImageFromCurrentImageContext())
+        //redoArray.append(UIGraphicsGetImageFromCurrentImageContext())
         
         UIGraphicsEndImageContext()
         
