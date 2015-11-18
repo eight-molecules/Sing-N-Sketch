@@ -135,7 +135,7 @@ class SketchingView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
-        multiplier = audio.amplitude * 100 + 1;
+        multiplier = audio.amplitude.average * 100 + 1;
         
         //Update audio
         audio.update()

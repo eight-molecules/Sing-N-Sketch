@@ -8,26 +8,26 @@
 
 import Foundation
 class MovingAverage {
-    var samples: Array<Double>
+    var samples: Array<Float>
     var sampleCount = 0
     var period = 5
     
     init(period: Int = 5) {
         self.period = period
-        samples = Array<Double>()
+        samples = Array<Float>()
     }
     
-    var average: Double {
-        let sum: Double = samples.reduce(0, combine: +)
+    var average: Float {
+        let sum: Float = samples.reduce(0, combine: +)
         
         if period > samples.count {
-            return sum / Double(samples.count)
+            return sum / Float(samples.count)
         } else {
-            return sum / Double(period)
+            return sum / Float(period)
         }
     }
     
-    func addSample(value: Double) -> Double {
+    func addSample(value: Float) -> Float {
         var pos = Int(fmodf(Float(sampleCount++), Float(period)))
         
         if pos >= samples.count {
@@ -44,140 +44,44 @@ class AudioInterface {
     var input: AKMicrophone = AKMicrophone()
     var analyzer: AKAudioAnalyzer!
     var frequency: MovingAverage!
-    var amplitude: Float = 1
+    var amplitude: MovingAverage!
     var noiseFloor: Float = 0.0005
-    var bufferSize: Int = 100
+    var freqBuffer: Int = 25
+    let ampBuffer: Int = 3
     
     init() {
         AKSettings.shared().audioInputEnabled = true
-        frequency = MovingAverage(period: bufferSize)
+        frequency = MovingAverage(period: freqBuffer)
+        amplitude = MovingAverage(period: ampBuffer)
         analyzer = AKAudioAnalyzer(input: input.output)
         
         AKOrchestra.addInstrument(input)
         AKOrchestra.addInstrument(analyzer)
         
-        for(var i = 0; i < bufferSize; i++) {
-            amplitude += analyzer.trackedAmplitude.floatValue
+        for i in 1...freqBuffer {
+            frequency.addSample(analyzer.trackedFrequency.floatValue)
+            if (i <= ampBuffer) {
+                amplitude.addSample(analyzer.trackedFrequency.floatValue)
+            }
         }
         
-        amplitude /= Float(bufferSize)
-        noiseFloor = amplitude
-        amplitude = 0
+        noiseFloor = amplitude.average
     }
     
     func start() {
         input.start()
         analyzer.start()
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
+        
     }
     
     func stop() {
-        input.stop()
         analyzer.stop()
+        input.stop()
     }
     
     func update() {
-        amplitude = analyzer.trackedAmplitude.floatValue
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
+            amplitude.addSample(analyzer.trackedAmplitude.floatValue)
+            frequency.addSample(analyzer.trackedFrequency.floatValue)
     }
     
 }
