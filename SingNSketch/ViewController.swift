@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
+    @IBOutlet weak var undo: UIButton!
+    @IBOutlet weak var redo: UIButton!
     @IBOutlet weak var navBarLabel: UINavigationItem!
     
     var navTitle: String = "Sing N' Sketch"
@@ -143,6 +145,27 @@ class ViewController: UIViewController {
             new.layer.shadowRadius = 2
             menuView.addSubview(new)
             
+            //###
+            let undo   = UIButton() as UIButton
+            undo.frame = CGRectMake(10, self.navigationController!.navigationBar.frame.height + 180, 110, 50)
+            undo.backgroundColor = UIColor.darkGrayColor()
+            undo.setTitle("Undo", forState: UIControlState.Normal)
+            undo.addTarget(self, action: "undo:", forControlEvents: UIControlEvents.TouchUpInside)
+            undo.layer.shadowOffset = CGSize(width: 0, height: 2)
+            undo.layer.shadowOpacity = 0.7
+            undo.layer.shadowRadius = 2
+            menuView.addSubview(undo)
+            
+            let redo   = UIButton() as UIButton
+            redo.frame = CGRectMake(130, self.navigationController!.navigationBar.frame.height + 180, 110, 50)
+            redo.backgroundColor = UIColor.darkGrayColor()
+            redo.setTitle("Redo", forState: UIControlState.Normal)
+            redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
+            redo.layer.shadowOffset = CGSize(width: 0, height: 2)
+            redo.layer.shadowOpacity = 0.7
+            redo.layer.shadowRadius = 2
+            menuView.addSubview(redo)
+            
             // Can you just call MenuItem.item as UIButton if you know it's a button?
             let width = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 60, 230, 50))
             width.minimumValue = 1
@@ -224,6 +247,21 @@ class ViewController: UIViewController {
             viewWithTag.removeFromSuperview()
         }
         sketchingView.newDrawing()
+    }
+    
+    //###
+    @IBAction func redo(sender: UIButton) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }
+        sketchingView.redo()
+    }
+    
+    @IBAction func undo(sender: UIButton) {
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }
+        sketchingView.undo()
     }
     
     // Interface slider actions

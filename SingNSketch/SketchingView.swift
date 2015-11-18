@@ -18,6 +18,10 @@ class SketchingView: UIView {
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
     var multiplier: Float = 0
+    
+    //###
+    var undoArray = [UIImage] ()
+    var redoArray = [UIImage] ()
 
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!
@@ -120,6 +124,9 @@ class SketchingView: UIView {
         
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
         
+        //###
+        undoArray.append(UIGraphicsGetImageFromCurrentImageContext())
+        
         UIGraphicsEndImageContext()
         
         drawView.image = nil
@@ -148,6 +155,25 @@ class SketchingView: UIView {
     // Update Palette - Includes update of Brush
     func updatePalette(newPalette: Palette) {
         palette = newPalette
+    }
+    
+    //###
+    func undo(){
+        //###
+        if undoArray.last != nil {
+            redoArray.append(undoArray.last!)
+            undoArray.removeLast()
+            canvasView.image = undoArray.last
+        }
+    }
+    
+    func redo(){
+        //###
+        if redoArray.last != nil{
+            undoArray.append(redoArray.last!)
+            canvasView.image = redoArray.last
+            redoArray.removeLast()
+        }
     }
     
 }
