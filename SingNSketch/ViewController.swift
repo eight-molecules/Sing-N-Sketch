@@ -87,22 +87,16 @@ class ViewController: UIViewController {
         if let menuView = self.view.viewWithTag(100) {
             closeMenu()
         }
-        //###
-        //canvasView.image = sketchingView.redoArray[0]
     }
     
     @IBAction func show(sender: UIButton) {
         navigationController!.navigationBarHidden = false
         show.hidden = true
         //###
-        //sketchingView.redoArray.append(UIGraphicsGetImageFromCurrentImageContext())
-        //canvasView.image = sketchingView.undoArray.last
-        //sketchingView.redoArray[0] = sketchingView.undoArray[0]
         if sketchingView.undoArray.last != nil {
             sketchingView.redoArray.append(sketchingView.undoArray.last!)
             sketchingView.undoArray.removeLast()
             canvasView.image = sketchingView.undoArray.last
-            //setNeedsDisplay()
         }
     }
     
@@ -201,8 +195,6 @@ class ViewController: UIViewController {
         else {
             drawMenu()
         }
-        //###
-        //canvasView.image = sketchingView.redoArray[0]
     }
     
     func swipeMenu(sender: UIScreenEdgePanGestureRecognizer) {
@@ -242,8 +234,6 @@ class ViewController: UIViewController {
             sketchingView.undoArray.append(sketchingView.redoArray.last!)
             canvasView.image = sketchingView.redoArray.last
             sketchingView.redoArray.removeLast()
-            //###
-            //canvasView.image = sketchingView.redoArray.last
         }
     }
     

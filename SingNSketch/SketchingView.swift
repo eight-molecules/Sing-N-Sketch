@@ -20,10 +20,8 @@ class SketchingView: UIView {
     var multiplier: Float = 0
     
     //###
-    var undoArray = [UIImage] () //: UIImage = []
+    var undoArray = [UIImage] ()
     var redoArray = [UIImage] ()
-    //var undoStack: Stack!// = UIGraphicsGetImageFromCurrentImageContext()
-    //var redoStack: Stack?//
 
     @IBOutlet weak var drawView: UIImageView!
     @IBOutlet weak var canvasView: UIImageView!
@@ -121,9 +119,7 @@ class SketchingView: UIView {
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
         
         //###
-        //var undoStack: Stack = UIGraphicsGetImageFromCurrentImageContext()
         undoArray.append(UIGraphicsGetImageFromCurrentImageContext())
-        //redoArray.append(UIGraphicsGetImageFromCurrentImageContext())
         
         UIGraphicsEndImageContext()
         
