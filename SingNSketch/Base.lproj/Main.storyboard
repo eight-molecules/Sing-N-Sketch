@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Sing N' Sketch-->
@@ -46,7 +45,6 @@
                                 <connections>
                                     <outlet property="canvasView" destination="qIa-Kk-11Z" id="btj-K1-Kpi"/>
                                     <outlet property="drawView" destination="Hqa-mn-DMK" id="n16-Jn-f6s"/>
-                                    <outletCollection property="gestureRecognizers" destination="tUl-Ou-yZF" appends="YES" id="LAC-fB-FlR"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -93,7 +91,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="tUl-Ou-yZF"/>
             </objects>
             <point key="canvasLocation" x="1149" y="539"/>
         </scene>

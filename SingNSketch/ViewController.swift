@@ -27,24 +27,13 @@ class ViewController: UIViewController {
         screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self,
             action: "swipeMenu:")
         screenEdgeRecognizer.edges = .Left
-        view.addGestureRecognizer(screenEdgeRecognizer)
+        sketchingView.addGestureRecognizer(screenEdgeRecognizer)
         
     }
     
     override func viewDidAppear(animated: Bool) {
         sketchingView.audio.start()
         sketchingView.audio.update()
-        
-        // This is bad. All of this is bad, and will be updated to be better.
-        var barView = UIView(frame: CGRectMake(0, 30, 250, 1000))
-        barView.backgroundColor = UIColor.clearColor()
-        barView.alpha = 1
-        
-        let navBarItems = UIBarButtonItem() as UIBarButtonItem!
-        navBarItems.customView = barView
-        
-        var hideButtonItem:UIBarButtonItem = UIBarButtonItem(title: "Hide", style: UIBarButtonItemStyle.Plain, target: self, action: "hide:")
-        self.title = navTitle
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -144,31 +133,53 @@ class ViewController: UIViewController {
             menuView.addSubview(new)
             
             // Can you just call MenuItem.item as UIButton if you know it's a button?
-            let width = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 60, 230, 50))
-            width.minimumValue = 1
-            width.maximumValue = 50
-            width.continuous = true
+            let width = UIView(frame: CGRectMake(10, self.navigationController!.navigationBar.frame.height + 60, 230, 50))
+            let widthSlider = UISlider(frame: CGRectMake(80, 0, 140, 50))
+            let widthLabel = UILabel(frame: CGRectMake(10, 0, 60, 50))
+            
             width.backgroundColor = UIColor.darkGrayColor()
-            width.value = 50
-            width.addTarget(self, action: "widthManipulator:", forControlEvents: .ValueChanged)
             width.layer.shadowOffset = CGSize(width: 0, height: 2)
             width.layer.shadowOpacity = 0.7
             width.layer.shadowRadius = 2
+            
+            widthLabel.text = "Width"
+            widthLabel.textColor = UIColor.whiteColor()
+            widthLabel.textAlignment = NSTextAlignment.Center
+            
+            widthSlider.minimumValue = 1
+            widthSlider.maximumValue = 50
+            widthSlider.continuous = true
+            widthSlider.value = Float(sketchingView.brush.width)
+            widthSlider.addTarget(self, action: "widthManipulator:", forControlEvents: .ValueChanged)
+            
+            width.addSubview(widthSlider)
+            width.addSubview(widthLabel)
             menuView.addSubview(width)
             
             // TODO: Look up generic storage and type checking
-            let opacity = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 120, 230, 50))
-            opacity.minimumValue = 0
-            opacity.maximumValue = 1
-            opacity.value = Float(sketchingView.brush.opacity)
-            opacity.continuous = true
+            let opacity = UIView(frame: CGRectMake(10, self.navigationController!.navigationBar.frame.height + 120, 230, 50))
+            let opacitySlider = UISlider(frame: CGRectMake(80, 0, 140, 50))
+            let opacityLabel = UILabel(frame: CGRectMake(10, 0, 60, 50))
+            
             opacity.backgroundColor = UIColor.darkGrayColor()
-            opacity.value = 50
-            opacity.addTarget(self, action: "opacityManipulator:", forControlEvents: .ValueChanged)
             opacity.layer.shadowOffset = CGSize(width: 0, height: 2)
             opacity.layer.shadowOpacity = 0.7
             opacity.layer.shadowRadius = 2
+            
+            opacityLabel.text = "Opacity"
+            opacityLabel.textColor = UIColor.whiteColor()
+            opacityLabel.textAlignment = NSTextAlignment.Center
+            
+            opacitySlider.minimumValue = 1
+            opacitySlider.maximumValue = 50
+            opacitySlider.continuous = true
+            opacitySlider.value = Float(sketchingView.brush.opacity)
+            opacitySlider.addTarget(self, action: "opacityManipulator:", forControlEvents: .ValueChanged)
+            
+            opacity.addSubview(opacitySlider)
+            opacity.addSubview(opacityLabel)
             menuView.addSubview(opacity)
+            
             
             self.view.addSubview(menuView)
             
