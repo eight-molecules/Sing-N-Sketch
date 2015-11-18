@@ -46,6 +46,12 @@ class SketchingView: UIView {
         palette.addColor(220, color: UIColor.greenColor())
         palette.addColor(330, color: UIColor.blueColor())
         palette.addColor(440, color: UIColor.purpleColor())
+        palette.addColor(550, color: UIColor.redColor())
+        palette.addColor(680, color: UIColor.orangeColor())
+        palette.addColor(800, color: UIColor.yellowColor())
+        palette.addColor(880, color: UIColor.greenColor())
+        palette.addColor(960, color: UIColor.blueColor())
+        palette.addColor(1100, color: UIColor.purpleColor())
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
