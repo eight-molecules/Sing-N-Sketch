@@ -145,8 +145,8 @@ class ViewController: UIViewController {
             
             // Can you just call MenuItem.item as UIButton if you know it's a button?
             let width = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 60, 230, 50))
-            width.minimumValue = 0
-            width.maximumValue = 100
+            width.minimumValue = 1
+            width.maximumValue = 50
             width.continuous = true
             width.backgroundColor = UIColor.darkGrayColor()
             width.value = 50
@@ -160,6 +160,7 @@ class ViewController: UIViewController {
             let opacity = UISlider(frame:CGRectMake(10, self.navigationController!.navigationBar.frame.height + 120, 230, 50))
             opacity.minimumValue = 0
             opacity.maximumValue = 1
+            opacity.value = Float(sketchingView.brush.opacity)
             opacity.continuous = true
             opacity.backgroundColor = UIColor.darkGrayColor()
             opacity.value = 50

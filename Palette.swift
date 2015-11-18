@@ -45,7 +45,7 @@ class Palette {
             // the surrounding frequencies.
             let sortedKeys = Array(values.keys).sorted(<)
             for f in sortedKeys {
-                if f < frequency - 1 {
+                if f < frequency {
                     // Store the last frequency and
                     // the last color value checked
                     // then continue
@@ -56,10 +56,6 @@ class Palette {
                 // Generate the next frequency
                 // then break to return
                 else {
-                    if (frequency < lastFrequency + 1) {
-                        return values[f]!
-                    }
-                    
                     // Interpolate the value of the channel
                     var ratio: CGFloat = CGFloat((frequency - lastFrequency) / (f - lastFrequency))
                     val = lastValue + ((values[f]! - lastValue) * ratio)

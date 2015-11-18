@@ -42,6 +42,12 @@ class SketchingView: UIView {
         palette.addColor(220, color: UIColor.greenColor())
         palette.addColor(330, color: UIColor.blueColor())
         palette.addColor(440, color: UIColor.purpleColor())
+        palette.addColor(600, color: UIColor.redColor())
+        palette.addColor(720, color: UIColor.orangeColor())
+        palette.addColor(840, color: UIColor.yellowColor())
+        palette.addColor(920, color: UIColor.greenColor())
+        palette.addColor(1060, color: UIColor.blueColor())
+        palette.addColor(1300, color: UIColor.purpleColor())
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -126,10 +132,9 @@ class SketchingView: UIView {
         
         //Update audio
         audio.update()
-        println(audio.amplitude)
-        if (audio.amplitude > audio.noiseFloor) {
-            brush.color = palette.getColor(audio.frequency)
-        }
+        println(audio.frequency!.average)
+        brush.color = palette.getColor(Float(audio.frequency!.average))
+        
     }
     
     // New Drawing Action
