@@ -93,11 +93,7 @@ class ViewController: UIViewController {
         navigationController!.navigationBarHidden = false
         show.hidden = true
         //###
-        if sketchingView.undoArray.last != nil {
-            sketchingView.redoArray.append(sketchingView.undoArray.last!)
-            sketchingView.undoArray.removeLast()
-            canvasView.image = sketchingView.undoArray.last
-        }
+        sketchingView.undo()
     }
     
     func handleLongPress(longPress: UILongPressGestureRecognizer) {
@@ -230,11 +226,7 @@ class ViewController: UIViewController {
         }
         sketchingView.newDrawing()
         //###
-        if sketchingView.redoArray.last != nil{
-            sketchingView.undoArray.append(sketchingView.redoArray.last!)
-            canvasView.image = sketchingView.redoArray.last
-            sketchingView.redoArray.removeLast()
-        }
+        sketchingView.redo()
     }
     
     // Interface slider actions

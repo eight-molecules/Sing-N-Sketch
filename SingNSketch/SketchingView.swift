@@ -152,4 +152,23 @@ class SketchingView: UIView {
         palette = newPalette
     }
     
+    //###
+    func undo(){
+        //###
+        if undoArray.last != nil {
+            redoArray.append(undoArray.last!)
+            undoArray.removeLast()
+            canvasView.image = undoArray.last
+        }
+    }
+    
+    func redo(){
+        //###
+        if redoArray.last != nil{
+            undoArray.append(redoArray.last!)
+            canvasView.image = redoArray.last
+            redoArray.removeLast()
+        }
+    }
+    
 }
