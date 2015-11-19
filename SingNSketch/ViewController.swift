@@ -29,6 +29,10 @@ class ViewController: UIViewController {
         screenEdgeRecognizer.edges = .Left
         sketchingView.addGestureRecognizer(screenEdgeRecognizer)
         
+        
+        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 1)
+        self.navigationController?.navigationBar.layer.shadowOpacity = 0.7
+        self.navigationController?.navigationBar.layer.shadowRadius = 2
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -170,8 +174,8 @@ class ViewController: UIViewController {
             opacityLabel.textColor = UIColor.whiteColor()
             opacityLabel.textAlignment = NSTextAlignment.Center
             
-            opacitySlider.minimumValue = 1
-            opacitySlider.maximumValue = 50
+            opacitySlider.minimumValue = 0
+            opacitySlider.maximumValue = 1
             opacitySlider.continuous = true
             opacitySlider.value = Float(sketchingView.brush.opacity)
             opacitySlider.addTarget(self, action: "opacityManipulator:", forControlEvents: .ValueChanged)

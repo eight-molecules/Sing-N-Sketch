@@ -95,7 +95,6 @@ class SketchingView: UIView {
             CGContextStrokePath(context)
             
             drawView.image = UIGraphicsGetImageFromCurrentImageContext()
-            
             drawView.alpha = brush.opacity
             
             UIGraphicsEndImageContext()
@@ -132,9 +131,10 @@ class SketchingView: UIView {
         
         //Update audio
         audio.update()
-        println(audio.frequency!.average)
-        brush.color = palette.getColor(Float(audio.frequency!.average))
-        
+        println(audio.amplitude)
+        if (audio.amplitude > 0.007) {
+            brush.color = palette.getColor(Float(audio.frequency!.average))
+        }
     }
     
     // New Drawing Action

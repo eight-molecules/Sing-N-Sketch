@@ -176,8 +176,17 @@ class AudioInterface {
     }
     
     func update() {
+        let root = Float(frequency.average)
+        let deltaFrequency = abs(root - analyzer.trackedFrequency.floatValue)
+        if deltaFrequency > (root / 2) {
+            for i in 1...5 {
+                frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
+            }
+        }
+        else {
+            frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
+        }
+        
         amplitude = analyzer.trackedAmplitude.floatValue
-        frequency.addSample(Double(analyzer.trackedFrequency.floatValue))
     }
-    
 }
