@@ -83,5 +83,4 @@ class AudioInterface {
             amplitude.addSample(analyzer.trackedAmplitude.floatValue)
             frequency.addSample(analyzer.trackedFrequency.floatValue)
     }
-    
 }
