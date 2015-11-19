@@ -132,55 +132,13 @@ class ViewController: UIViewController {
                 menuView.addSubview(title)
             }
             
-            // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
-            let save   = UIButton() as UIButton
-            save.frame = CGRectMake(10, 40, 110, 50)
-            save.backgroundColor = UIColor(white: 0.1, alpha: 0.3)
-            save.setTitle("Save", forState: UIControlState.Normal)
-            save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
-            save.layer.shadowOffset = CGSize(width: 0, height: 2)
-            save.layer.shadowOpacity = 0.7
-            save.layer.shadowRadius = 2
-            menuView.addSubview(save)
-            
-            // This could totally be embedded in a class. MenuItem.item -> UIView?
-            let new   = UIButton() as UIButton
-            new.frame = CGRectMake(130, 40, 110, 50)
-            new.backgroundColor = UIColor(white: 0.1, alpha: 0.3)
-            new.setTitle("New", forState: UIControlState.Normal)
-            new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
-            new.layer.shadowOffset = CGSize(width: 0, height: 2)
-            new.layer.shadowOpacity = 0.7
-            new.layer.shadowRadius = 2
-            menuView.addSubview(new)
-            
-            let undo   = UIButton() as UIButton
-            undo.frame = CGRectMake(10, 220, 110, 50)
-            undo.backgroundColor = UIColor(white: 0.1, alpha: 0.3)
-            undo.setTitle("Undo", forState: UIControlState.Normal)
-            undo.addTarget(self, action: "undo:", forControlEvents: UIControlEvents.TouchUpInside)
-            undo.layer.shadowOffset = CGSize(width: 0, height: 2)
-            undo.layer.shadowOpacity = 0.7
-            undo.layer.shadowRadius = 2
-            menuView.addSubview(undo)
-            
-            let redo   = UIButton() as UIButton
-            redo.frame = CGRectMake(130, 220, 110, 50)
-            redo.backgroundColor = UIColor(white: 0.1, alpha: 0.3)
-            redo.setTitle("Redo", forState: UIControlState.Normal)
-            redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
-            redo.layer.shadowOffset = CGSize(width: 0, height: 2)
-            redo.layer.shadowOpacity = 0.7
-            redo.layer.shadowRadius = 2
-            menuView.addSubview(redo)
-            
             // Can you just call MenuItem.item as UIButton if you know it's a button?
-            let width = UIView(frame: CGRectMake(10, 100, 230, 50))
-            let widthSlider = UISlider(frame: CGRectMake(80, 0, 140, 50))
-            let widthLabel = UILabel(frame: CGRectMake(10, 0, 60, 50))
+            let width = UIView(frame: CGRectMake(10, 40, 230, 40))
+            let widthSlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
+            let widthLabel = UILabel(frame: CGRectMake(10, 0, 60, 40))
             
-            width.backgroundColor = UIColor(white: 0.1, alpha: 0.3)
-            width.layer.shadowOffset = CGSize(width: 0, height: 2)
+            width.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            width.layer.shadowOffset = CGSize(width: 0, height: 1)
             width.layer.shadowOpacity = 0.7
             width.layer.shadowRadius = 2
             
@@ -199,12 +157,12 @@ class ViewController: UIViewController {
             menuView.addSubview(width)
             
             // TODO: Look up generic storage and type checking
-            let opacity = UIView(frame: CGRectMake(10, 160, 230, 50))
-            let opacitySlider = UISlider(frame: CGRectMake(80, 0, 140, 50))
-            let opacityLabel = UILabel(frame: CGRectMake(10, 0, 60, 50))
+            let opacity = UIView(frame: CGRectMake(10, 90, 230, 40))
+            let opacitySlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
+            let opacityLabel = UILabel(frame: CGRectMake(10, 0, 60, 40))
             
-            opacity.backgroundColor = UIColor(white: 0.1, alpha: 0.3)
-            opacity.layer.shadowOffset = CGSize(width: 0, height: 2)
+            opacity.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            opacity.layer.shadowOffset = CGSize(width: 0, height: 1)
             opacity.layer.shadowOpacity = 0.7
             opacity.layer.shadowRadius = 2
             
@@ -221,6 +179,48 @@ class ViewController: UIViewController {
             opacity.addSubview(opacitySlider)
             opacity.addSubview(opacityLabel)
             menuView.addSubview(opacity)
+        
+            // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
+            let save   = UIButton() as UIButton
+            save.frame = CGRectMake(10, 140, 110, 40)
+            save.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            save.setTitle("Save", forState: UIControlState.Normal)
+            save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
+            save.layer.shadowOffset = CGSize(width: 0, height: 1)
+            save.layer.shadowOpacity = 0.7
+            save.layer.shadowRadius = 2
+            menuView.addSubview(save)
+            
+            // This could totally be embedded in a class. MenuItem.item -> UIView?
+            let new   = UIButton() as UIButton
+            new.frame = CGRectMake(130, 140, 110, 40)
+            new.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            new.setTitle("New", forState: UIControlState.Normal)
+            new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
+            new.layer.shadowOffset = CGSize(width: 0, height: 1)
+            new.layer.shadowOpacity = 0.7
+            new.layer.shadowRadius = 2
+            menuView.addSubview(new)
+            
+            let undo   = UIButton() as UIButton
+            undo.frame = CGRectMake(10, 190, 110, 40)
+            undo.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            undo.setTitle("Undo", forState: UIControlState.Normal)
+            undo.addTarget(self, action: "undo:", forControlEvents: UIControlEvents.TouchUpInside)
+            undo.layer.shadowOffset = CGSize(width: 0, height: 1)
+            undo.layer.shadowOpacity = 0.7
+            undo.layer.shadowRadius = 2
+            menuView.addSubview(undo)
+            
+            let redo   = UIButton() as UIButton
+            redo.frame = CGRectMake(130, 190, 110, 40)
+            redo.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            redo.setTitle("Redo", forState: UIControlState.Normal)
+            redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
+            redo.layer.shadowOffset = CGSize(width: 0, height: 1)
+            redo.layer.shadowOpacity = 0.7
+            redo.layer.shadowRadius = 2
+            menuView.addSubview(redo)
             
             let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
                 action: "closeMenu")
