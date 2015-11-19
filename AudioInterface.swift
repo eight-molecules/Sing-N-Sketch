@@ -80,7 +80,7 @@ class AudioInterface {
     }
     
     func update() {
-            amplitude.addSample(analyzer.trackedAmplitude.floatValue)
-            frequency.addSample(analyzer.trackedFrequency.floatValue)
+        frequency.addSample(analyzer.trackedFrequency.floatValue)
+        amplitude.addSample(analyzer.trackedAmplitude.floatValue)
     }
 }
