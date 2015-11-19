@@ -124,14 +124,10 @@ class SketchingView: UIView {
         UIGraphicsBeginImageContext(canvasView.frame.size)
         
         canvasView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
-        
         drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
-        
+
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        //###
         undoArray.append(UIGraphicsGetImageFromCurrentImageContext())
-        
         UIGraphicsEndImageContext()
         
         drawView.image = nil
@@ -152,7 +148,9 @@ class SketchingView: UIView {
     
     // New Drawing Action
     func newDrawing() {
-        undoArray.append(canvasView.image!)
+        if canvasView.image != nil {
+            undoArray.append(canvasView.image!)
+        }
         canvasView.image = nil
         setNeedsDisplay()
         

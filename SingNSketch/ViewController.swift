@@ -81,7 +81,6 @@ class ViewController: UIViewController {
             title.textAlignment = NSTextAlignment.Center
             title.textColor = UIColor.whiteColor()
             menuView.addSubview(title)
-            closeMenu()
         }
     }
     
@@ -277,24 +276,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func new(sender: UIButton) {
-        if let viewWithTag = self.view.viewWithTag(100) {
-            viewWithTag.removeFromSuperview()
-        }
         sketchingView.newDrawing()
     }
     
     //###
     @IBAction func redo(sender: UIButton) {
-        if let viewWithTag = self.view.viewWithTag(100) {
-            viewWithTag.removeFromSuperview()
-        }
         sketchingView.redo()
     }
     
     @IBAction func undo(sender: UIButton) {
-        if let viewWithTag = self.view.viewWithTag(100) {
-            viewWithTag.removeFromSuperview()
-        }
         sketchingView.undo()
     }
     
