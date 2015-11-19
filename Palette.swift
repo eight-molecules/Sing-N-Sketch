@@ -16,7 +16,7 @@ class Palette {
         // Init the channel and add a Zero Hertz mapping
         required init() {
             addMapping(0, value: CGFloat(0))
-        }
+            addMapping(20000, value: CGFloat(0))        }
         
         // Map a frequency to a color
         func addMapping(frequency: Float, value: CGFloat) {
