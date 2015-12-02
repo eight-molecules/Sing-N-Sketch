@@ -69,18 +69,10 @@ class ViewController: UIViewController {
     }
     
     func hide(sender: UIButton) {
-        if let viewWithTag = self.view.viewWithTag(100) {
-            closeMenu()
-        }
         navigationController!.navigationBarHidden = true
         show.hidden = false
         if let menuView = self.view.viewWithTag(100) {
-            let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
-            title.text = navTitle
-            title.backgroundColor = UIColor.clearColor()
-            title.textAlignment = NSTextAlignment.Center
-            title.textColor = UIColor.whiteColor()
-            menuView.addSubview(title)
+
         }
     }
     
@@ -103,10 +95,16 @@ class ViewController: UIViewController {
     func drawMenu() {
         sketchingView.userInteractionEnabled = false
         
+        var offset = (x: 0, y: self.navigationController!.navigationBar.frame.height)
         if let menuView = self.view.viewWithTag(100) {
             closeMenu()
         }
         else {
+            
+            if show.hidden == false {
+                offset.y = 0
+            }
+            
             // This is bad. All of this is bad, and will be updated to be better.
             let menuView = MenuView(frame: CGRectMake(-250, 0, 250, 1000))
             menuView.backgroundColor = UIColor.clearColor()
@@ -123,17 +121,15 @@ class ViewController: UIViewController {
             blurEffectView.frame = menuView.bounds
             menuView.addSubview(blurEffectView)
             
-            if show.hidden != true {
-                let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
-                title.text = navTitle
-                title.backgroundColor = UIColor.clearColor()
-                title.textAlignment = NSTextAlignment.Center
-                title.textColor = UIColor.whiteColor()
-                menuView.addSubview(title)
-            }
+            let title = UILabel(frame: CGRectMake(10, 0 + (offset.y / 2), 230, 40))
+            title.text = navTitle
+            title.backgroundColor = UIColor.clearColor()
+            title.textAlignment = NSTextAlignment.Center
+            title.textColor = UIColor.whiteColor()
+            menuView.addSubview(title)
             
             // Can you just call MenuItem.item as UIButton if you know it's a button?
-            let width = UIView(frame: CGRectMake(10, 40, 230, 40))
+            let width = UIView(frame: CGRectMake(10, 40 + offset.y, 230, 40))
             let widthSlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
             let widthLabel = UILabel(frame: CGRectMake(10, 0, 60, 40))
             
@@ -157,7 +153,7 @@ class ViewController: UIViewController {
             menuView.addSubview(width)
             
             // TODO: Look up generic storage and type checking
-            let opacity = UIView(frame: CGRectMake(10, 90, 230, 40))
+            let opacity = UIView(frame: CGRectMake(10, 90 + offset.y, 230, 40))
             let opacitySlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
             let opacityLabel = UILabel(frame: CGRectMake(10, 0, 60, 40))
             
@@ -182,7 +178,7 @@ class ViewController: UIViewController {
         
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
-            save.frame = CGRectMake(10, 140, 110, 40)
+            save.frame = CGRectMake(10, 140 + offset.y, 110, 40)
             save.backgroundColor = UIColor(white: 0.1, alpha: 0)
             save.setTitle("Save", forState: UIControlState.Normal)
             save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -193,7 +189,7 @@ class ViewController: UIViewController {
             
             // This could totally be embedded in a class. MenuItem.item -> UIView?
             let new   = UIButton() as UIButton
-            new.frame = CGRectMake(130, 140, 110, 40)
+            new.frame = CGRectMake(130, 140 + offset.y, 110, 40)
             new.backgroundColor = UIColor(white: 0.1, alpha: 0)
             new.setTitle("New", forState: UIControlState.Normal)
             new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -203,7 +199,7 @@ class ViewController: UIViewController {
             menuView.addSubview(new)
             
             let undo   = UIButton() as UIButton
-            undo.frame = CGRectMake(10, 190, 110, 40)
+            undo.frame = CGRectMake(10, 190 + offset.y, 110, 40)
             undo.backgroundColor = UIColor(white: 0.1, alpha: 0)
             undo.setTitle("Undo", forState: UIControlState.Normal)
             undo.addTarget(self, action: "undo:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -213,7 +209,7 @@ class ViewController: UIViewController {
             menuView.addSubview(undo)
             
             let redo   = UIButton() as UIButton
-            redo.frame = CGRectMake(130, 190, 110, 40)
+            redo.frame = CGRectMake(130, 190 + offset.y, 110, 40)
             redo.backgroundColor = UIColor(white: 0.1, alpha: 0)
             redo.setTitle("Redo", forState: UIControlState.Normal)
             redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -229,6 +225,7 @@ class ViewController: UIViewController {
             
             self.view.addSubview(menuView)
             
+
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
                 menuFrame.origin.x += menuFrame.size.width
