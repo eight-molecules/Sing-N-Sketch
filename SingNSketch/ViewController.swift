@@ -72,6 +72,12 @@ class ViewController: UIViewController {
         navigationController!.navigationBarHidden = true
         show.hidden = false
         if let menuView = self.view.viewWithTag(100) {
+            let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
+            title.text = navTitle
+            title.backgroundColor = UIColor.clearColor()
+            title.textAlignment = NSTextAlignment.Center
+            title.textColor = UIColor.whiteColor()
+            menuView.addSubview(title)
 
         }
     }
@@ -101,12 +107,10 @@ class ViewController: UIViewController {
         }
         else {
             
-            if show.hidden == false {
-                offset.y = 0
-            }
+            
             
             // This is bad. All of this is bad, and will be updated to be better.
-            let menuView = MenuView(frame: CGRectMake(-250, 0, 250, 1000))
+            let menuView = MenuView(frame: CGRectMake(-250, 0, 250, self.view.frame.height))
             menuView.backgroundColor = UIColor.clearColor()
             menuView.alpha = 1
             menuView.tag = 100
@@ -121,12 +125,17 @@ class ViewController: UIViewController {
             blurEffectView.frame = menuView.bounds
             menuView.addSubview(blurEffectView)
             
-            let title = UILabel(frame: CGRectMake(10, 0 + (offset.y / 2), 230, 40))
-            title.text = navTitle
-            title.backgroundColor = UIColor.clearColor()
-            title.textAlignment = NSTextAlignment.Center
-            title.textColor = UIColor.whiteColor()
-            menuView.addSubview(title)
+            if show.hidden == false {
+                offset.y = 0
+                
+                let title = UILabel(frame: CGRectMake(10, 0 + (offset.y / 2), 230, 40))
+                title.text = navTitle
+                title.backgroundColor = UIColor.clearColor()
+                title.textAlignment = NSTextAlignment.Center
+                title.textColor = UIColor.whiteColor()
+                menuView.addSubview(title)
+                
+            }
             
             // Can you just call MenuItem.item as UIButton if you know it's a button?
             let width = UIView(frame: CGRectMake(10, 40 + offset.y, 230, 40))
