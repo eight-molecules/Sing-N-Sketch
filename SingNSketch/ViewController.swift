@@ -92,6 +92,8 @@ class ViewController: UIViewController {
     func hide(sender: UIButton) {
         navigationController!.navigationBarHidden = true
         show.hidden = false
+        
+        // Close the menu if it's in the view
         if let menuView = self.view.viewWithTag(100) {
             let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
             title.text = navTitle
@@ -101,6 +103,20 @@ class ViewController: UIViewController {
             menuView.addSubview(title)
             
         }
+        // Close the Palette Editor if it's in the view.
+        if let paletteEditor = self.view.viewWithTag(200) {
+            UIView.animateWithDuration(0.7, animations: {
+                var frame = paletteEditor.frame
+                frame.origin.x -= frame.size.width
+                
+                paletteEditor.frame = frame
+                }, completion: { finished in
+                    paletteEditor.removeFromSuperview()
+                }
+            )
+            sketchingView.userInteractionEnabled = true
+        }
+
     }
     
     @IBAction func show(sender: UIButton) {
@@ -210,6 +226,8 @@ class ViewController: UIViewController {
         sketchingView.userInteractionEnabled = false
         
         var offset = (x: 0, y: self.navigationController!.navigationBar.frame.height + 5)
+        
+        // This should never run. If it does, something called the wrong function
         if let paletteEditor = self.view.viewWithTag(200) {
             UIView.animateWithDuration(0.7, animations: {
                 var frame = paletteEditor.frame
@@ -305,6 +323,10 @@ class ViewController: UIViewController {
             menuView.addSubview(colorPicker)
             menuView.addSubview(scrollView)
             
+            let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
+                action: "closeMenu")
+            menuSwipeGestureRecognizer.direction = .Left
+            menuView.addGestureRecognizer(menuSwipeGestureRecognizer)
             
             self.view.addSubview(menuView)
             
