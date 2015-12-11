@@ -99,7 +99,7 @@ class ViewController: UIViewController {
             title.textAlignment = NSTextAlignment.Center
             title.textColor = UIColor.whiteColor()
             menuView.addSubview(title)
-
+            
         }
     }
     
@@ -175,9 +175,9 @@ class ViewController: UIViewController {
                     paletteView = getPaletteView()
                     paletteView.tag = 2000
                     scrollView.addSubview(paletteView)
+                }
             }
         }
-    }
     }
     func updateColorPicker() {
         if let paletteEditor = self.view.viewWithTag(200) {
@@ -191,7 +191,7 @@ class ViewController: UIViewController {
                 add.backgroundColor = colorPicker.color
             }
         }
-        }
+    }
     
     func redColorManipulator(sender: UISlider) {
         updateColorPicker()
@@ -223,8 +223,8 @@ class ViewController: UIViewController {
             sketchingView.userInteractionEnabled = true
         }
         else {
-
-            // This is bad, AND copied from drawMenu. 
+            
+            // This is bad, AND copied from drawMenu.
             // Welcome to All Nighter 2: Electric Bugaloo
             let menuView = MenuView(frame: CGRectMake(-250, 0, 250, self.view.frame.height))
             menuView.backgroundColor = UIColor.clearColor()
@@ -252,11 +252,11 @@ class ViewController: UIViewController {
                 menuView.addSubview(title)
                 
             }
-
+            
             let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
             let colorView = getPaletteView()
             colorView.tag = 2000
-
+            
             scrollView.contentSize = colorView.frame.size
             scrollView.addSubview(colorView)
             scrollView.tag = 300
@@ -307,7 +307,7 @@ class ViewController: UIViewController {
             
             
             self.view.addSubview(menuView)
-
+            
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
                 menuFrame.origin.x += menuFrame.size.width
@@ -326,15 +326,15 @@ class ViewController: UIViewController {
     
     func addMapping() {
         if let paletteEditor = self.view.viewWithTag(200) {
-                if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
-                    for i in 1...25 {
-                        sketchingView.audio.update()
-                    }
-                    sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
-                    updatePaletteView()
+            if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
+                for i in 1...25 {
+                    sketchingView.audio.update()
                 }
+                sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
+                updatePaletteView()
             }
         }
+    }
     
     
     func drawMenu() {
@@ -424,7 +424,7 @@ class ViewController: UIViewController {
             opacity.addSubview(opacitySlider)
             opacity.addSubview(opacityLabel)
             menuView.addSubview(opacity)
-        
+            
             // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
             let save   = UIButton() as UIButton
             save.frame = CGRectMake(10, 140 + offset.y, 110, 40)
@@ -484,7 +484,7 @@ class ViewController: UIViewController {
             
             self.view.addSubview(menuView)
             
-
+            
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
                 menuFrame.origin.x += menuFrame.size.width
@@ -493,7 +493,7 @@ class ViewController: UIViewController {
                 }
             )
         }
-
+        
     }
     
     @IBAction func showMenuView(sender: UIBarButtonItem) {
@@ -521,7 +521,7 @@ class ViewController: UIViewController {
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
                 menuFrame.origin.x -= menuFrame.size.width
-            
+                
                 menuView.frame = menuFrame
                 }, completion: { finished in
                     menuView.removeFromSuperview()
@@ -538,7 +538,7 @@ class ViewController: UIViewController {
                     paletteEditor.removeFromSuperview()
                 }
             )
-
+            
         }
         sketchingView.userInteractionEnabled = true
     }
@@ -564,7 +564,7 @@ class ViewController: UIViewController {
     @IBAction func widthManipulator(sender: UISlider) {
         sketchingView.brush.width = CGFloat(sender.value)
     }
-
+    
     @IBAction func mute(sender: UIButton) {
         AKSettings.shared().audioInputEnabled = false
     }
