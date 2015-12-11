@@ -136,7 +136,7 @@ class ViewController: UIViewController {
             
             if i % 2 == 0 {
                 xOrigin = 10
-                yOrigin = CGFloat(i * 35)
+                yOrigin = CGFloat(i * 20)
             }
             else {
                 xOrigin = 110
@@ -162,7 +162,7 @@ class ViewController: UIViewController {
             paletteView.addSubview(colorView)
         }
         
-        paletteView.frame = CGRectMake(0, self.navigationController!.navigationBar.frame.height + 250, 120, CGFloat(i * 35))
+        paletteView.frame = CGRectMake(0, 0, 120, CGFloat(i * 35))
         
         return paletteView
     }
@@ -252,10 +252,12 @@ class ViewController: UIViewController {
                 
             }
 
+            let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
             let colorView = getPaletteView()
             colorView.tag = 2000
             
-            menuView.addSubview(colorView)
+            scrollView.contentSize = colorView.frame.size
+            scrollView.addSubview(colorView)
             let colorPicker = ColorPickerView()
             colorPicker.tag = 3000
             
@@ -299,6 +301,7 @@ class ViewController: UIViewController {
             colorPicker.addSubview(blue)
             
             menuView.addSubview(colorPicker)
+            menuView.addSubview(scrollView)
             
             
             self.view.addSubview(menuView)
