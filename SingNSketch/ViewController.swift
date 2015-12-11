@@ -145,14 +145,14 @@ class ViewController: UIViewController {
             let colorView = UIView(frame: CGRectMake(xOrigin, yOrigin, 100, 30))
             colorView.backgroundColor = UIColor.clearColor()
             
-            let delete = PaletteButton(frame: CGRectMake(0, 0, 30, 30))
+            let delete = PaletteButton(frame: CGRectMake(0, 0, 40, 30))
             delete.backgroundColor = UIColor.clearColor()
             delete.setTitle("-", forState: UIControlState.Normal)
             delete.addTarget(self, action: "deleteMapping:", forControlEvents: UIControlEvents.TouchUpInside)
             delete.frequency = f
             colorView.addSubview(delete)
             
-            let color = UILabel(frame: CGRectMake(40, 0, 50, 30))
+            let color = UILabel(frame: CGRectMake(50, 0, 50, 30))
             color.backgroundColor = c
             color.text = Int(f).description
             color.textAlignment = .Center
@@ -169,15 +169,16 @@ class ViewController: UIViewController {
     
     func updatePaletteView() {
         if let paletteEditor = self.view.viewWithTag(200) {
-            if var paletteView = paletteEditor.viewWithTag(2000) {
-                paletteView.removeFromSuperview()
-                paletteView = getPaletteView()
-                paletteView.tag = 2000
-                paletteEditor.addSubview(paletteView)
+            if let scrollView = paletteEditor.viewWithTag(300) {
+                if var paletteView = scrollView.viewWithTag(2000) {
+                    paletteView.removeFromSuperview()
+                    paletteView = getPaletteView()
+                    paletteView.tag = 2000
+                    scrollView.addSubview(paletteView)
             }
         }
     }
-
+    }
     func updateColorPicker() {
         if let paletteEditor = self.view.viewWithTag(200) {
             if var colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
@@ -190,7 +191,7 @@ class ViewController: UIViewController {
                 add.backgroundColor = colorPicker.color
             }
         }
-    }
+        }
     
     func redColorManipulator(sender: UISlider) {
         updateColorPicker()
@@ -255,9 +256,10 @@ class ViewController: UIViewController {
             let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
             let colorView = getPaletteView()
             colorView.tag = 2000
-            
+
             scrollView.contentSize = colorView.frame.size
             scrollView.addSubview(colorView)
+            scrollView.tag = 300
             let colorPicker = ColorPickerView()
             colorPicker.tag = 3000
             
@@ -324,15 +326,16 @@ class ViewController: UIViewController {
     
     func addMapping() {
         if let paletteEditor = self.view.viewWithTag(200) {
-            if let colorPicker = self.view.viewWithTag(3000) as? ColorPickerView {
-                for i in 1...25 {
-                    sketchingView.audio.update()
+                if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
+                    for i in 1...25 {
+                        sketchingView.audio.update()
+                    }
+                    sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
+                    updatePaletteView()
                 }
-                sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
-                updatePaletteView()
             }
         }
-    }
+    
     
     func drawMenu() {
         sketchingView.userInteractionEnabled = false
