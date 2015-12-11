@@ -1,5 +1,26 @@
 import UIKit
 
+extension Dictionary {
+    
+    func sort(isOrderedBefore: (Key, Key) -> Bool) -> [(Key, Value)] {
+        var result: [(Key, Value)] = []
+        let sortedKeys = keys.array.sorted(isOrderedBefore)
+        for key in sortedKeys {
+            result.append(key, self[key]!)
+        }
+        return result
+    }
+}
+
+class PaletteAddButton: UIButton {
+    var frequency: Float! = 0
+    var color: UIColor! = UIColor.clearColor()
+}
+
+class PaletteDeleteButton: UIButton {
+    var frequency: Float! = 0
+}
+
 class ViewController: UIViewController {
     
     
@@ -98,6 +119,131 @@ class ViewController: UIViewController {
         }
     }
     
+    func getPaletteView() -> UIView {
+        let mappings = sketchingView.palette.getMappings().sort(<)
+        
+        let paletteView = UIView()
+        var i: CGFloat = 0
+        for (f, c) in mappings {
+            
+            // Ignore the default mappings for 0Hz and 20kHz
+            if f < 1 || f > 19999 {
+                continue
+            }
+            
+            let yOrigin = i * 35
+            let colorView = UIView(frame: CGRectMake(10, yOrigin, 100, 30))
+            colorView.backgroundColor = UIColor.clearColor()
+            
+            let delete = PaletteDeleteButton(frame: CGRectMake(0, 0, 60, 30))
+            delete.backgroundColor = UIColor.clearColor()
+            delete.setTitle("Delete", forState: UIControlState.Normal)
+            delete.addTarget(self, action: "deleteMapping:", forControlEvents: UIControlEvents.TouchUpInside)
+            delete.frequency = f
+            colorView.addSubview(delete)
+            
+            let color = UILabel(frame: CGRectMake(70, 0, 70, 30))
+            color.backgroundColor = c
+            color.text = Int(f).description
+            color.textAlignment = .Center
+            colorView.addSubview(color)
+            
+            i = (i + 1)
+            paletteView.addSubview(colorView)
+        }
+        
+        paletteView.frame = CGRectMake(0, self.navigationController!.navigationBar.frame.height + 200, 120, i * 35)
+        
+        return paletteView
+    }
+    
+    func updatePaletteView() {
+        if let paletteEditor = self.view.viewWithTag(200) {
+            if var paletteView = paletteEditor.viewWithTag(2000) {
+                paletteView.removeFromSuperview()
+                paletteView = getPaletteView()
+                paletteView.tag = 2000
+                paletteEditor.addSubview(paletteView)
+            }
+        }
+    }
+
+    
+    func drawPaletteEditor() {
+        closeMenu()
+        sketchingView.userInteractionEnabled = false
+        
+        var offset = (x: 0, y: self.navigationController!.navigationBar.frame.height + 5)
+        if let paletteEditor = self.view.viewWithTag(200) {
+            UIView.animateWithDuration(0.7, animations: {
+                var frame = paletteEditor.frame
+                frame.origin.x -= frame.size.width
+                
+                paletteEditor.frame = frame
+                }, completion: { finished in
+                    paletteEditor.removeFromSuperview()
+                }
+            )
+            sketchingView.userInteractionEnabled = true
+        }
+        else {
+
+            // This is bad, AND copied from drawMenu. 
+            // Welcome to All Nighter 2: Electric Bugaloo
+            let menuView = MenuView(frame: CGRectMake(-250, 0, 250, self.view.frame.height))
+            menuView.backgroundColor = UIColor.clearColor()
+            menuView.alpha = 1
+            menuView.tag = 200
+            menuView.userInteractionEnabled = true
+            menuView.layer.shadowOffset = CGSize(width: 3, height: -2)
+            menuView.layer.shadowOpacity = 0.7
+            menuView.layer.shadowRadius = 2
+            
+            // Blur Effect
+            var blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+            var blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = menuView.bounds
+            menuView.addSubview(blurEffectView)
+            
+            if show.hidden == false {
+                offset.y = 0
+                
+                let title = UILabel(frame: CGRectMake(10, 0 + (offset.y / 2), 230, 40))
+                title.text = "Palette Editor"
+                title.backgroundColor = UIColor.clearColor()
+                title.textAlignment = NSTextAlignment.Center
+                title.textColor = UIColor.whiteColor()
+                menuView.addSubview(title)
+                
+            }
+            
+            let colorView = getPaletteView()
+            colorView.tag = 2000
+            
+            menuView.addSubview(colorView)
+            
+            self.view.addSubview(menuView)
+
+            UIView.animateWithDuration(0.7, animations: {
+                var menuFrame = menuView.frame
+                menuFrame.origin.x += menuFrame.size.width
+                
+                menuView.frame = menuFrame
+                }
+            )
+        }
+        
+    }
+    
+    func deleteMapping(sender: PaletteDeleteButton) {
+        sketchingView.palette.deleteColor(sender.frequency)
+        updatePaletteView()
+    }
+    
+    func addMapping(sender: PaletteAddButton) {
+        sketchingView.palette.addColor(sender.frequency, color: sender.color)
+    }
+    
     func drawMenu() {
         sketchingView.userInteractionEnabled = false
         
@@ -105,9 +251,10 @@ class ViewController: UIViewController {
         if let menuView = self.view.viewWithTag(100) {
             closeMenu()
         }
+        else if let paletteEditorView = self.view.viewWithTag(200) {
+            closeMenu()
+        }
         else {
-            
-            
             
             // This is bad. All of this is bad, and will be updated to be better.
             let menuView = MenuView(frame: CGRectMake(-250, 0, 250, self.view.frame.height))
@@ -128,7 +275,7 @@ class ViewController: UIViewController {
             if show.hidden == false {
                 offset.y = 0
                 
-                let title = UILabel(frame: CGRectMake(10, 0 + (offset.y / 2), 230, 40))
+                let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
                 title.text = navTitle
                 title.backgroundColor = UIColor.clearColor()
                 title.textAlignment = NSTextAlignment.Center
@@ -227,6 +374,16 @@ class ViewController: UIViewController {
             redo.layer.shadowRadius = 2
             menuView.addSubview(redo)
             
+            let openPaletteEditor   = UIButton() as UIButton
+            openPaletteEditor.frame = CGRectMake(10, 240 + offset.y, 230, 40)
+            openPaletteEditor.backgroundColor = UIColor(white: 0.1, alpha: 0)
+            openPaletteEditor.setTitle("Palette Editor", forState: UIControlState.Normal)
+            openPaletteEditor.addTarget(self, action: "drawPaletteEditor", forControlEvents: UIControlEvents.TouchUpInside)
+            openPaletteEditor.layer.shadowOffset = CGSize(width: 0, height: 1)
+            openPaletteEditor.layer.shadowOpacity = 0.7
+            openPaletteEditor.layer.shadowRadius = 2
+            menuView.addSubview(openPaletteEditor)
+            
             let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
                 action: "closeMenu")
             menuSwipeGestureRecognizer.direction = .Left
@@ -277,6 +434,18 @@ class ViewController: UIViewController {
                     menuView.removeFromSuperview()
                 }
             )
+        }
+        else if let paletteEditor = self.view.viewWithTag(200) {
+            UIView.animateWithDuration(0.7, animations: {
+                var frame = paletteEditor.frame
+                frame.origin.x -= frame.size.width
+                
+                paletteEditor.frame = frame
+                }, completion: { finished in
+                    paletteEditor.removeFromSuperview()
+                }
+            )
+
         }
         sketchingView.userInteractionEnabled = true
     }
