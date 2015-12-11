@@ -185,7 +185,7 @@ class Palette {
         //  to scale exponentially like octaves do.
         //
         // Seriously, 2% of 1000hz is a very wide range to call for a remap
-        if mappedFrequencies.count > 1 {
+        if mappedFrequencies.count > 0 {
             for f in mappedFrequencies {
                 let diff = fabs(f - frequency)
                 if diff < (f / 50) {

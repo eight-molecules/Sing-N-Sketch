@@ -12,13 +12,13 @@ extension Dictionary {
     }
 }
 
-class PaletteAddButton: UIButton {
+class PaletteButton: UIButton {
     var frequency: Float! = 0
-    var color: UIColor! = UIColor.clearColor()
+    var color: UIColor! = UIColor.blackColor()
 }
 
-class PaletteDeleteButton: UIButton {
-    var frequency: Float! = 0
+class ColorPickerView: UIView {
+    var color: UIColor! = UIColor.blackColor()
 }
 
 class ViewController: UIViewController {
@@ -123,7 +123,10 @@ class ViewController: UIViewController {
         let mappings = sketchingView.palette.getMappings().sort(<)
         
         let paletteView = UIView()
-        var i: CGFloat = 0
+        var i: Int = 0
+        var xOrigin: CGFloat = 10
+        var yOrigin: CGFloat = 0
+        
         for (f, c) in mappings {
             
             // Ignore the default mappings for 0Hz and 20kHz
@@ -131,18 +134,25 @@ class ViewController: UIViewController {
                 continue
             }
             
-            let yOrigin = i * 35
-            let colorView = UIView(frame: CGRectMake(10, yOrigin, 100, 30))
+            if i % 2 == 0 {
+                xOrigin = 10
+                yOrigin = CGFloat(i * 35)
+            }
+            else {
+                xOrigin = 110
+            }
+            
+            let colorView = UIView(frame: CGRectMake(xOrigin, yOrigin, 100, 30))
             colorView.backgroundColor = UIColor.clearColor()
             
-            let delete = PaletteDeleteButton(frame: CGRectMake(0, 0, 60, 30))
+            let delete = PaletteButton(frame: CGRectMake(0, 0, 30, 30))
             delete.backgroundColor = UIColor.clearColor()
-            delete.setTitle("Delete", forState: UIControlState.Normal)
+            delete.setTitle("-", forState: UIControlState.Normal)
             delete.addTarget(self, action: "deleteMapping:", forControlEvents: UIControlEvents.TouchUpInside)
             delete.frequency = f
             colorView.addSubview(delete)
             
-            let color = UILabel(frame: CGRectMake(70, 0, 70, 30))
+            let color = UILabel(frame: CGRectMake(40, 0, 50, 30))
             color.backgroundColor = c
             color.text = Int(f).description
             color.textAlignment = .Center
@@ -152,7 +162,7 @@ class ViewController: UIViewController {
             paletteView.addSubview(colorView)
         }
         
-        paletteView.frame = CGRectMake(0, self.navigationController!.navigationBar.frame.height + 200, 120, i * 35)
+        paletteView.frame = CGRectMake(0, self.navigationController!.navigationBar.frame.height + 250, 120, CGFloat(i * 35))
         
         return paletteView
     }
@@ -168,6 +178,31 @@ class ViewController: UIViewController {
         }
     }
 
+    func updateColorPicker() {
+        if let paletteEditor = self.view.viewWithTag(200) {
+            if var colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
+                let red = colorPicker.viewWithTag(3010) as! UISlider
+                let green = colorPicker.viewWithTag(3020) as! UISlider
+                let blue = colorPicker.viewWithTag(3030) as! UISlider
+                let add = paletteEditor.viewWithTag(2010) as! UIButton
+                
+                colorPicker.color = UIColor(red: CGFloat(red.value), green: CGFloat(green.value), blue: CGFloat(blue.value), alpha: 1.0)
+                add.backgroundColor = colorPicker.color
+            }
+        }
+    }
+    
+    func redColorManipulator(sender: UISlider) {
+        updateColorPicker()
+    }
+    
+    func greenColorManipulator(sender: UISlider) {
+        updateColorPicker()
+    }
+    
+    func blueColorManipulator(sender: UISlider) {
+        updateColorPicker()
+    }
     
     func drawPaletteEditor() {
         closeMenu()
@@ -208,7 +243,7 @@ class ViewController: UIViewController {
             if show.hidden == false {
                 offset.y = 0
                 
-                let title = UILabel(frame: CGRectMake(10, 0 + (offset.y / 2), 230, 40))
+                let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
                 title.text = "Palette Editor"
                 title.backgroundColor = UIColor.clearColor()
                 title.textAlignment = NSTextAlignment.Center
@@ -216,11 +251,55 @@ class ViewController: UIViewController {
                 menuView.addSubview(title)
                 
             }
-            
+
             let colorView = getPaletteView()
             colorView.tag = 2000
             
             menuView.addSubview(colorView)
+            let colorPicker = ColorPickerView()
+            colorPicker.tag = 3000
+            
+            colorPicker.frame = CGRectMake(0, 0, menuView.frame.width, 200)
+            
+            let red = UISlider(frame: CGRectMake(10, 75, 230, 40))
+            let green = UISlider(frame: CGRectMake(10, 125, 230, 40))
+            let blue = UISlider(frame: CGRectMake(10, 175, 230, 40))
+            
+            let add = PaletteButton(frame: CGRectMake(10, 225, 230, 40))
+            
+            red.minimumValue = 0
+            red.maximumValue = 1
+            red.continuous = true
+            red.value = 0
+            red.tag = 3010
+            red.addTarget(self, action: "redColorManipulator:", forControlEvents: .ValueChanged)
+            
+            green.minimumValue = 0
+            green.maximumValue = 1
+            green.continuous = true
+            green.tag = 3020
+            green.addTarget(self, action: "greenColorManipulator:", forControlEvents: .ValueChanged)
+            
+            blue.minimumValue = 0
+            blue.maximumValue = 1
+            blue.continuous = true
+            blue.tag = 3030
+            blue.addTarget(self, action: "blueColorManipulator:", forControlEvents: .ValueChanged)
+            
+            add.backgroundColor = UIColor.clearColor()
+            add.setTitle("Add", forState: UIControlState.Normal)
+            add.addTarget(self, action: "addMapping", forControlEvents: UIControlEvents.TouchUpInside)
+            add.backgroundColor = sketchingView.brush.color
+            add.tag = 2010
+            add.color = colorPicker.color
+            
+            menuView.addSubview(add)
+            colorPicker.addSubview(red)
+            colorPicker.addSubview(green)
+            colorPicker.addSubview(blue)
+            
+            menuView.addSubview(colorPicker)
+            
             
             self.view.addSubview(menuView)
 
@@ -235,13 +314,21 @@ class ViewController: UIViewController {
         
     }
     
-    func deleteMapping(sender: PaletteDeleteButton) {
+    func deleteMapping(sender: PaletteButton) {
         sketchingView.palette.deleteColor(sender.frequency)
         updatePaletteView()
     }
     
-    func addMapping(sender: PaletteAddButton) {
-        sketchingView.palette.addColor(sender.frequency, color: sender.color)
+    func addMapping() {
+        if let paletteEditor = self.view.viewWithTag(200) {
+            if let colorPicker = self.view.viewWithTag(3000) as? ColorPickerView {
+                for i in 1...25 {
+                    sketchingView.audio.update()
+                }
+                sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
+                updatePaletteView()
+            }
+        }
     }
     
     func drawMenu() {
