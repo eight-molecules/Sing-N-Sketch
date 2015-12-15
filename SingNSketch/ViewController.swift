@@ -19,38 +19,6 @@ class PaletteButton: UIButton {
 
 class ColorPickerView: UIImageView {
     var color: UIColor! = UIColor.blackColor()
-    
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event!)
-        if let touch = touches.first as? UITouch
-        {
-            let t = touch
-            print("__________________")
-            println(t)
-            let point = t.locationInView(self)
-            println(point)
-            color = getPixelColorAtPoint(point)//colorAtPosition(point)
-            println(color)
-            println("^^^^^^^^^^^^^^^^^^^^^^^")
-            
-        }
-    }
-    
-    //returns the color data of the pixel at the currently selected point
-    func getPixelColorAtPoint(point:CGPoint)->UIColor
-    {
-        let pixel = UnsafeMutablePointer<CUnsignedChar>.alloc(4)
-        var colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
-        let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo)
-        
-        CGContextTranslateCTM(context, -point.x, -point.y)
-        layer.renderInContext(context)
-        var color:UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
-        
-        pixel.dealloc(4)
-        return color
-    }
 }
 
 class ViewController: UIViewController {
@@ -68,6 +36,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var redo: UIButton!
     @IBOutlet weak var navBarLabel: UINavigationItem!
     var navTitle: String = "Sing N' Sketch"
+    
+    var gradient: CAGradientLayer = CAGradientLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,28 +97,22 @@ class ViewController: UIViewController {
         {
             let t = touch
             let point = t.locationInView(self.view.viewWithTag(200))
-            println(point)
-            var testColor = getPixelColorAtPoint(point)//colorAtPosition(point)
-            println(testColor)
-            updateColorPicker(testColor)
-            
-            
+            var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+            println(color)
+            updateColorPicker(color)
         }
-        //println("SSSSSSSSSSSS")
-        //self.menuView.testColor
-        //self.menuView.testColor = UIColor.yellowColor()
-        //updateColorPicker(menuView.testColor)
-        
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        println("AAAAAAAAAAAAA")
-        
-    }
-    
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        println("GGGGGGGGGGG")
-        
+        super.touchesMoved(touches, withEvent: event)
+        if let touch = touches.first as? UITouch
+        {
+            let t = touch
+            let point = t.locationInView(self.view.viewWithTag(200))
+            println(point)
+            var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+            updateColorPicker(color)
+        }
     }
     
     @IBAction func save(sender: UIButton) {
@@ -277,34 +241,26 @@ class ViewController: UIViewController {
     func updateColorPicker(color: UIColor) {
         if let paletteEditor = self.view.viewWithTag(200) {
             if var colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
-                //let red = colorPicker.viewWithTag(3010) as! UIImageView
-                //let green = colorPicker.viewWithTag(3020) as! UISlider
-                //let blue = colorPicker.viewWithTag(3030) as! UISlider
                 let add = paletteEditor.viewWithTag(2010) as! UIButton
                 
-                //colorPicker.color = menuView.getColorAtPoint()
+                var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20))
+                gradient.startPoint = CGPointMake(0.0, 0.5)
+                gradient.endPoint = CGPointMake(1.0, 0.5)
+                gradient.frame = gradientView.bounds
+                gradient.colors = [UIColor.whiteColor().CGColor, color.CGColor, UIColor.blackColor().CGColor]
+                gradientView.layer.insertSublayer(gradient, atIndex: 0)
+                colorPicker.addSubview(gradientView)
+                
                 colorPicker.color = color
-                print("$$$$$$$$$$$$")
                 println(colorPicker.color)
                 
-                //colorPicker.color = UIColor(red: CGFloat(red.value), green: CGFloat(green.value), blue: CGFloat(blue.value), alpha: 1.0)
-                //colorPicker.getPixelColorAtPoint(point: CGPoint)
+                //colorPicker.color should have it's alpha value checked before it's added,
+                // that way only colors with a valid alpha of one get added to the palette.
+                
                 add.backgroundColor = colorPicker.color
             }
         }
     }
-    
-    //func redColorManipulator(sender: UISlider) {
-     //   updateColorPicker()
-    //}
-    
-    //func greenColorManipulator(sender: UISlider) {
-     //   updateColorPicker()
-    //}
-    
-    //func blueColorManipulator(sender: UISlider) {
-     //   updateColorPicker()
-    //}
     
     func drawPaletteEditor() {
         closeMenu()
@@ -364,50 +320,16 @@ class ViewController: UIViewController {
             scrollView.addSubview(colorView)
             scrollView.tag = 300
             let colorPicker = ColorPickerView()
-            //let colorPicker = ColorWheelView(frame: CGRectMake(0, 0, menuView.frame.width, 200))
             colorPicker.tag = 3000
             
             colorPicker.frame = CGRectMake(0, 0, menuView.frame.width, 200)
             
             UIGraphicsBeginImageContext(CGSize(width: menuView.frame.width, height: 200))
-            println("@@@@@@@@@@@@@@@@@@")
-            //println(menuframe.size)
-            //UIImage(named: "drcolorpicker-colormap.png")!.drawInRect(self.bounds)
             UIImage(named: "drcolorpicker-colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y, colorPicker.frame.width, colorPicker.frame.height))
             colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            //let red = UISlider(frame: CGRectMake(10, 75, 230, 40))
-            //let green = UISlider(frame: CGRectMake(10, 125, 230, 40))
-            //let blue = UISlider(frame: CGRectMake(10, 175, 230, 40))
-            
-            //let colorWheelView = ColorWheelView(frame: CGRectMake(10, 75, 230, 40))
-            
-            //let colorWheelView = ColorWheelView(frame: colorPicker.frame)
-            //colorWheelView.bounds = colorPicker.bounds
-            
             let add = PaletteButton(frame: CGRectMake(10, 225, 230, 40))
-            
-            
-            
-            //red.minimumValue = 0
-            //red.maximumValue = 1
-            //red.continuous = true
-            //red.value = 0
-            //red.tag = 3010
-            //red.addTarget(self, action: "redColorManipulator:", forControlEvents: .ValueChanged)
-            
-            //green.minimumValue = 0
-            //green.maximumValue = 1
-            //green.continuous = true
-            //green.tag = 3020
-            //green.addTarget(self, action: "greenColorManipulator:", forControlEvents: .ValueChanged)
-            
-            //blue.minimumValue = 0
-            //blue.maximumValue = 1
-            //blue.continuous = true
-            //blue.tag = 3030
-            //blue.addTarget(self, action: "blueColorManipulator:", forControlEvents: .ValueChanged)
             
             add.backgroundColor = UIColor.clearColor()
             add.setTitle("Add", forState: UIControlState.Normal)
@@ -417,14 +339,7 @@ class ViewController: UIViewController {
             add.color = colorPicker.color
             
             menuView.addSubview(add)
-            //colorPicker.addSubview(colorWheelView)
-            //colorPicker.addSubview(red)
-            //colorPicker.addSubview(green)
-            //colorPicker.addSubview(blue)
-            
-            
             menuView.addSubview(colorPicker)
-            //menuView.addSubview(colorWheelView)
             menuView.addSubview(scrollView)
             
             let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
