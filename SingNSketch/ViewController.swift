@@ -19,6 +19,7 @@ class PaletteButton: UIButton {
 
 class ColorPickerView: UIImageView {
     var color: UIColor! = UIColor.blackColor()
+    var gradientColor: UIColor! = UIColor.blackColor()
 }
 
 class ViewController: UIViewController {
@@ -76,7 +77,7 @@ class ViewController: UIViewController {
     }
     
     //returns the color data of the pixel at the currently selected point
-    func getPixelColorAtPoint(point:CGPoint)->UIColor
+    func getPixelColorAtPoint(point:CGPoint)->UIColor?
     {
         let pixel = UnsafeMutablePointer<CUnsignedChar>.alloc(4)
         var colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -84,11 +85,13 @@ class ViewController: UIViewController {
         let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo)
         
         CGContextTranslateCTM(context, -point.x, -point.y)
-        self.view.viewWithTag(200)!.layer.renderInContext(context)
-        var color:UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
-        
-        pixel.dealloc(4)
-        return color
+        if let paletteEditor = self.view.viewWithTag(200){
+            self.view.viewWithTag(200)!.layer.renderInContext(context)
+            var color:UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
+            pixel.dealloc(4)
+            return color
+        }
+        return nil
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -96,10 +99,17 @@ class ViewController: UIViewController {
         if let touch = touches.first as? UITouch
         {
             let t = touch
-            let point = t.locationInView(self.view.viewWithTag(200))
-            var color = getPixelColorAtPoint(point)//colorAtPosition(point)
-            println(color)
-            updateColorPicker(color)
+            let point = t.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
+            if 0.0 <= point.x && point.x <= 250{
+                if 39.0 <= point.y && point.y <= 200{
+                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    updateColorPicker(color!, isGradient: false)
+                }
+                else if 200 <= point.y && point.y <= 219{
+                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    updateColorPicker(color!, isGradient: true)
+                }
+            }
         }
     }
     
@@ -108,10 +118,17 @@ class ViewController: UIViewController {
         if let touch = touches.first as? UITouch
         {
             let t = touch
-            let point = t.locationInView(self.view.viewWithTag(200))
-            println(point)
-            var color = getPixelColorAtPoint(point)//colorAtPosition(point)
-            updateColorPicker(color)
+            let point = t.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
+            if 0.0 <= point.x && point.x <= 250{
+                if 39.0 <= point.y && point.y <= 200{
+                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    updateColorPicker(color!, isGradient: false)
+                }
+                else if 200 <= point.y && point.y <= 219{
+                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    updateColorPicker(color!, isGradient: true)
+                }
+            }
         }
     }
     
@@ -238,24 +255,23 @@ class ViewController: UIViewController {
             }
         }
     }
-    func updateColorPicker(color: UIColor) {
+    func updateColorPicker(color: UIColor, isGradient: Bool) {
         if let paletteEditor = self.view.viewWithTag(200) {
             if var colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
                 let add = paletteEditor.viewWithTag(2010) as! UIButton
+                
+                colorPicker.color = color
+                if(isGradient == false){
+                    colorPicker.gradientColor = color
+                }
                 
                 var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20))
                 gradient.startPoint = CGPointMake(0.0, 0.5)
                 gradient.endPoint = CGPointMake(1.0, 0.5)
                 gradient.frame = gradientView.bounds
-                gradient.colors = [UIColor.whiteColor().CGColor, color.CGColor, UIColor.blackColor().CGColor]
+                gradient.colors = [UIColor.whiteColor().CGColor, colorPicker.gradientColor.CGColor, UIColor.blackColor().CGColor]
                 gradientView.layer.insertSublayer(gradient, atIndex: 0)
                 colorPicker.addSubview(gradientView)
-                
-                colorPicker.color = color
-                println(colorPicker.color)
-                
-                //colorPicker.color should have it's alpha value checked before it's added,
-                // that way only colors with a valid alpha of one get added to the palette.
                 
                 add.backgroundColor = colorPicker.color
             }
@@ -323,11 +339,13 @@ class ViewController: UIViewController {
             colorPicker.tag = 3000
             
             colorPicker.frame = CGRectMake(0, 0, menuView.frame.width, 200)
+            println(250.0)
             
-            UIGraphicsBeginImageContext(CGSize(width: menuView.frame.width, height: 200))
-            UIImage(named: "drcolorpicker-colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y, colorPicker.frame.width, colorPicker.frame.height))
+            UIGraphicsBeginImageContext(CGSize(width: menuView.frame.width, height: 180))
+            UIImage(named: "drcolorpicker-colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
             colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
+            
             
             let add = PaletteButton(frame: CGRectMake(10, 225, 230, 40))
             
