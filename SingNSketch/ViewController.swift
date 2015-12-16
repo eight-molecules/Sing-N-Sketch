@@ -101,7 +101,7 @@ class ViewController: UIViewController {
             title.textAlignment = NSTextAlignment.Center
             title.textColor = UIColor.whiteColor()
             menuView.addSubview(title)
-            
+            closeMenu()
         }
         // Close the Palette Editor if it's in the view.
         if let paletteEditor = self.view.viewWithTag(200) {
@@ -116,7 +116,7 @@ class ViewController: UIViewController {
             )
             sketchingView.userInteractionEnabled = true
         }
-
+        
     }
     
     @IBAction func show(sender: UIButton) {
@@ -222,6 +222,7 @@ class ViewController: UIViewController {
     }
     
     func drawPaletteEditor() {
+        
         closeMenu()
         sketchingView.userInteractionEnabled = false
         
@@ -259,17 +260,14 @@ class ViewController: UIViewController {
             blurEffectView.frame = menuView.bounds
             menuView.addSubview(blurEffectView)
             
-            if show.hidden == false {
-                offset.y = 0
-                
-                let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
-                title.text = "Palette Editor"
-                title.backgroundColor = UIColor.clearColor()
-                title.textAlignment = NSTextAlignment.Center
-                title.textColor = UIColor.whiteColor()
-                menuView.addSubview(title)
-                
-            }
+            
+            let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
+            title.text = "Palette Editor"
+            title.backgroundColor = UIColor.clearColor()
+            title.textAlignment = NSTextAlignment.Center
+            title.textColor = UIColor.whiteColor()
+            menuView.addSubview(title)
+            
             
             let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
             let colorView = getPaletteView()
