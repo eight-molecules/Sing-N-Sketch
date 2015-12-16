@@ -339,13 +339,11 @@ class ViewController: UIViewController {
             colorPicker.tag = 3000
             
             colorPicker.frame = CGRectMake(0, 0, menuView.frame.width, 200)
-            println(250.0)
             
             UIGraphicsBeginImageContext(CGSize(width: menuView.frame.width, height: 180))
             UIImage(named: "drcolorpicker-colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
             colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            
             
             let add = PaletteButton(frame: CGRectMake(10, 225, 230, 40))
             
