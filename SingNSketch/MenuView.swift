@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 
 class MenuView : UIView {
-    
     var image = UIImage()
     
     required init(coder aDecoder: NSCoder) {
@@ -12,6 +11,4 @@ class MenuView : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
-    
 }
