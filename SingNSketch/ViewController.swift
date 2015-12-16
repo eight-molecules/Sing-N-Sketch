@@ -105,7 +105,7 @@ class ViewController: UIViewController {
                     var color = getPixelColorAtPoint(point)//colorAtPosition(point)
                     updateColorPicker(color!, isGradient: false)
                 }
-                else if 200 <= point.y && point.y <= 219{
+                else if 200 <= point.y && point.y <= 219 + 30{
                     var color = getPixelColorAtPoint(point)//colorAtPosition(point)
                     updateColorPicker(color!, isGradient: true)
                 }
@@ -124,7 +124,7 @@ class ViewController: UIViewController {
                     var color = getPixelColorAtPoint(point)//colorAtPosition(point)
                     updateColorPicker(color!, isGradient: false)
                 }
-                else if 200 <= point.y && point.y <= 219{
+                else if 200 <= point.y && point.y <= 219 + 30{
                     var color = getPixelColorAtPoint(point)//colorAtPosition(point)
                     updateColorPicker(color!, isGradient: true)
                 }
@@ -265,7 +265,7 @@ class ViewController: UIViewController {
                     colorPicker.gradientColor = color
                 }
                 
-                var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20))
+                var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
                 gradient.startPoint = CGPointMake(0.0, 0.5)
                 gradient.endPoint = CGPointMake(1.0, 0.5)
                 gradient.frame = gradientView.bounds
@@ -328,7 +328,7 @@ class ViewController: UIViewController {
                 
             }
             
-            let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
+            let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240 + 30, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
             let colorView = getPaletteView()
             colorView.tag = 2000
             
@@ -345,7 +345,15 @@ class ViewController: UIViewController {
             colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            let add = PaletteButton(frame: CGRectMake(10, 225, 230, 40))
+            var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
+            gradient.startPoint = CGPointMake(0.0, 0.5)
+            gradient.endPoint = CGPointMake(1.0, 0.5)
+            gradient.frame = gradientView.bounds
+            gradient.colors = [UIColor.whiteColor().CGColor, colorPicker.gradientColor.CGColor, UIColor.blackColor().CGColor]
+            gradientView.layer.insertSublayer(gradient, atIndex: 0)
+            colorPicker.addSubview(gradientView)
+            
+            let add = PaletteButton(frame: CGRectMake(10, 225 + 30, 230, 40))
             
             add.backgroundColor = UIColor.clearColor()
             add.setTitle("Add", forState: UIControlState.Normal)
