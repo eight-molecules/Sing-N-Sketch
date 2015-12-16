@@ -1,0 +1,38 @@
+SketchingView Class
+Author: Dakota C. B.
+
+The SketchingView class is a UIView that holds all of the information for drawing capabilities.
+
+Variables
+brush: an instance of the brush class. This variable affects the color of the path that the user draws
+palette: an instance of the palette class. This variable holds the colors for a palette
+audio: an instance of the audio class. This variable is used for detecting user audio to manipulate the brush’s color
+multiplier: a float used as a way to show amplitude in the drawing
+undoArray: array that holds previous state of the canvas
+redoArray: array that undos what the undo array has done to the view
+drawView: An UIImageView that holds the path that the user draws without lifting their figure
+canvasView: An UIImageView that is the amalgamation of all of the previous draw views
+points: a tuple holding points that determine the line creation when the user draws
+
+Functions
+override init() sets the background color to white
+
+required init() creates a palette based on the values in the function
+
+touchesBegan() saves locations of where the user touched on the screen
+
+touchesMoved() sets all of the information for the line to be made, creates a mid point based on where the user touches and the previous touch, and then creates that line on drawView
+
+touchesCanelled() if the touch is not able to be made, ends the touch context
+
+touchesEnded() takes the image drawn by the drawView and puts it into the canvasView
+
+drawRect() updates the audio variable with the audio created by the user to influence colors used to draw and size of the line
+
+newDrawing() clears everything and creates a new drawing
+
+updatePalette() creates a new palette based on the values in required init
+
+undo() removes the current state of the screen with the first previous one
+
+redo() replace the current state with one already created

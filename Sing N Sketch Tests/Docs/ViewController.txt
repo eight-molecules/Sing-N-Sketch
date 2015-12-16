@@ -1,0 +1,73 @@
+View Controller Class: The main implementation of all the classes, and the creation of a menu view.
+Author: Dakota C. B.
+
+Extensions
+dictionary: allows sorting by keys
+
+Classes
+PaletteButton: creates a button for the palette view in the menu
+ColorPickerView: creates a view for the color picker in the menu
+
+Variables
+sketchingView: an instance of the SketchingView class
+canvasView: storyboard representation of the canvasView from the SketchingView class
+menuView: UIView that displays the menu
+screenEdgeRecognizer: determines if there is a dragging motion coming from the side of a screen
+show: a button that makes the navigation bar visible after it is hidden
+navBarLabel: a label for the navigation bar that holds its title
+navTitle: the title for the navigation bar
+
+Functions
+viewDidLoad() initializes screenEdgeRecognizer and an instance of the SketchingView class and edits the navigation bar style
+
+viewDidAppear() starts the audio updates from the SketchingView class and creates a new variable called longPress to see pressing length of the show button, making it movable
+
+viewWillDisappear() stops audio recording
+
+save() saves the image to the iphone’s gallery
+
+hide() hides the navigation bar allowing full viewing of the canvas
+
+show() makes the navigation bar visible if hidden
+
+handleLongPress() determination of what to do when a long press is initiated
+
+getPaletteView() a getter that returns a UIView for the palette menu. Creates the whole palette view in the menu as well
+
+updatePaletteView() updates the UIView for the PaletteView so it isn’t a static view
+
+updateColorPicker() updates the color picker within the PaletteView so it isn’t static
+
+redColorManipulator() updates the red color in the PaletteView
+
+greenColorManipulator() updates the green color in the PaletteView
+
+blueColorManipulator() updates the blue color in the PaletteView
+
+drawPaletteEditor() creates the PaletteView menu as a separate menu with RGB sliders and a representation of all of your created palettes.
+
+deleteMapping() deletes a color in the PaletteView for a user’s palette
+
+addMapping() adds a color in the PaletteView for a user’s palette
+
+drawMenu() creates the main menu that holds the width slider, opacity slider, save feature, new feature, undo button, redo button, and a button opening the PaletteView 
+
+showMenuView() when the menu button is pressed in the navigation bar, it shows the menuView
+
+swipeMenu() using the screenEdgeRecognizer variable, it checks to see if the menu is swiped open
+
+closeMenu() closes the menuView or PaletteView
+
+new() creates a new drawing
+
+undo() calls the function of the same name in the SketchingView class. It removes the current state of the screen with the first previous one
+
+redo() calls the function of the same name in the SketchingView class. It replaces the current state with one already created
+
+opacityManipulator() slider to change the opacity of the line being drawn
+
+widthManipulator() slider to change the width of what’s being drawn
+
+mute() mute’s the audio allowing for a single color to be used
+
+unmute() unmutes the audio allowing for changing colors

@@ -325,8 +325,7 @@ class ViewController: UIViewController {
             title.textColor = UIColor.whiteColor()
             menuView.addSubview(title)
             
-            
-            let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 240 + 30, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
+            let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 270, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
             let colorView = getPaletteView()
             colorView.tag = 2000
             

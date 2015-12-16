@@ -1,0 +1,16 @@
+AudioInterface.swift
+Author: Govind B.
+
+MovingAverage Class
+Used to average the audio input provided to map the range of colors.
+
+AddSample function is used to update the changing frequencies in the program from given audio.
+
+AudioInterface class 
+Holds the properties of all the audio characteristics like amplitude, frequency, noise floor, and buffer sizes.
+
+start() is used to start taking the audio input and analyze it.
+
+stop() is used to stop taking the audio input and also stops the analyzer.
+
+update() updates the frequency average and amplitude average based on the audio input provided.

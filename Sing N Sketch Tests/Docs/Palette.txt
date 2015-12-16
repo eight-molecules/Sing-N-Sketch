@@ -1,0 +1,43 @@
+Palette.swift
+Author: Omer A.
+
+Use: var palette: Palette = Palette().
+
+Palette Class Subclasses:
+Channel class: Used like var red: Channel = Channel()
+
+Channel Class Variables:
+values [Float: CGFloat](): A dictionary used to store frequency mappings with an associated value.
+
+Channel Class Functions:
+init(): Initializes the class and the channel by adding a zero Hertz mapping and a 20000 Hertz mapping to encompass average human hearing range.
+
+addMapping(frequency: Float, value: CGFloat): Map a frequency to a value, which in this case the value is a color and add it to the values dictionary.
+
+modifyMapping(frequency: Float, value: CGFloat): Remap a frequency from the values dictionary to a new color. If the frequency does not exist then it will be created with the value in the dictionary.
+
+deleteMapping(frequency: Float): Remove a frequency and it’s value from the values dictionary.
+
+getValue(frequency: Float) ­> CGFloat: Return a value unique to a given frequency. Zero is returned if the values dictionary is a single value or less.
+
+getFrequencies() ­> [Float]: Return the frequencies mapped in the values dictionary which is the channel as an array.
+
+getValues() ­> [CGFloat]: Return the values mapped in the values dictionary as an array.
+
+Palette Class Variables:
+var red: Channel = Channel()
+var green: Channel = Channel()
+var blue: Channel = Channel()
+
+Palette Class Functions:
+init(): Initialize the palette class.
+
+getColor(frequency: Float) ­> UIColor: Return a mapped UIColor.
+
+private addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat): A private function to handle individual color channels.
+
+addColor(frequency: Float, color: UIColor): Function to add color from a UIColor.
+
+getMappings() ­> Dictionary<Float, UIColor>: Generate colors for the channel frequencies and them to a dictionary which is then returned by the function.
+
+deleteColor(frequency: Float): Delete the color from the channel dictionaries that is associated with the frequency in the function call.

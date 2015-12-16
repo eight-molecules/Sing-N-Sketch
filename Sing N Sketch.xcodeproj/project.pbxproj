@@ -25,6 +25,7 @@
 		9BCD80221BB33A670092771F /* AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCD80211BB33A670092771F /* AudioKit.swift */; };
 		9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBF5B91BC5DA33007117F4 /* Palette.swift */; };
 		C3BB7AA51BF04E6300C53C49 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BB7AA41BF04E6300C53C49 /* MenuView.swift */; };
+		C3EE00861C222EEB0082D3E8 /* Docs in Resources */ = {isa = PBXBuildFile; fileRef = C3EE00851C222EEB0082D3E8 /* Docs */; };
 		EE5359501C2142C100F16B62 /* colormap.png in Resources */ = {isa = PBXBuildFile; fileRef = EE53594F1C2142C100F16B62 /* colormap.png */; };
 		F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */; };
 /* End PBXBuildFile section */
@@ -103,6 +104,7 @@
 		9BCD80241BB33DD90092771F /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		9BFBF5B91BC5DA33007117F4 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Palette.swift; path = ../Palette.swift; sourceTree = "<group>"; };
 		C3BB7AA41BF04E6300C53C49 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		C3EE00851C222EEB0082D3E8 /* Docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Docs; path = "Sing N Sketch Tests/Docs"; sourceTree = "<group>"; };
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE53594F1C2142C100F16B62 /* colormap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = colormap.png; path = SingNSketch/colormap.png; sourceTree = "<group>"; };
 		F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
@@ -177,6 +179,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C3EE00871C222EFC0082D3E8 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				C3EE00851C222EEB0082D3E8 /* Docs */,
+			);
+			name = Docs;
+			sourceTree = "<group>";
+		};
 		EE43D4641A14A6F200311C06 = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +197,7 @@
 				EE43D46E1A14A6F200311C06 /* Products */,
 				9BCD80211BB33A670092771F /* AudioKit.swift */,
 				9BCD80241BB33DD90092771F /* Bridging-Header.h */,
+				C3EE00871C222EFC0082D3E8 /* Docs */,
 				9BCD80161BB338DD0092771F /* libsndfile.framework */,
 				9BCD80171BB338DD0092771F /* CsoundLib.framework */,
 				9341A56C1BB0D35000D6BCB0 /* Fabric.framework */,
@@ -319,6 +330,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3EE00861C222EEB0082D3E8 /* Docs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

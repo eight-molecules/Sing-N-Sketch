@@ -1,0 +1,15 @@
+Build Instructions
+Author: Omer A.
+
+Tested with Xcode 6.4 on OS X 10.10
+Requirements: Computer running OS X with XCode 6.4. 
+
+1. Clone or download the project from gitlab at http://cs3060.bgsu.edu
+
+2. Open the project with Xcode.
+
+3. Fabric needs to be installed or the project won’t compile, go to https://get.fabric.io/ and sign in or sign up if not yet registered and download and install the Fabric app.
+
+4. Build and compile.
+
+Notes: Testing under iOS 9 is unavailable in a default configuration. In order to test you must modify the XCode 6.4 package to include the XCode 7 iOS 9 device support files. This is outside the scope of these instructions, as it requires disabling app verification.
