@@ -25,6 +25,7 @@
 		9BCD80221BB33A670092771F /* AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCD80211BB33A670092771F /* AudioKit.swift */; };
 		9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBF5B91BC5DA33007117F4 /* Palette.swift */; };
 		C3BB7AA51BF04E6300C53C49 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BB7AA41BF04E6300C53C49 /* MenuView.swift */; };
+		EE5359501C2142C100F16B62 /* colormap.png in Resources */ = {isa = PBXBuildFile; fileRef = EE53594F1C2142C100F16B62 /* colormap.png */; };
 		F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +104,7 @@
 		9BFBF5B91BC5DA33007117F4 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Palette.swift; path = ../Palette.swift; sourceTree = "<group>"; };
 		C3BB7AA41BF04E6300C53C49 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE53594F1C2142C100F16B62 /* colormap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = colormap.png; path = SingNSketch/colormap.png; sourceTree = "<group>"; };
 		F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,6 +180,7 @@
 		EE43D4641A14A6F200311C06 = {
 			isa = PBXGroup;
 			children = (
+				EE53594F1C2142C100F16B62 /* colormap.png */,
 				9BCD80071BB338360092771F /* AudioKit.xcodeproj */,
 				938FBFE61BA79C5000EAFC7E /* Sing N Sketch */,
 				938FC0011BA79C7F00EAFC7E /* Sing N Sketch Tests */,
@@ -325,6 +328,7 @@
 			files = (
 				938FBFF41BA79C5000EAFC7E /* LaunchScreen.xib in Resources */,
 				1D7DBCB11BB88FC300C85633 /* Main.storyboard in Resources */,
+				EE5359501C2142C100F16B62 /* colormap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

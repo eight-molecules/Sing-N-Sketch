@@ -341,7 +341,7 @@ class ViewController: UIViewController {
             colorPicker.frame = CGRectMake(0, 0, menuView.frame.width, 200)
             
             UIGraphicsBeginImageContext(CGSize(width: menuView.frame.width, height: 180))
-            UIImage(named: "drcolorpicker-colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
+            UIImage(named: "colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
             colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
