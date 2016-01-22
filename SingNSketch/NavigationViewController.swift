@@ -18,7 +18,7 @@ class NavigationController: UINavigationController, UIViewControllerTransitionin
         self.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationBar.barTintColor = UIColor.clearColor()
         
-        var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark)) as UIVisualEffectView
+        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark)) as UIVisualEffectView
         navigationBar.addSubview(visualEffectView)
     }
 }

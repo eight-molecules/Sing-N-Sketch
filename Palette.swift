@@ -51,7 +51,7 @@ class Palette {
                 
                 // Find the matching target value, or interpolate the value from
                 // the surrounding frequencies.
-                let sortedKeys = Array(values.keys).sorted(<)
+                let sortedKeys = Array(values.keys).sort(<)
                 for f in sortedKeys {
                     if f < frequency {
                         
@@ -67,7 +67,7 @@ class Palette {
                     else {
                         
                         // Interpolate the value of the channel
-                        var ratio: CGFloat = CGFloat((frequency - lastFrequency) / (f - lastFrequency))
+                        let ratio: CGFloat = CGFloat((frequency - lastFrequency) / (f - lastFrequency))
                         val = lastValue + ((values[f]! - lastValue) * ratio)
                         break
                     }
@@ -80,13 +80,13 @@ class Palette {
         
         // Return the frequencies mapped to the channel
         func getFrequencies() -> [Float] {
-            var frequencies = values.keys.array
+            let frequencies = Array(values.keys)
             return frequencies
         }
         
         // Return the channel values mapped to the channel
         func getValues() -> [CGFloat] {
-            var channelValues = values.values.array
+            let channelValues = Array(values.values)
             return channelValues
         }
         
@@ -114,7 +114,7 @@ class Palette {
     // Private function to handle individual color channels
     private func addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat) {
         var mappedFrequencies = red.getFrequencies()
-        mappedFrequencies.sort(<)
+        mappedFrequencies.sortInPlace(<)
         var newFreq: Bool = true
         // If the frequency is +/- 2% of a frequency
         // already added, modify that frequency instead.
@@ -149,12 +149,10 @@ class Palette {
     // Function to add color from a UIColor
     func addColor(frequency: Float, color: UIColor) {
         
-        if let c = CIColor(color: color) {
-            let r = c.red()
-            let g = c.green()
-            let b = c.blue()
-            addColor(frequency, r: r, g: g, b: b)
-        }
+        let r = color.CIColor.red
+        let g = color.CIColor.green
+        let b = color.CIColor.blue
+        addColor(frequency, r: r, g: g, b: b)
     }
     
     func getMappings() -> Dictionary<Float, UIColor> {
@@ -175,7 +173,7 @@ class Palette {
     
     func deleteColor(frequency: Float) {
         var mappedFrequencies = red.getFrequencies()
-        mappedFrequencies.sort(<)
+        mappedFrequencies.sortInPlace(<)
         
         // If the frequency is +/- 2% of a frequency
         // already added, modify that frequency instead.

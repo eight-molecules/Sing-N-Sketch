@@ -4,7 +4,7 @@ extension Dictionary {
     
     func sort(isOrderedBefore: (Key, Key) -> Bool) -> [(Key, Value)] {
         var result: [(Key, Value)] = []
-        let sortedKeys = keys.array.sorted(isOrderedBefore)
+        let sortedKeys = Array(keys).sort(isOrderedBefore)
         for key in sortedKeys {
             result.append(key, self[key]!)
         }
@@ -94,38 +94,37 @@ class ViewController: UIViewController {
         return nil
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
-        if let touch = touches.first as? UITouch
+        if let touch = touches.first
         {
-            let t = touch
-            let point = t.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
+            let point = touch.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
             if 0.0 <= point.x && point.x <= 250{
                 if 39.0 <= point.y && point.y <= 200{
-                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    let color = getPixelColorAtPoint(point) // colorAtPosition(point)
                     updateColorPicker(color!, isGradient: false)
                 }
                 else if 200 <= point.y && point.y <= 219 + 30{
-                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    let color = getPixelColorAtPoint(point) // colorAtPosition(point)
                     updateColorPicker(color!, isGradient: true)
                 }
             }
         }
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
         super.touchesMoved(touches, withEvent: event)
-        if let touch = touches.first as? UITouch
+        if let touch = touches.first
         {
             let t = touch
             let point = t.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
             if 0.0 <= point.x && point.x <= 250{
                 if 39.0 <= point.y && point.y <= 200{
-                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    let color = getPixelColorAtPoint(point)//colorAtPosition(point)
                     updateColorPicker(color!, isGradient: false)
                 }
                 else if 200 <= point.y && point.y <= 219 + 30{
-                    var color = getPixelColorAtPoint(point)//colorAtPosition(point)
+                    let color = getPixelColorAtPoint(point)//colorAtPosition(point)
                     updateColorPicker(color!, isGradient: true)
                 }
             }
@@ -133,7 +132,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func save(sender: UIButton) {
-        UIImageWriteToSavedPhotosAlbum(canvasView.image, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        UIImageWriteToSavedPhotosAlbum(canvasView.image!, self, "image:didFinishSavingWithError:contextInfo:", nil)
     }
     
     
@@ -257,7 +256,7 @@ class ViewController: UIViewController {
     }
     func updateColorPicker(color: UIColor, isGradient: Bool) {
         if let paletteEditor = self.view.viewWithTag(200) {
-            if var colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
+            if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
                 let add = paletteEditor.viewWithTag(2010) as! UIButton
                 
                 colorPicker.color = color
@@ -265,7 +264,7 @@ class ViewController: UIViewController {
                     colorPicker.gradientColor = color
                 }
                 
-                var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
+                let gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
                 gradient.startPoint = CGPointMake(0.0, 0.5)
                 gradient.endPoint = CGPointMake(1.0, 0.5)
                 gradient.frame = gradientView.bounds
@@ -282,8 +281,6 @@ class ViewController: UIViewController {
         
         closeMenu()
         sketchingView.userInteractionEnabled = false
-        
-        var offset = (x: 0, y: self.navigationController!.navigationBar.frame.height + 5)
         
         // This should never run. If it does, something called the wrong function
         if let paletteEditor = self.view.viewWithTag(200) {
@@ -312,8 +309,8 @@ class ViewController: UIViewController {
             menuView.layer.shadowRadius = 2
             
             // Blur Effect
-            var blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
-            var blurEffectView = UIVisualEffectView(effect: blurEffect)
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView.frame = menuView.bounds
             menuView.addSubview(blurEffectView)
             
@@ -342,7 +339,7 @@ class ViewController: UIViewController {
             colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            var gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
+            let gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
             gradient.startPoint = CGPointMake(0.0, 0.5)
             gradient.endPoint = CGPointMake(1.0, 0.5)
             gradient.frame = gradientView.bounds
@@ -389,9 +386,10 @@ class ViewController: UIViewController {
     func addMapping() {
         if let paletteEditor = self.view.viewWithTag(200) {
             if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
-                for i in 1...25 {
+                for _ in 1...25 {
                     sketchingView.audio.update()
                 }
+                
                 sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
                 updatePaletteView()
             }
@@ -403,10 +401,14 @@ class ViewController: UIViewController {
         sketchingView.userInteractionEnabled = false
         
         var offset = (x: 0, y: self.navigationController!.navigationBar.frame.height)
-        if let menuView = self.view.viewWithTag(100) {
+        
+        // MenuView
+        if (self.view.viewWithTag(100) != nil) {
             closeMenu()
         }
-        else if let paletteEditorView = self.view.viewWithTag(200) {
+            
+        // Palette Editor
+        else if (self.view.viewWithTag(200) != nil) {
             closeMenu()
         }
         else {
@@ -422,8 +424,8 @@ class ViewController: UIViewController {
             menuView.layer.shadowRadius = 2
             
             // Blur Effect
-            var blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
-            var blurEffectView = UIVisualEffectView(effect: blurEffect)
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView.frame = menuView.bounds
             menuView.addSubview(blurEffectView)
             
@@ -559,7 +561,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showMenuView(sender: UIBarButtonItem) {
-        if let menuView = self.view.viewWithTag(100) {
+        if (self.view.viewWithTag(100) != nil) {
             closeMenu()
         }
         else {
@@ -569,7 +571,7 @@ class ViewController: UIViewController {
     
     func swipeMenu(sender: UIScreenEdgePanGestureRecognizer) {
         if sender.state == .Ended {
-            if let menuView = self.view.viewWithTag(100) {
+            if (self.view.viewWithTag(100) != nil) {
                 // Nothing happens if we swipe and the menu is open
             }
             else {

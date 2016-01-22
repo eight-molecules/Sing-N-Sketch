@@ -28,7 +28,7 @@ class MovingAverage {
     }
     
     func addSample(value: Float) -> Float {
-        var pos = Int(fmodf(Float(sampleCount++), Float(period)))
+        let pos = Int(fmodf(Float(sampleCount++), Float(period)))
         
         if pos >= samples.count {
             samples.append(value)

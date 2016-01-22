@@ -29,7 +29,7 @@ class SketchingView: UIView {
     
     //variables for points of the quadratic curve
     
-    var points = (CGPoint.zeroPoint, CGPoint.zeroPoint, last: CGPoint.zeroPoint)
+    var points = (CGPoint.zero, CGPoint.zero, last: CGPoint.zero)
     
     
     override init(frame: CGRect) {
@@ -38,7 +38,7 @@ class SketchingView: UIView {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         palette = Palette()
         palette.addColor(55, color: UIColor.redColor())
         palette.addColor(77, color: UIColor.orangeColor())
@@ -86,10 +86,10 @@ class SketchingView: UIView {
             CGContextSetAllowsAntialiasing(context, true)
             CGContextSetShouldAntialias(context, true)
             
-            CGContextSetLineCap(context, kCGLineCapRound)
+            CGContextSetLineCap(context, .Round)
             CGContextSetLineWidth(context, brush.width * CGFloat(multiplier))
             CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
-            CGContextSetBlendMode(context, kCGBlendModeNormal)
+            CGContextSetBlendMode(context, .Normal)
             
             
             drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height))
@@ -123,8 +123,8 @@ class SketchingView: UIView {
         
         UIGraphicsBeginImageContext(canvasView.frame.size)
         
-        canvasView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: 1.0)
-        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: kCGBlendModeNormal, alpha: brush.opacity)
+        canvasView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: .Normal, alpha: 1.0)
+        drawView.image?.drawInRect(CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height), blendMode: .Normal, alpha: brush.opacity)
 
         canvasView.image = UIGraphicsGetImageFromCurrentImageContext()
         undoArray.append(UIGraphicsGetImageFromCurrentImageContext())
@@ -138,9 +138,8 @@ class SketchingView: UIView {
     override func drawRect(rect: CGRect) {
         multiplier = audio.amplitude.average * 100 + 1;
         
-        //Update audio
+        // Update audio
         audio.update()
-        println(audio.frequency.average)
         if (audio.amplitude.average > 0.007) {
             brush.color = palette.getColor(Float(audio.frequency!.average))
         }
@@ -162,9 +161,7 @@ class SketchingView: UIView {
         palette = newPalette
     }
     
-    //###
-    func undo(){
-        //###
+    func undo() {
         if undoArray.last != nil {
             redoArray.append(undoArray.last!)
             undoArray.removeLast()
@@ -172,8 +169,7 @@ class SketchingView: UIView {
         }
     }
     
-    func redo(){
-        //###
+    func redo() {
         if redoArray.last != nil{
             undoArray.append(redoArray.last!)
             canvasView.image = redoArray.last
