@@ -79,22 +79,28 @@ class ViewController: UIViewController {
     //returns the color data of the pixel at the currently selected point
     func getPixelColorAtPoint(point:CGPoint)->UIColor?
     {
+        var r = UIColor.blackColor()
         let pixel = UnsafeMutablePointer<CUnsignedChar>.alloc(4)
-        var colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
-        let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)
+        let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo.rawValue)
         
         CGContextTranslateCTM(context, -point.x, -point.y)
-        if let paletteEditor = self.view.viewWithTag(200){
-            self.view.viewWithTag(200)!.layer.renderInContext(context)
-            var color:UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
+        if self.view.viewWithTag(200) != nil {
+            let paletteEditorView = self.view.viewWithTag(200)!
+            paletteEditorView.layer.renderInContext(context!)
+            let color: UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
             pixel.dealloc(4)
-            return color
+            r = color
         }
-        return nil
+        else {
+            debugPrint("Return value not set in ViewController.getPixelColorAtPoint()")
+        }
+        
+        return r
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
         if let touch = touches.first
         {
@@ -112,7 +118,7 @@ class ViewController: UIViewController {
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent? ) {
         super.touchesMoved(touches, withEvent: event)
         if let touch = touches.first
         {

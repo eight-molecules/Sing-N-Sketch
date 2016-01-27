@@ -60,8 +60,8 @@ class SketchingView: UIView {
         palette.addColor(429, color: UIColor.purpleColor())
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        if let touch = touches.first as? UITouch {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
             points.0 = touch.previousLocationInView(self)
             
             points.1 = touch.previousLocationInView(self)
@@ -70,8 +70,8 @@ class SketchingView: UIView {
         }
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        if let touch = touches.first as? UITouch{
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
             
             let currentPoint = touch.locationInView(self)
             
@@ -115,11 +115,11 @@ class SketchingView: UIView {
         setNeedsDisplay()
     }
     
-    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    override func touchesCancelled(touches: Set<UITouch>!, withEvent event: UIEvent!) {
         touchesEnded(touches!, withEvent: event)
     }
     
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         UIGraphicsBeginImageContext(canvasView.frame.size)
         
