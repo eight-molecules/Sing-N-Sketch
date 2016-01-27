@@ -8,6 +8,14 @@
 
 import Foundation
 
+extension UIColor {
+    var components:(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        return (r,g,b,a)
+    }
+}
+
 class Palette {
     class Channel {
         // Dictionary storage of the frequency mappings
@@ -148,10 +156,12 @@ class Palette {
     
     // Function to add color from a UIColor
     func addColor(frequency: Float, color: UIColor) {
-        
-        let r = color.CIColor.red
-        let g = color.CIColor.green
-        let b = color.CIColor.blue
+
+        let colorComponents = color.components
+        let r = colorComponents.red
+        let g = colorComponents.green
+        let b = colorComponents.blue
+
         addColor(frequency, r: r, g: g, b: b)
     }
     
