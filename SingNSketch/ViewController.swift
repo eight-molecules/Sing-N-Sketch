@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         
         screenEdgeRecognizer.edges = .Left
         sketchingView.addGestureRecognizer(screenEdgeRecognizer)
-    }
+            }
     
     override func viewDidAppear(animated: Bool) {
         sketchingView.audio.start()
@@ -352,6 +352,12 @@ class ViewController: UIViewController {
     
     @IBAction func unmute(sender: UIButton) {
         AKSettings.shared().audioInputEnabled = true
+    }
+    
+    @IBAction func drawPaletteEditor() {
+        paletteEditor = PaletteEditorView(frame: CGRect(x: 0, y: 0, width: 200, height: self.view.frame.height), palette: sketchingView.palette)
+
+        self.view.addSubview(paletteEditor)
     }
 }
 
