@@ -27,8 +27,31 @@ class PaletteEditorView: UIView {
         super.init(frame: frame)
         self.palette = palette
         self.gradientView = UIView(frame: CGRectMake(0, 0, self.frame.width, 50))
+        
+        self.drawPaletteEditor(palette)
     }
     
+    func open() {
+        UIView.animateWithDuration(0.7, animations: {
+            var menuFrame = self.frame
+            menuFrame.origin.x += menuFrame.size.width
+            
+            self.frame = menuFrame
+            }
+        )
+    }
+    
+    func close() {
+        UIView.animateWithDuration(0.7, animations: {
+            var frame = self.frame
+            frame.origin.x -= frame.size.width
+            
+            self.frame = frame
+            }, completion: { finished in
+                self.removeFromSuperview()
+            }
+        )
+    }
     // Returns the color data of the pixel at the currently selected point
     func getPixelColorAtPoint(point: CGPoint) -> UIColor? {
         // Capture pixel color data from the background image
@@ -109,10 +132,9 @@ class PaletteEditorView: UIView {
         colorPickerView.addSubview(gradientView)
     }
     
-    func drawPaletteEditor(brush: Brush, navBarHeight: CGFloat, viewHeight: CGFloat, sketchingView: SketchingView) {
+    func drawPaletteEditor(palette: Palette) {
         // This is bad, AND copied from drawMenu.
         // Welcome to All Nighter 2: Electric Bugaloo
-        super.frame = CGRectMake(-250, 0, 250, viewHeight)
         self.backgroundColor = UIColor.clearColor()
         self.alpha = 1
         self.tag = 200
@@ -135,9 +157,9 @@ class PaletteEditorView: UIView {
         title.textColor = UIColor.whiteColor()
         self.addSubview(title)
         
-        let mappingScrollView = UIScrollView(frame: CGRectMake(0, navBarHeight + 270, 250, CGFloat(viewHeight - (navBarHeight + 230))))
+        let mappingScrollView = UIScrollView(frame: CGRectMake(0, 270, 250, self.frame.width))
             
-        let mappings = sketchingView.palette.getMappings().sort(<)
+        let mappings = palette.getMappings().sort(<)
         let colorView = drawPaletteView(mappings)
         colorView.tag = 2000
             
@@ -164,7 +186,7 @@ class PaletteEditorView: UIView {
         add.backgroundColor = UIColor.clearColor()
         add.setTitle("Add", forState: UIControlState.Normal)
         add.addTarget(self, action: "addMapping", forControlEvents: UIControlEvents.TouchUpInside)
-        add.backgroundColor = brush.color
+        add.backgroundColor = UIColor.blackColor()
         add.tag = 2010
         add.color = colorPicker.color
             
@@ -176,13 +198,5 @@ class PaletteEditorView: UIView {
                 action: "closeMenu")
         menuSwipeGestureRecognizer.direction = .Left
         self.addGestureRecognizer(menuSwipeGestureRecognizer)
-            
-        UIView.animateWithDuration(0.7, animations: {
-            var menuFrame = self.frame
-            menuFrame.origin.x += menuFrame.size.width
-                
-            self.frame = menuFrame
-            }
-        )
     }
 }

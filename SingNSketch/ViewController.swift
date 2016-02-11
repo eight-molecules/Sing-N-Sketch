@@ -255,7 +255,7 @@ class ViewController: UIViewController {
             openPaletteEditor.frame = CGRectMake(10, 240 + offset.y, 230, 40)
             openPaletteEditor.backgroundColor = UIColor(white: 0.1, alpha: 0)
             openPaletteEditor.setTitle("Palette Editor", forState: UIControlState.Normal)
-            openPaletteEditor.addTarget(self, action: "drawPaletteEditor", forControlEvents: UIControlEvents.TouchUpInside)
+            openPaletteEditor.addTarget(self, action: "drawPaletteEditor:", forControlEvents: UIControlEvents.TouchUpInside)
             openPaletteEditor.layer.shadowOffset = CGSize(width: 0, height: 1)
             openPaletteEditor.layer.shadowOpacity = 0.7
             openPaletteEditor.layer.shadowRadius = 2
@@ -309,17 +309,8 @@ class ViewController: UIViewController {
                 }
             )
         }
-        else if let paletteEditor = self.view.viewWithTag(200) {
-            UIView.animateWithDuration(0.7, animations: {
-                var frame = paletteEditor.frame
-                frame.origin.x -= frame.size.width
-                
-                paletteEditor.frame = frame
-                }, completion: { finished in
-                    paletteEditor.removeFromSuperview()
-                }
-            )
-            
+        else {
+            paletteEditor.close()
         }
         sketchingView.userInteractionEnabled = true
     }
@@ -354,10 +345,10 @@ class ViewController: UIViewController {
         AKSettings.shared().audioInputEnabled = true
     }
     
-    @IBAction func drawPaletteEditor() {
-        self.paletteEditor = PaletteEditorView(frame: CGRect(x: 0, y: 0, width: 200, height: self.view.frame.height), palette: sketchingView.palette)
-
-        self.view.addSubview(self.paletteEditor)
+    @IBAction func drawPaletteEditor(sender: UIButton) {
+        paletteEditor = PaletteEditorView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height), palette: sketchingView.palette)
+        self.view.addSubview(paletteEditor)
+        paletteEditor.open()
     }
 }
 
