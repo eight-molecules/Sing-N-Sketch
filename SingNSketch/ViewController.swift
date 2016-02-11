@@ -1,33 +1,13 @@
 import UIKit
 
-extension Dictionary {
-    
-    func sort(isOrderedBefore: (Key, Key) -> Bool) -> [(Key, Value)] {
-        var result: [(Key, Value)] = []
-        let sortedKeys = Array(keys).sort(isOrderedBefore)
-        for key in sortedKeys {
-            result.append(key, self[key]!)
-        }
-        return result
-    }
-}
-
-class PaletteButton: UIButton {
-    var frequency: Float! = 0
-    var color: UIColor! = UIColor.blackColor()
-}
-
-class ColorPickerView: UIImageView {
-    var color: UIColor! = UIColor.blackColor()
-    var gradientColor: UIColor! = UIColor.blackColor()
-}
-
 class ViewController: UIViewController {
     
     
     @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var canvasView: UIImageView!
     @IBOutlet weak var menuView: MenuView!
+    @IBOutlet weak var navView: UIView!
+    @IBOutlet weak var paletteEditor: PaletteEditorView!
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
     @IBOutlet weak var show: UIButton!
@@ -35,10 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var new: UIButton!
     @IBOutlet weak var undo: UIButton!
     @IBOutlet weak var redo: UIButton!
-    @IBOutlet weak var navBarLabel: UINavigationItem!
     var navTitle: String = "Sing N' Sketch"
-    
-    var gradient: CAGradientLayer = CAGradientLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,15 +28,11 @@ class ViewController: UIViewController {
         
         screenEdgeRecognizer.edges = .Left
         sketchingView.addGestureRecognizer(screenEdgeRecognizer)
-        navBarLabel.title = navTitle
-        
-        self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 1)
-        self.navigationController?.navigationBar.layer.shadowOpacity = 0.7
-        self.navigationController?.navigationBar.layer.shadowRadius = 2
     }
     
     override func viewDidAppear(animated: Bool) {
         sketchingView.audio.start()
+        debugPrint("Started Audio")
         sketchingView.audio.update()
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
@@ -68,80 +41,25 @@ class ViewController: UIViewController {
     
     override func viewWillDisappear(animated: Bool) {
         sketchingView.audio.stop()
+        debugPrint("Stopping Audio")
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    //returns the color data of the pixel at the currently selected point
-    func getPixelColorAtPoint(point:CGPoint)->UIColor?
-    {
-        var r = UIColor.blackColor()
-        let pixel = UnsafeMutablePointer<CUnsignedChar>.alloc(4)
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)
-        let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo.rawValue)
-        
-        CGContextTranslateCTM(context, -point.x, -point.y)
-        if self.view.viewWithTag(200) != nil {
-            let paletteEditorView = self.view.viewWithTag(200)!
-            paletteEditorView.layer.renderInContext(context!)
-            let color: UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
-            pixel.dealloc(4)
-            r = color
-        }
-        else {
-            debugPrint("Return value not set in ViewController.getPixelColorAtPoint()")
-        }
-        
-        return r
-    }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
-        if let touch = touches.first
-        {
-            let point = touch.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
-            if 0.0 <= point.x && point.x <= 250{
-                if 39.0 <= point.y && point.y <= 200{
-                    let color = getPixelColorAtPoint(point) // colorAtPosition(point)
-                    updateColorPicker(color!, isGradient: false)
-                }
-                else if 200 <= point.y && point.y <= 219 + 30{
-                    let color = getPixelColorAtPoint(point) // colorAtPosition(point)
-                    updateColorPicker(color!, isGradient: true)
-                }
-            }
-        }
-    }
-    
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent? ) {
-        super.touchesMoved(touches, withEvent: event)
-        if let touch = touches.first
-        {
-            let t = touch
-            let point = t.locationInView(self.view.viewWithTag(200)?.viewWithTag(3000))
-            if 0.0 <= point.x && point.x <= 250{
-                if 39.0 <= point.y && point.y <= 200{
-                    let color = getPixelColorAtPoint(point)//colorAtPosition(point)
-                    updateColorPicker(color!, isGradient: false)
-                }
-                else if 200 <= point.y && point.y <= 219 + 30{
-                    let color = getPixelColorAtPoint(point)//colorAtPosition(point)
-                    updateColorPicker(color!, isGradient: true)
-                }
-            }
-        }
-    }
-    
+    // Save function for the current canvas
     @IBAction func save(sender: UIButton) {
-        UIImageWriteToSavedPhotosAlbum(canvasView.image!, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        if let img = canvasView.image {
+            // "image:" is defined below
+            // as func image(...
+            UIImageWriteToSavedPhotosAlbum(img, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        }
     }
     
-    
+    // Alert image creation status on return
     func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
         if error == nil {
             let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .Alert)
@@ -154,8 +72,9 @@ class ViewController: UIViewController {
         }
     }
     
+    // Hide navigation
     func hide(sender: UIButton) {
-        navigationController!.navigationBarHidden = true
+        // navView.hidden = true
         show.hidden = false
         
         // Close the menu if it's in the view
@@ -169,7 +88,9 @@ class ViewController: UIViewController {
             closeMenu()
         }
         // Close the Palette Editor if it's in the view.
-        if let paletteEditor = self.view.viewWithTag(200) {
+        if self.view.viewWithTag(200) != nil {
+            let paletteEditor = self.view.viewWithTag(200)!
+            
             UIView.animateWithDuration(0.7, animations: {
                 var frame = paletteEditor.frame
                 frame.origin.x -= frame.size.width
@@ -185,7 +106,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func show(sender: UIButton) {
-        navigationController!.navigationBarHidden = false
         show.hidden = true
     }
     
@@ -200,213 +120,9 @@ class ViewController: UIViewController {
         }
     }
     
-    func getPaletteView() -> UIView {
-        let mappings = sketchingView.palette.getMappings().sort(<)
-        
-        let paletteView = UIView()
-        var i: Int = 0
-        var xOrigin: CGFloat = 10
-        var yOrigin: CGFloat = 0
-        
-        for (f, c) in mappings {
-            
-            // Ignore the default mappings for 0Hz and 20kHz
-            if f < 1 || f > 19999 {
-                continue
-            }
-            
-            if i % 2 == 0 {
-                xOrigin = 10
-                yOrigin = CGFloat(i * 20)
-            }
-            else {
-                xOrigin = 110
-            }
-            
-            let colorView = UIView(frame: CGRectMake(xOrigin, yOrigin, 100, 30))
-            colorView.backgroundColor = UIColor.clearColor()
-            
-            let delete = PaletteButton(frame: CGRectMake(0, 0, 40, 30))
-            delete.backgroundColor = UIColor.clearColor()
-            delete.setTitle("-", forState: UIControlState.Normal)
-            delete.addTarget(self, action: "deleteMapping:", forControlEvents: UIControlEvents.TouchUpInside)
-            delete.frequency = f
-            colorView.addSubview(delete)
-            
-            let color = UILabel(frame: CGRectMake(50, 0, 50, 30))
-            color.backgroundColor = c
-            color.text = Int(f).description
-            color.textAlignment = .Center
-            colorView.addSubview(color)
-            
-            i = (i + 1)
-            paletteView.addSubview(colorView)
-        }
-        
-        paletteView.frame = CGRectMake(0, 0, 120, CGFloat(i * 35))
-        
-        return paletteView
-    }
-    
-    func updatePaletteView() {
-        if let paletteEditor = self.view.viewWithTag(200) {
-            if let scrollView = paletteEditor.viewWithTag(300) {
-                if var paletteView = scrollView.viewWithTag(2000) {
-                    paletteView.removeFromSuperview()
-                    paletteView = getPaletteView()
-                    paletteView.tag = 2000
-                    scrollView.addSubview(paletteView)
-                }
-            }
-        }
-    }
-    func updateColorPicker(color: UIColor, isGradient: Bool) {
-        if let paletteEditor = self.view.viewWithTag(200) {
-            if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
-                let add = paletteEditor.viewWithTag(2010) as! UIButton
-                
-                colorPicker.color = color
-                if(isGradient == false){
-                    colorPicker.gradientColor = color
-                }
-                
-                let gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
-                gradient.startPoint = CGPointMake(0.0, 0.5)
-                gradient.endPoint = CGPointMake(1.0, 0.5)
-                gradient.frame = gradientView.bounds
-                gradient.colors = [UIColor.whiteColor().CGColor, colorPicker.gradientColor.CGColor, UIColor.blackColor().CGColor]
-                gradientView.layer.insertSublayer(gradient, atIndex: 0)
-                colorPicker.addSubview(gradientView)
-                
-                add.backgroundColor = colorPicker.color
-            }
-        }
-    }
-    
-    func drawPaletteEditor() {
-        
-        closeMenu()
-        sketchingView.userInteractionEnabled = false
-        
-        // This should never run. If it does, something called the wrong function
-        if let paletteEditor = self.view.viewWithTag(200) {
-            UIView.animateWithDuration(0.7, animations: {
-                var frame = paletteEditor.frame
-                frame.origin.x -= frame.size.width
-                
-                paletteEditor.frame = frame
-                }, completion: { finished in
-                    paletteEditor.removeFromSuperview()
-                }
-            )
-            sketchingView.userInteractionEnabled = true
-        }
-        else {
-            
-            // This is bad, AND copied from drawMenu.
-            // Welcome to All Nighter 2: Electric Bugaloo
-            let menuView = MenuView(frame: CGRectMake(-250, 0, 250, self.view.frame.height))
-            menuView.backgroundColor = UIColor.clearColor()
-            menuView.alpha = 1
-            menuView.tag = 200
-            menuView.userInteractionEnabled = true
-            menuView.layer.shadowOffset = CGSize(width: 3, height: -2)
-            menuView.layer.shadowOpacity = 0.7
-            menuView.layer.shadowRadius = 2
-            
-            // Blur Effect
-            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
-            let blurEffectView = UIVisualEffectView(effect: blurEffect)
-            blurEffectView.frame = menuView.bounds
-            menuView.addSubview(blurEffectView)
-            
-            
-            let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
-            title.text = "Palette Editor"
-            title.backgroundColor = UIColor.clearColor()
-            title.textAlignment = NSTextAlignment.Center
-            title.textColor = UIColor.whiteColor()
-            menuView.addSubview(title)
-            
-            let scrollView = UIScrollView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + 270, 250, CGFloat(self.view.frame.height - (self.navigationController!.navigationBar.frame.height + 230))))
-            let colorView = getPaletteView()
-            colorView.tag = 2000
-            
-            scrollView.contentSize = colorView.frame.size
-            scrollView.addSubview(colorView)
-            scrollView.tag = 300
-            let colorPicker = ColorPickerView()
-            colorPicker.tag = 3000
-            
-            colorPicker.frame = CGRectMake(0, 0, menuView.frame.width, 200)
-            
-            UIGraphicsBeginImageContext(CGSize(width: menuView.frame.width, height: 180))
-            UIImage(named: "colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
-            colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            let gradientView: UIView = UIView(frame: CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + colorPicker.frame.height, colorPicker.frame.width, 20 + 30))
-            gradient.startPoint = CGPointMake(0.0, 0.5)
-            gradient.endPoint = CGPointMake(1.0, 0.5)
-            gradient.frame = gradientView.bounds
-            gradient.colors = [UIColor.whiteColor().CGColor, colorPicker.gradientColor.CGColor, UIColor.blackColor().CGColor]
-            gradientView.layer.insertSublayer(gradient, atIndex: 0)
-            colorPicker.addSubview(gradientView)
-            
-            let add = PaletteButton(frame: CGRectMake(10, 225 + 30, 230, 40))
-            
-            add.backgroundColor = UIColor.clearColor()
-            add.setTitle("Add", forState: UIControlState.Normal)
-            add.addTarget(self, action: "addMapping", forControlEvents: UIControlEvents.TouchUpInside)
-            add.backgroundColor = sketchingView.brush.color
-            add.tag = 2010
-            add.color = colorPicker.color
-            
-            menuView.addSubview(add)
-            menuView.addSubview(colorPicker)
-            menuView.addSubview(scrollView)
-            
-            let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
-                action: "closeMenu")
-            menuSwipeGestureRecognizer.direction = .Left
-            menuView.addGestureRecognizer(menuSwipeGestureRecognizer)
-            
-            self.view.addSubview(menuView)
-            
-            UIView.animateWithDuration(0.7, animations: {
-                var menuFrame = menuView.frame
-                menuFrame.origin.x += menuFrame.size.width
-                
-                menuView.frame = menuFrame
-                }
-            )
-        }
-        
-    }
-    
-    func deleteMapping(sender: PaletteButton) {
-        sketchingView.palette.deleteColor(sender.frequency)
-        updatePaletteView()
-    }
-    
-    func addMapping() {
-        if let paletteEditor = self.view.viewWithTag(200) {
-            if let colorPicker = paletteEditor.viewWithTag(3000) as? ColorPickerView {
-                for _ in 1...25 {
-                    sketchingView.audio.update()
-                }
-                
-                sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colorPicker.color)
-                updatePaletteView()
-            }
-        }
-    }
-    
     
     func drawMenu() {
         sketchingView.userInteractionEnabled = false
-        
-        var offset = (x: 0, y: self.navigationController!.navigationBar.frame.height)
         
         // MenuView
         if (self.view.viewWithTag(100) != nil) {
@@ -436,8 +152,6 @@ class ViewController: UIViewController {
             menuView.addSubview(blurEffectView)
             
             if show.hidden == false {
-                offset.y = 0
-                
                 let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
                 title.text = navTitle
                 title.backgroundColor = UIColor.clearColor()
@@ -446,7 +160,7 @@ class ViewController: UIViewController {
                 menuView.addSubview(title)
                 
             }
-            
+            let offset = (x: CGFloat(0), y: CGFloat(0))
             // Can you just call MenuItem.item as UIButton if you know it's a button?
             let width = UIView(frame: CGRectMake(10, 40 + offset.y, 230, 40))
             let widthSlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
@@ -566,7 +280,7 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func showMenuView(sender: UIBarButtonItem) {
+    @IBAction func showMenuView(sender: UIButton) {
         if (self.view.viewWithTag(100) != nil) {
             closeMenu()
         }
@@ -577,10 +291,7 @@ class ViewController: UIViewController {
     
     func swipeMenu(sender: UIScreenEdgePanGestureRecognizer) {
         if sender.state == .Ended {
-            if (self.view.viewWithTag(100) != nil) {
-                // Nothing happens if we swipe and the menu is open
-            }
-            else {
+            if self.view.viewWithTag(100) == nil {
                 drawMenu()
             }
         }

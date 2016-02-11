@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wT0-9R-Cwn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <scenes>
-        <!--Sing N' Sketch-->
+        <!--Application-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Application" id="vXZ-lx-hvc" customClass="ViewController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="80x-P8-Tp7"/>
                         <viewControllerLayoutGuide type="bottom" id="qDO-Zf-A9M"/>
@@ -16,21 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view autoresizesSubviews="NO" contentMode="redraw" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                            <view contentMode="redraw" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jme-l1-KiE" customClass="SketchingView" customModule="Sing_N_Sketch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qIa-Kk-11Z" userLabel="canvasView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <animations/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <animations/>
-                                        <gestureRecognizers/>
                                     </imageView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XwK-x4-01C">
                                         <rect key="frame" x="10" y="10" width="64" height="64"/>
-                                        <animations/>
                                         <state key="normal" title="☻">
                                             <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -38,8 +32,11 @@
                                             <action selector="show:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="NEK-fJ-KCg"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-mn-DMK" userLabel="drawView">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
                                 </subviews>
-                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -48,7 +45,6 @@
                                 </connections>
                             </view>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -71,7 +67,6 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Q7-dJ-3vJ">
                                 <rect key="frame" x="548" y="7" width="32" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <animations/>
                                 <state key="normal" title="Hide">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -82,10 +77,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
-                    <splitViewMasterSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="canvasView" destination="qIa-Kk-11Z" id="Avx-na-fXJ"/>
-                        <outlet property="navBarLabel" destination="x1h-l8-JK5" id="KtO-z6-JPY"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
                     </connections>
@@ -97,19 +90,19 @@
         <!--Navigation Controller-->
         <scene sceneID="0qb-E8-GVr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wT0-9R-Cwn" customClass="NavigationController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HY3-km-afq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="wT0-9R-Cwn" customClass="NavigationController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1kD-DU-loy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
+                        <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="Ot4-Fi-k0v"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HY3-km-afq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="313" y="522"/>
         </scene>

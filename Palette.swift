@@ -8,6 +8,18 @@
 
 import Foundation
 
+extension Dictionary {
+    
+    func sort(isOrderedBefore: (Key, Key) -> Bool) -> [(Key, Value)] {
+        var result: [(Key, Value)] = []
+        let sortedKeys = Array(keys).sort(isOrderedBefore)
+        for key in sortedKeys {
+            result.append(key, self[key]!)
+        }
+        return result
+    }
+}
+
 extension UIColor {
     var components:(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
