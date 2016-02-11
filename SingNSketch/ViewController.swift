@@ -7,7 +7,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var canvasView: UIImageView!
     @IBOutlet weak var menuView: MenuView!
     @IBOutlet weak var navView: UIView!
-    @IBOutlet weak var paletteEditor: PaletteEditorView!
+    var paletteEditor: PaletteEditorView!
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
     @IBOutlet weak var show: UIButton!
@@ -355,9 +355,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func drawPaletteEditor() {
-        paletteEditor = PaletteEditorView(frame: CGRect(x: 0, y: 0, width: 200, height: self.view.frame.height), palette: sketchingView.palette)
+        self.paletteEditor = PaletteEditorView(frame: CGRect(x: 0, y: 0, width: 200, height: self.view.frame.height), palette: sketchingView.palette)
 
-        self.view.addSubview(paletteEditor)
+        self.view.addSubview(self.paletteEditor)
     }
 }
 
