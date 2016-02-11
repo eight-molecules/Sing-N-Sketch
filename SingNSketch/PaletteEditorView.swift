@@ -1,9 +1,7 @@
 import Foundation
 import UIKit
 
-
-
-class MappingButton: UIButton {
+class PaletteButton: UIButton {
     var frequency: Float! = 0
     var color: UIColor! = UIColor.blackColor()
 }
@@ -19,8 +17,8 @@ class PaletteEditorView: UIView {
     var colorPickerView: ColorPickerView = ColorPickerView()
     var gradientView: UIView?
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
     required init(frame: CGRect, palette: Palette) {
@@ -29,6 +27,7 @@ class PaletteEditorView: UIView {
         self.gradientView = UIView(frame: CGRectMake(0, 0, self.frame.width, 50))
         
         self.drawPaletteEditor(palette)
+        debugPrint("Palette init(frame, palette) finished (PaletteEditorView:32)")
     }
     
     func open() {
@@ -102,8 +101,9 @@ class PaletteEditorView: UIView {
             let delete = PaletteButton(frame: CGRectMake(0, 0, 40, 30))
             delete.backgroundColor = UIColor.clearColor()
             delete.setTitle("-", forState: UIControlState.Normal)
-            delete.addTarget(self, action: "deleteMapping:", forControlEvents: UIControlEvents.TouchUpInside)
+            
             delete.frequency = f
+            delete.addTarget(self, action: "deleteMapping:", forControlEvents: UIControlEvents.TouchUpInside)
             colorView.addSubview(delete)
             
             let color = UILabel(frame: CGRectMake(50, 0, 50, 30))
@@ -121,6 +121,11 @@ class PaletteEditorView: UIView {
         return paletteView
     }
     
+    func deleteMapping(sender: PaletteButton) {
+        palette.deleteColor(sender.frequency)
+        drawPaletteView(self.palette.getMappings().sort(<))
+        
+    }
     func updateColorPicker(color: UIColor, gradientView: UIView, isGradient: Bool) {
         let gradient: CAGradientLayer = CAGradientLayer()
         
