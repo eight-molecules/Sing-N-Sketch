@@ -16,9 +16,9 @@ class PaletteEditorViewController: UIViewController {
         super.init(coder: coder)
     }
     
-    convenience init?(coder: NSCoder, palette: Palette) {
+    convenience init?(coder: NSCoder, palette: Palette, audio: AudioInterface) {
         self.init(coder: coder)
-        self.paletteEditor = PaletteEditorView(frame: CGRect(x: 0, y: 0, width: 250, height: 250), palette: palette)
+        self.paletteEditor = PaletteEditorView(frame: CGRect(x: 0, y: 0, width: 250, height: 250), palette: palette, audio: audio)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

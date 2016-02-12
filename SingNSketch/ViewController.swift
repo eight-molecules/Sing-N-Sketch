@@ -3,11 +3,11 @@ import UIKit
 class ViewController: UIViewController {
     
     
-    @IBOutlet weak var sketchingView: SketchingView!
-    @IBOutlet weak var canvasView: UIImageView!
-    @IBOutlet weak var menuView: MenuView!
-    @IBOutlet weak var navView: UIView!
-    var paletteEditor: PaletteEditorView!
+    @IBOutlet weak var sketchingView: SketchingView! = nil
+    @IBOutlet weak var canvasView: UIImageView! = nil
+    @IBOutlet weak var menuView: MenuView! = nil
+    @IBOutlet weak var navView: UIView! = nil
+    @IBOutlet weak var paletteEditor: PaletteEditorView! = nil
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
     @IBOutlet weak var show: UIButton!
@@ -346,9 +346,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func drawPaletteEditor(sender: UIButton) {
-        paletteEditor = PaletteEditorView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height), palette: sketchingView.palette)
-        self.view.addSubview(paletteEditor)
-        paletteEditor.open()
+        if paletteEditor == nil {
+            let paletteEditor = PaletteEditorView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height), palette: sketchingView.palette, audio: sketchingView.audio)
+            self.view.addSubview(paletteEditor)
+        
+            paletteEditor.open()
+        }
+        else {
+            debugPrint("Editor already open!")
+        }
     }
 }
 

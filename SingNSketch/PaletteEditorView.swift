@@ -13,44 +13,51 @@ class ColorPickerView: UIImageView {
 
 class PaletteEditorView: UIView {
     var paletteView: UIView = UIView()
-    var palette: Palette = Palette()
-    var colorPickerView: ColorPickerView = ColorPickerView()
-    var gradientView: UIView?
+    var palette: Palette!
+    var audio: AudioInterface!
+    var colorPicker: ColorPickerView!
+    var gradientView: UIView!
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    required init(frame: CGRect, palette: Palette) {
+    required init(frame: CGRect, palette: Palette, audio: AudioInterface) {
         super.init(frame: frame)
+        
+        // Init properties sent from the superview
         self.palette = palette
+        self.audio = audio
+        
+        // Generating views we need data from
+        self.colorPicker = ColorPickerView(frame: CGRectMake(0, 0, self.frame.width, 200))
         self.gradientView = UIView(frame: CGRectMake(0, 0, self.frame.width, 50))
         
+        // Update UIView attributes
+        self.backgroundColor = UIColor.clearColor()
+        self.alpha = 1
+        self.tag = 200
+        self.userInteractionEnabled = true
+        self.layer.shadowOffset = CGSize(width: 3, height: -2)
+        self.layer.shadowOpacity = 0.7
+        self.layer.shadowRadius = 2
+        
+        // Apply Blur Effect to background
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.bounds
+        addSubview(blurEffectView)
+        
         self.drawPaletteEditor(palette)
+        
         debugPrint("Palette init(frame, palette) finished (PaletteEditorView:32)")
     }
     
-    func open() {
-        UIView.animateWithDuration(0.7, animations: {
-            var menuFrame = self.frame
-            menuFrame.origin.x += menuFrame.size.width
-            
-            self.frame = menuFrame
-            }
-        )
-    }
-    
-    func close() {
-        UIView.animateWithDuration(0.7, animations: {
-            var frame = self.frame
-            frame.origin.x -= frame.size.width
-            
-            self.frame = frame
-            }, completion: { finished in
-                self.removeFromSuperview()
-            }
-        )
-    }
+      // // // // // // //
+      //                //
+      // Color Picker  //
+    ////                // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
     // Returns the color data of the pixel at the currently selected point
     func getPixelColorAtPoint(point: CGPoint) -> UIColor? {
         // Capture pixel color data from the background image
@@ -69,11 +76,29 @@ class PaletteEditorView: UIView {
             return ret
         }
         else {
-            debugPrint("Return value not set in ViewController.getPixelColorAtPoint()")
+            debugPrint("Could not generate pixel [PaletteEditorView.swift:81]")
         }
     }
     
-    func drawPaletteView(mappings: Array<(Float, UIColor)>) -> UIView {
+    // ToDo:
+    func updateColorPicker(color: UIColor, view: UIView, isGradient: Bool) {
+        debugPrint(colorPicker.subviews.debugDescription)
+        let gradient: CAGradientLayer = CAGradientLayer()
+        
+        gradient.startPoint = CGPointMake(0.0, 0.5)
+        gradient.endPoint = CGPointMake(1.0, 0.5)
+        gradient.frame = gradientView.bounds
+        gradient.colors = [UIColor.whiteColor().CGColor, color.CGColor, UIColor.blackColor().CGColor]
+        view.layer.insertSublayer(gradient, atIndex: 0)
+        colorPicker.addSubview(gradientView)
+    }
+    
+      // // // // // // //
+      //                //
+      // Mappings View  //
+    ////                // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    
+    func drawMappingsView(mappings: Array<(Float, UIColor)>) -> UIView {
         
         paletteView = UIView()
         var i: Int = 0
@@ -121,40 +146,19 @@ class PaletteEditorView: UIView {
         return paletteView
     }
     
-    func deleteMapping(sender: PaletteButton) {
-        palette.deleteColor(sender.frequency)
-        drawPaletteView(self.palette.getMappings().sort(<))
+    func generateColorMappingView() -> UIScrollView {
+        let view = UIScrollView(frame: CGRectMake(0, colorPicker.frame.height + 50, 250, self.frame.width))
         
-    }
-    func updateColorPicker(color: UIColor, gradientView: UIView, isGradient: Bool) {
-        let gradient: CAGradientLayer = CAGradientLayer()
+        let mappings = palette.getMappings().sort(<)
+        let mappingsView = drawMappingsView(mappings)
         
-        gradient.startPoint = CGPointMake(0.0, 0.5)
-        gradient.endPoint = CGPointMake(1.0, 0.5)
-        gradient.frame = gradientView.bounds
-        gradient.colors = [UIColor.whiteColor().CGColor, color.CGColor, UIColor.blackColor().CGColor]
-        gradientView.layer.insertSublayer(gradient, atIndex: 0)
-        colorPickerView.addSubview(gradientView)
+        view.addSubview(mappingsView)
+        view.contentSize = mappingsView.frame.size
+        
+        return view
     }
     
     func drawPaletteEditor(palette: Palette) {
-        // This is bad, AND copied from drawMenu.
-        // Welcome to All Nighter 2: Electric Bugaloo
-        self.backgroundColor = UIColor.clearColor()
-        self.alpha = 1
-        self.tag = 200
-        self.userInteractionEnabled = true
-        self.layer.shadowOffset = CGSize(width: 3, height: -2)
-        self.layer.shadowOpacity = 0.7
-        self.layer.shadowRadius = 2
-        
-        // Blur Effect
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = self.bounds
-        addSubview(blurEffectView)
-        
-        
         let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
         title.text = "Palette Editor"
         title.backgroundColor = UIColor.clearColor()
@@ -162,46 +166,74 @@ class PaletteEditorView: UIView {
         title.textColor = UIColor.whiteColor()
         self.addSubview(title)
         
-        let mappingScrollView = UIScrollView(frame: CGRectMake(0, 270, 250, self.frame.width))
-            
-        let mappings = palette.getMappings().sort(<)
-        let colorView = drawPaletteView(mappings)
-        colorView.tag = 2000
-            
-        mappingScrollView.contentSize = colorView.frame.size
-        mappingScrollView.addSubview(colorView)
-        mappingScrollView.tag = 300
         
-        let colorPicker = ColorPickerView()
         colorPicker.tag = 3000
         
-        colorPicker.frame = CGRectMake(0, 0, self.frame.width, 200)
-        
+        let mappingScrollView = generateColorMappingView()
         UIGraphicsBeginImageContext(CGSize(width: self.frame.width, height: 180))
         UIImage(named: "colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
         
         colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         
-        updateColorPicker(colorPicker.gradientColor, gradientView: gradientView!, isGradient: false)
+        updateColorPicker(colorPicker.gradientColor, view: gradientView, isGradient: false)
         colorPicker.addSubview(gradientView!)
         
-        let add = PaletteButton(frame: CGRectMake(10, 225 + 30, 230, 40))
+        let add = PaletteButton(frame: CGRectMake(10, colorPicker.frame.height, 230, 40))
         
         add.backgroundColor = UIColor.clearColor()
         add.setTitle("Add", forState: UIControlState.Normal)
-        add.addTarget(self, action: "addMapping", forControlEvents: UIControlEvents.TouchUpInside)
+        add.addTarget(self, action: "addMapping:", forControlEvents: UIControlEvents.TouchUpInside)
         add.backgroundColor = UIColor.blackColor()
         add.tag = 2010
         add.color = colorPicker.color
-            
+        add.frequency = audio.clearFrequency()
+        
         self.addSubview(add)
         self.addSubview(colorPicker)
         self.addSubview(mappingScrollView)
-            
-        let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self,
-                action: "closeMenu")
+        
+        let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "close")
         menuSwipeGestureRecognizer.direction = .Left
         self.addGestureRecognizer(menuSwipeGestureRecognizer)
     }
+    
+    /////////////
+    // Actions //
+    //         ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    func addMapping(sender: PaletteButton) {
+        palette.addColor(sender.frequency, color: sender.color)
+    }
+    
+    
+    func deleteMapping(sender: PaletteButton) {
+        self.palette.deleteColor(sender.frequency)
+        drawMappingsView(self.palette.getMappings().sort(<))
+        
+    }
+    
+    func open() {
+        UIView.animateWithDuration(0.7, animations: {
+            var menuFrame = self.frame
+            debugPrint("Palette Editor Opening")
+            menuFrame.origin.x += menuFrame.size.width
+            
+            self.frame = menuFrame
+            }
+        )
+    }
+    
+    func close() {
+        UIView.animateWithDuration(0.7, animations: {
+            var frame = self.frame
+            frame.origin.x -= frame.size.width
+            
+            self.frame = frame
+            }, completion: { finished in
+                debugPrint("Palette Editor Closing")
+                self.removeFromSuperview()
+            }
+        )
+    }
+    
 }

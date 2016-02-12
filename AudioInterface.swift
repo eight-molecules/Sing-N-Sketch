@@ -49,7 +49,7 @@ class AudioInterface {
     var freqBuffer: Int = 25
     let ampBuffer: Int = 3
     
-    init() {
+    required init() {
         AKSettings.shared().audioInputEnabled = true
         frequency = MovingAverage(period: freqBuffer)
         amplitude = MovingAverage(period: ampBuffer)
@@ -82,5 +82,15 @@ class AudioInterface {
     func update() {
         frequency.addSample(analyzer.trackedFrequency.floatValue)
         amplitude.addSample(analyzer.trackedAmplitude.floatValue)
+    }
+    
+    func clearFrequency() -> Float {
+        var i = 0
+        repeat {
+            frequency.addSample(analyzer.trackedFrequency.floatValue)
+            i++
+        }
+        while i < freqBuffer
+        return frequency.average
     }
 }
