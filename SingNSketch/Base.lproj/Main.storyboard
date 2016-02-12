@@ -87,24 +87,5 @@
             </objects>
             <point key="canvasLocation" x="1149" y="539"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="0qb-E8-GVr">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HY3-km-afq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="wT0-9R-Cwn" customClass="NavigationController" customModule="Sing_N_Sketch" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1kD-DU-loy">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="Ot4-Fi-k0v"/>
-                    </connections>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="313" y="522"/>
-        </scene>
     </scenes>
 </document>

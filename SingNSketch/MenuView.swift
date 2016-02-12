@@ -154,5 +154,29 @@ class MenuView : UIView {
         )
     }
     
+    func open() {
+        UIView.animateWithDuration(0.7, animations: {
+            var menuFrame = self.frame
+            debugPrint("Palette Editor Opening")
+            menuFrame.origin.x += menuFrame.size.width
+            
+            self.frame = menuFrame
+            }
+        )
+    }
+    
+    func close() {
+        UIView.animateWithDuration(0.7, animations: {
+            var frame = self.frame
+            frame.origin.x -= frame.size.width
+            
+            self.frame = frame
+            }, completion: { finished in
+                debugPrint("Palette Editor Closing")
+                self.removeFromSuperview()
+            }
+        )
+    }
+    
 }
 

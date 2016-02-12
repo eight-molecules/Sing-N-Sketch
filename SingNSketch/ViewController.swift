@@ -49,66 +49,6 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    // Save function for the current canvas
-    @IBAction func save(sender: UIButton) {
-        if let img = canvasView.image {
-            // "image:" is defined below
-            // as func image(...
-            UIImageWriteToSavedPhotosAlbum(img, self, "image:didFinishSavingWithError:contextInfo:", nil)
-        }
-    }
-    
-    // Alert image creation status on return
-    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
-        if error == nil {
-            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .Alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            presentViewController(ac, animated: true, completion: nil)
-        } else {
-            let ac = UIAlertController(title: "Save error", message: error?.localizedDescription, preferredStyle: .Alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            presentViewController(ac, animated: true, completion: nil)
-        }
-    }
-    
-    // Hide navigation
-    func hide(sender: UIButton) {
-        // navView.hidden = true
-        show.hidden = false
-        
-        // Close the menu if it's in the view
-        if let menuView = self.view.viewWithTag(100) {
-            let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
-            title.text = navTitle
-            title.backgroundColor = UIColor.clearColor()
-            title.textAlignment = NSTextAlignment.Center
-            title.textColor = UIColor.whiteColor()
-            menuView.addSubview(title)
-            closeMenu()
-        }
-        // Close the Palette Editor if it's in the view.
-        if self.view.viewWithTag(200) != nil {
-            let paletteEditor = self.view.viewWithTag(200)!
-            
-            UIView.animateWithDuration(0.7, animations: {
-                var frame = paletteEditor.frame
-                frame.origin.x -= frame.size.width
-                
-                paletteEditor.frame = frame
-                }, completion: { finished in
-                    paletteEditor.removeFromSuperview()
-                }
-            )
-            sketchingView.userInteractionEnabled = true
-        }
-        
-    }
-    
-    @IBAction func show(sender: UIButton) {
-        show.hidden = true
-    }
-    
     func handleLongPress(longPress: UILongPressGestureRecognizer) {
         switch longPress.state {
         case .Changed:
@@ -120,20 +60,37 @@ class ViewController: UIViewController {
         }
     }
     
+    // Hide navigation
+    func hide(sender: UIButton) {
+        show.hidden = false
+    }
     
-    func drawMenu() {
-        sketchingView.userInteractionEnabled = false
-        
-        // MenuView
-        if (self.view.viewWithTag(100) != nil) {
-            closeMenu()
-        }
+    @IBAction func show(sender: UIButton) {
+        show.hidden = true
+    }
+    
+    @IBAction func drawPaletteEditor(sender: UIButton) {
+        if paletteEditor == nil {
+            let paletteEditor = PaletteEditorView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height), palette: sketchingView.palette, audio: sketchingView.audio)
+            self.view.addSubview(paletteEditor)
             
-        // Palette Editor
-        else if (self.view.viewWithTag(200) != nil) {
-            closeMenu()
+            paletteEditor.open()
         }
         else {
+            debugPrint("Editor already open!")
+        }
+    }
+    
+    func drawMenu(sender: UIButton) {
+        if menuView == nil {
+            let menuView = MenuView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height))
+            self.view.addSubview(menuView)
+            
+            menuView.open()
+        }
+    }
+    
+    func drawMenu() {
             
             // This is bad. All of this is bad, and will be updated to be better.
             let menuView = MenuView(frame: CGRectMake(-250, 0, 250, self.view.frame.height))
@@ -276,9 +233,31 @@ class ViewController: UIViewController {
                 menuView.frame = menuFrame
                 }
             )
-        }
         
     }
+    
+    // Save function for the current canvas
+    @IBAction func save(sender: UIButton) {
+        if let img = canvasView.image {
+            UIImageWriteToSavedPhotosAlbum(img, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        }
+    }
+    
+    // Alert image creation status on return
+    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+        // Save was successful
+        if error == nil {
+            let ac = UIAlertController(title: "Saved to Photos", message: "Your image has been saved successfully!", preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+        } else {
+            let ac = UIAlertController(title: "Error Saving to Photos", message: error?.localizedDescription, preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+        }
+    }
+    
+    
     
     @IBAction func showMenuView(sender: UIButton) {
         if (self.view.viewWithTag(100) != nil) {
@@ -309,23 +288,11 @@ class ViewController: UIViewController {
                 }
             )
         }
-        else {
-            paletteEditor.close()
-        }
         sketchingView.userInteractionEnabled = true
     }
     
     @IBAction func new(sender: UIButton) {
         sketchingView.newDrawing()
-    }
-    
-    //###
-    @IBAction func redo(sender: UIButton) {
-        sketchingView.redo()
-    }
-    
-    @IBAction func undo(sender: UIButton) {
-        sketchingView.undo()
     }
     
     // Interface slider actions
@@ -345,16 +312,5 @@ class ViewController: UIViewController {
         AKSettings.shared().audioInputEnabled = true
     }
     
-    @IBAction func drawPaletteEditor(sender: UIButton) {
-        if paletteEditor == nil {
-            let paletteEditor = PaletteEditorView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height), palette: sketchingView.palette, audio: sketchingView.audio)
-            self.view.addSubview(paletteEditor)
-        
-            paletteEditor.open()
-        }
-        else {
-            debugPrint("Editor already open!")
-        }
-    }
 }
 

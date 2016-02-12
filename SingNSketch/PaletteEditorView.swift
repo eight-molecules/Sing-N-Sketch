@@ -18,6 +18,16 @@ class PaletteEditorView: UIView {
     var colorPicker: ColorPickerView!
     var gradientView: UIView!
     
+    // Color image for selector
+    var colorMap: UIImage {
+        UIGraphicsBeginImageContext(CGSize(width: self.frame.width, height: 180))
+        UIImage(named: "colormap")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
+        
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
+    }
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -48,7 +58,36 @@ class PaletteEditorView: UIView {
         blurEffectView.frame = self.bounds
         addSubview(blurEffectView)
         
-        self.drawPaletteEditor(palette)
+        let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
+        title.text = "Palette Editor"
+        title.backgroundColor = UIColor.clearColor()
+        title.textAlignment = NSTextAlignment.Center
+        title.textColor = UIColor.whiteColor()
+        self.addSubview(title)
+        
+        let mappingScrollView = generateColorMappingsView()
+        
+        colorPicker.image = colorMap
+        updateColorPicker(colorPicker.gradientColor, view: gradientView, isGradient: false)
+        colorPicker.addSubview(gradientView!)
+        
+        let add = PaletteButton(frame: CGRectMake(10, colorPicker.frame.height, 230, 40))
+        
+        add.backgroundColor = UIColor.clearColor()
+        add.setTitle("Add", forState: UIControlState.Normal)
+        add.addTarget(self, action: "addMapping:", forControlEvents: UIControlEvents.TouchUpInside)
+        add.backgroundColor = UIColor.blackColor()
+        add.tag = 2010
+        add.color = colorPicker.color
+        add.frequency = audio.clearFrequency()
+        
+        self.addSubview(add)
+        self.addSubview(colorPicker)
+        self.addSubview(mappingScrollView)
+        
+        let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "close")
+        menuSwipeGestureRecognizer.direction = .Left
+        self.addGestureRecognizer(menuSwipeGestureRecognizer)
         
         debugPrint("Palette init(frame, palette) finished (PaletteEditorView:32)")
     }
@@ -82,7 +121,6 @@ class PaletteEditorView: UIView {
     
     // ToDo:
     func updateColorPicker(color: UIColor, view: UIView, isGradient: Bool) {
-        debugPrint(colorPicker.subviews.debugDescription)
         let gradient: CAGradientLayer = CAGradientLayer()
         
         gradient.startPoint = CGPointMake(0.0, 0.5)
@@ -98,9 +136,11 @@ class PaletteEditorView: UIView {
       // Mappings View  //
     ////                // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
-    func drawMappingsView(mappings: Array<(Float, UIColor)>) -> UIView {
+    func generateColorMappingsView() -> UIScrollView {
+        let view = UIScrollView(frame: CGRectMake(0, colorPicker.frame.height + 50, self.frame.height - colorPicker.frame.height + 50, self.frame.width))
         
-        paletteView = UIView()
+        let mappings = palette.getMappings().sort(<)
+        
         var i: Int = 0
         var xOrigin: CGFloat = 10
         var yOrigin: CGFloat = 0
@@ -138,64 +178,10 @@ class PaletteEditorView: UIView {
             colorView.addSubview(color)
             
             i = (i + 1)
-            paletteView.addSubview(colorView)
+            view.addSubview(colorView)
         }
         
-        paletteView.frame = CGRectMake(0, 0, 120, CGFloat(i * 35))
-        
-        return paletteView
-    }
-    
-    func generateColorMappingView() -> UIScrollView {
-        let view = UIScrollView(frame: CGRectMake(0, colorPicker.frame.height + 50, 250, self.frame.width))
-        
-        let mappings = palette.getMappings().sort(<)
-        let mappingsView = drawMappingsView(mappings)
-        
-        view.addSubview(mappingsView)
-        view.contentSize = mappingsView.frame.size
-        
         return view
-    }
-    
-    func drawPaletteEditor(palette: Palette) {
-        let title = UILabel(frame: CGRectMake(10, 0, 230, 40))
-        title.text = "Palette Editor"
-        title.backgroundColor = UIColor.clearColor()
-        title.textAlignment = NSTextAlignment.Center
-        title.textColor = UIColor.whiteColor()
-        self.addSubview(title)
-        
-        
-        colorPicker.tag = 3000
-        
-        let mappingScrollView = generateColorMappingView()
-        UIGraphicsBeginImageContext(CGSize(width: self.frame.width, height: 180))
-        UIImage(named: "colormap.png")!.drawInRect(CGRectMake(colorPicker.frame.origin.x, colorPicker.frame.origin.y + 35, colorPicker.frame.width, colorPicker.frame.height))
-        
-        colorPicker.image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-        
-        updateColorPicker(colorPicker.gradientColor, view: gradientView, isGradient: false)
-        colorPicker.addSubview(gradientView!)
-        
-        let add = PaletteButton(frame: CGRectMake(10, colorPicker.frame.height, 230, 40))
-        
-        add.backgroundColor = UIColor.clearColor()
-        add.setTitle("Add", forState: UIControlState.Normal)
-        add.addTarget(self, action: "addMapping:", forControlEvents: UIControlEvents.TouchUpInside)
-        add.backgroundColor = UIColor.blackColor()
-        add.tag = 2010
-        add.color = colorPicker.color
-        add.frequency = audio.clearFrequency()
-        
-        self.addSubview(add)
-        self.addSubview(colorPicker)
-        self.addSubview(mappingScrollView)
-        
-        let menuSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "close")
-        menuSwipeGestureRecognizer.direction = .Left
-        self.addGestureRecognizer(menuSwipeGestureRecognizer)
     }
     
     /////////////
@@ -208,7 +194,7 @@ class PaletteEditorView: UIView {
     
     func deleteMapping(sender: PaletteButton) {
         self.palette.deleteColor(sender.frequency)
-        drawMappingsView(self.palette.getMappings().sort(<))
+        generateColorMappingsView()
         
     }
     
