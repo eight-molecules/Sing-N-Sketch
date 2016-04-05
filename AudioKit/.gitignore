@@ -1,9 +1,3 @@
-# Test file overwritten for each test
-Tests/AuditionSounds/AuditionSounds/main.swift
-
-# Playground file overwritten for each playground
-Playgrounds/AudioKitPlayground/AudioKitPlayground/Playground.m
-
 # xcode noise
 build/
 *.pyc
@@ -15,15 +9,15 @@ build/
 *.xccheckout
 project.xcworkspace/
 xcuserdata/
-
-# Place to put output file from scripts once you're done with them
-scripts/junk
-
-# old skool
-.svn
+xcodebuild
 
 # osx noise
 .DS_Store
 profile
 
-xcodebuild
+junk/
+docs/
+
+output/
+dev/
+

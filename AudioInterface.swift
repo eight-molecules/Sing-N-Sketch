@@ -7,27 +7,29 @@
 //
 
 import Foundation
+import AudioKit
+
 class MovingAverage {
-    var samples: Array<Float>
+    var samples: Array<Double>
     var sampleCount = 0
     var period = 5
     
     init(period: Int = 5) {
         self.period = period
-        samples = Array<Float>()
+        samples = Array<Double>()
     }
     
-    var average: Float {
-        let sum: Float = samples.reduce(0, combine: +)
+    var average: Double {
+        let sum: Double = samples.reduce(0, combine: +)
         
         if period > samples.count {
-            return sum / Float(samples.count)
+            return sum / Double(samples.count)
         } else {
-            return sum / Float(period)
+            return sum / Double(period)
         }
     }
     
-    func addSample(value: Float) -> Float {
+    func addSample(value: Double) -> Double {
         let pos = Int(fmodf(Float(sampleCount++), Float(period)))
         
         if pos >= samples.count {
@@ -40,54 +42,49 @@ class MovingAverage {
     }
 }
 class AudioInterface {
-    
-    var input: AKMicrophone = AKMicrophone()
-    var analyzer: AKAudioAnalyzer!
+    let mic = AKMicrophone()
+    var trackedFrequency: AKFrequencyTracker!
     var frequency: MovingAverage!
     var amplitude: MovingAverage!
-    var noiseFloor: Float = 0.0005
+    var noiseFloor: Double = 0.0005
     var freqBuffer: Int = 25
     let ampBuffer: Int = 3
     
     required init() {
-        AKSettings.shared().audioInputEnabled = true
+        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: 200, maximumFrequency: 2000)
+        AKSettings.audioInputEnabled = true
+        let silence = AKMixer(trackedFrequency)
+        silence.volume = 0
+        AudioKit.output = silence
+        AudioKit.start()
+        mic.start()
+        trackedFrequency.start()
+        
         frequency = MovingAverage(period: freqBuffer)
         amplitude = MovingAverage(period: ampBuffer)
-        analyzer = AKAudioAnalyzer(input: input.output)
-        
-        AKOrchestra.addInstrument(input)
-        AKOrchestra.addInstrument(analyzer)
         
         for i in 1...freqBuffer {
-            frequency.addSample(analyzer.trackedFrequency.floatValue)
+            frequency.addSample(trackedFrequency.frequency)
             if (i <= ampBuffer) {
-                amplitude.addSample(analyzer.trackedFrequency.floatValue)
+                amplitude.addSample(trackedFrequency.amplitude)
             }
         }
         
         noiseFloor = amplitude.average
     }
     
-    func start() {
-        input.start()
-        analyzer.start()
-        
-    }
-    
-    func stop() {
-        analyzer.stop()
-        input.stop()
-    }
-    
     func update() {
-        frequency.addSample(analyzer.trackedFrequency.floatValue)
-        amplitude.addSample(analyzer.trackedAmplitude.floatValue)
+        frequency.addSample(trackedFrequency.frequency)
+        amplitude.addSample(trackedFrequency.amplitude)
+    
+        print(frequency.average)
+        print(amplitude.average)
     }
     
-    func clearFrequency() -> Float {
+    func clearFrequency() -> Double {
         var i = 0
         repeat {
-            frequency.addSample(analyzer.trackedFrequency.floatValue)
+            frequency.addSample(trackedFrequency.frequency)
             i++
         }
         while i < freqBuffer

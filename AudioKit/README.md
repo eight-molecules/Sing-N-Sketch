@@ -1,52 +1,110 @@
-AudioKit
-========
+AudioKit V3
+===
 
 [![Build Status](https://travis-ci.org/audiokit/AudioKit.svg)](https://travis-ci.org/audiokit/AudioKit)
 [![License](https://img.shields.io/cocoapods/l/AudioKit.svg?style=flat)](http://cocoadocs.org/docsets/AudioKit)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![CocoaPods compatible](https://img.shields.io/cocoapods/v/AudioKit.svg?style=flat)](https://github.com/CocoaPods/Specs/tree/master/Specs/AudioKit)
+[![Twitter Follow](https://img.shields.io/twitter/follow/AudioKitMan.svg?style=social)](http://twitter.com/AudioKitMan)
 
-[AudioKit](http://audiokit.io/) is a powerful audio toolkit for synthesizing, processing, and analyzing sounds.  It contains several examples for iOS (iPhone & iPad) and Mac OSX, written in both Objective-C and in Swift.  A test suite is provided for many of the operations included in AudioKit.  A playground project can be used for trying out AudioKit instruments and for greatly speeding up the development of your own instruments and applications.
+*This document was last updated: January 29, 2016*
 
-Apps Using AudioKit
-------------------------
-If you release an app that uses AudioKit, please feel free to add it to the list!
+AudioKit is an audio synthesis, processing, and analysis platform for OS X, iOS, and tvOS. This document serves as a one-page introduction to AudioKit, but we have much more information available on the AudioKit website at http://audiokit.io/
 
-* [Guitar Score Trainer](https://itunes.apple.com/us/app/guitar-score-trainer-lite/id1008613919?mt=8&ign-mpt=uo%3D4)
-* [Well Tempered](https://itunes.apple.com/us/app/well-tempered/id303514313?mt=8#)
-* [VR TOEIC] (https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=975407337)
+### Version 3.0
+The third major revision of AudioKit has been completely rewritten to offer the following improvements over previous versions:
 
-The "AudioKit" subfolder
-------------------------
-This folder contains the actual AudioKit toolkit classes.
+* Installation as a framework
+* Integrated with CoreAudio audio units from Apple
+* No external dependencies
+* Can use opcodes from Faust, Chuck, STK, Csound, and others
+* Many included Xcode Swift playgrounds
 
-* [Core Classes](http://audiokit.io/core-classes/) - the foundation of AudioKit, the manager, the orchestra, settings, and MIDI.
-* [Instruments](http://audiokit.io/instruments/) - the instrument and instrument property classes.
-* [Notes](http://audiokit.io/notes/) - the note and note property classes.
-* [Operations](http://audiokit.io/operations/) - all of the synthesis and processing algorithms
-* [Parameters](http://audiokit.io/parameters/) - types of arguments that can be passed to operations
-* [Platforms](http://audiokit.io/platforms/) - audio engine and files specific to iOS, OSX, and Swift
-* [Resources](http://audiokit.io/resources/) - default audio files including a good general MIDI Sound Font and the AudioKit.plist settings file
-* [Sequencing](http://audiokit.io/sequencing/) -  phrases of notes and sequences of events
-* [Tables](http://audiokit.io/tables/) - lookup tables for waveforms and other tabular data
-* [Utilities](http://audiokit.io/utilities/) - prebuilt instruments, waveform plotting classes, and UI elements
+and quite a bit more. There are things that version 2 had that are not yet part of version 3, but rather than trying to support version 2, let us know what you need to do, and we'll port it over to version 3 upon request.
 
-Documentation
--------------
-This folder contains information about automatically generating Xcode documentation from the AudioKit source.
+## Key Concepts
 
-For most users, the documentation you really want: installation instructions, tutorials, examples, and more can be found here: [http://audiokit.io/docs/](http://audiokit.io/docs/)
+### Nodes
+Nodes are interconnectable signal processing components.  Each node has at least an ouput and most likely also has parameters.  If it is processing another signal, the node will also have an input.
 
-Examples
---------
-Included with AudioKit are two examples (HelloWorld and AudioKitDemo) written in two languages (Objective-C and Swift) for two operating systems (iOS and OSX).  So, there are eight projects for each permutation.  The Hello World project is a great starting point and a walk-through is available [here](http://audiokit.io/examples/HelloWorld/).  In Hello World, only one file is used to create a sine oscillator playing at 440Hz.  The AudioKitDemo is quite a bit more complex, combining three apps into one to demonstrate audio synthesis, processing, and analysis techniques.  More info: [http://audiokit.io/examples/](http://audiokit.io/examples/)
+### Operations
+Operations are similar to nodes, except that they are a series of signal processing components that exist inside of a single node.  Operations can be used as parameters to other operations to create very complex processing results.
 
-Playgrounds
------------
-Here is where the main AudioKitPlayground project is kept, and from here you can run a shell script to start the playground from a set of template playgrounds. Playgrounds allow for rapid audio prototyping, giving you the ability to quickly hear the results of your work without recompiling after every change. Refer to the [README within the Playgrounds folder](https://github.com/audiokit/AudioKit/tree/master/Playgrounds) for more instructions. More info: [http://audiokit.io/playgrounds/](http://audiokit.io/playgrounds/)
+## Installation
 
-Templates
----------
-We have built Xcode templates for typical AudioKit classes: instrument, processor, and conductor.  Once installed, these templates will be available from within Xcode's new file wizard.  More info: [http://audiokit.io/templates/](http://audiokit.io/templates/)
+Installation can be achieved in the usual ways for a framework.  This is explained in more detail in the INSTALL.md file in the Frameworks directory.
 
-Tests
------
-Numerous tests can be run utilizing the AudioKitTest project and the `build_all.sh` and `run.sh` shell scripts provided here.  More info: [http://audiokit.io/tests/](http://audiokit.io/tests/)
+Installation with CocoaPods and Carthage is also planned but may not come with the first release.
+
+## Example Code
+There are three Hello World projects, one for each of the Apple platforms: OSX, iOS, and tvOS. They simply play an oscillator and display the waveform.
+
+The examples rely on the frameworks being built so you can either download the precompiled frameworks or build them on your own:
+```
+$ cd Frameworks
+$ ./build_frameworks.sh
+```
+Hello World basically consists of just a few sections of code:
+
+Creating the sound, in this case an oscillator:
+```swift
+var oscillator = AKOscillator()
+```
+Telling AudioKit where to get its audio from (ie. the oscillator):
+```swift
+AudioKit.output = oscillator
+```
+Starting AudioKit:
+```swift
+AudioKit.start()
+```
+And then responding to the UI by changing the oscillator:
+```swift
+if oscillator.isPlaying {
+    oscillator.stop()
+} else {
+    oscillator.amplitude = random(0.5, 1)
+    oscillator.frequency = random(220, 880)
+    oscillator.start()
+}
+```
+## Playgrounds
+
+Because Playgrounds have very different capabilities depending on whether they are for OSX or iOS, we have two sets of playgrounds for each OS.  At this point tvOS behaves very much like iOS so there is no set of playgrounds explicitly for tvOS.
+
+### AudioKit for iOS Playgrounds
+There are many playground pages within the AudioKit for iOS Playground.  Each playground includes a demo of a node or operation or an example of sound design.  The first playground is a Table of Contents in which the playgrounds are organized via markup.  The playground may also be opened up to view the playgrounds alphabetically.
+
+### AudioKit for OS X Playgrounds
+OS X Playgrounds are able to launch NSWindows that can be used to control the AudioKit effects processors, so these playgrounds have a UI that allow you to adjust the parameters of an effect very easily.  However, OS X playgrounds at this point do not support AudioKit nodes that do not use Apple AudioUnit processors, so there are fewer things that we can demonstrate in OSX playgrounds.  Hopefully this will be fixed in the future - it is unclear whether the problem is in AudioKit or within the Xcode playground audio implementation.
+
+## Tests
+
+So far, the only testing that we do automatically through Travis is to ensure that all of the projects included with AudioKit build successfully.  AudioKit version 2 was heavily tested, but at the time of this writing AudioKit 3 does not have a test suite in place.  This is high on our priority list after an initial release.
+
+## Package Managers
+
+You can easily add the framework to your project by using [Carthage](https://github.com/Carthage/Carthage). Just use the following in your `Cartfile`:
+
+```
+github "audiokit/AudioKit"
+```
+
+If you use CocoaPods, you can also easily get the latest AudioKit binary framework for your project. Use this in your `Podfile`:
+
+```
+pod 'AudioKit', '~> 3.0'
+```
+
+## About Us
+
+AudioKit was created by the following team whose contributions are fully chronicled in Github, and summarized below in alphabetical order by first name:
+
+* **Aurelius Prochazka**: Primary programmer of AudioKit. Lives for this stuff.  Your life line if you need help.
+* **Jeff Cooper**: Rearchitected all things MIDI, sampler, and sequencer related in AudioKit 3.
+* **Matthew Fecher**: Sound design, graphic design, and programming of the Swift Synth example.
+* **Nicholas Arner**: Longtime contributor to AudioKit and AudioKit's web site.
+* **Paul Batchelor**: The author of [Soundpipe](https://github.com/paulbatchelor/soundpipe), and [Sporth](https://github.com/paulbatchelor/sporth), which serve as two primary audio engines in AudioKit 3.
+* **Simon Gladman**: Longtime user of AudioKit, contributed his AudioKitParticles project to AudioKit 3.
+* **Stephane Peter**: Installation and configuration czar and code reviewer.
+* **Syed Haris Ali**: The author of [EZAudio](https://github.com/syedhali/EZAudio) which is AudioKit's included waveform plotter and FFT analysis engine.

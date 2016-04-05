@@ -17,7 +17,7 @@ class SketchingView: UIView {
     var brush: Brush = Brush()
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
-    var multiplier: Float = 0
+    var multiplier: Double = 0
     
     //###
     var undoArray = [UIImage] ()
@@ -58,6 +58,24 @@ class SketchingView: UIView {
         palette.addColor(385, color: UIColor.greenColor())
         palette.addColor(407, color: UIColor.blueColor())
         palette.addColor(429, color: UIColor.purpleColor())
+        palette.addColor(455, color: UIColor.redColor())
+        palette.addColor(477, color: UIColor.orangeColor())
+        palette.addColor(499, color: UIColor.yellowColor())
+        palette.addColor(521, color: UIColor.greenColor())
+        palette.addColor(543, color: UIColor.blueColor())
+        palette.addColor(565, color: UIColor.purpleColor())
+        palette.addColor(587, color: UIColor.redColor())
+        palette.addColor(609, color: UIColor.orangeColor())
+        palette.addColor(631, color: UIColor.yellowColor())
+        palette.addColor(653, color: UIColor.greenColor())
+        palette.addColor(675, color: UIColor.blueColor())
+        palette.addColor(697, color: UIColor.purpleColor())
+        palette.addColor(719, color: UIColor.redColor())
+        palette.addColor(741, color: UIColor.orangeColor())
+        palette.addColor(763, color: UIColor.yellowColor())
+        palette.addColor(785, color: UIColor.greenColor())
+        palette.addColor(807, color: UIColor.blueColor())
+        palette.addColor(829, color: UIColor.purpleColor())
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -140,8 +158,8 @@ class SketchingView: UIView {
         
         // Update audio
         audio.update()
-        if (audio.amplitude.average > 0.007) {
-            brush.color = palette.getColor(Float(audio.frequency!.average))
+        if (audio.amplitude.average > 0.002) {
+            brush.color = palette.getColor(audio.frequency!.average)
         }
     }
     

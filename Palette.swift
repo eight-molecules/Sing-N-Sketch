@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Dictionary {
     
@@ -32,7 +33,7 @@ class Palette {
     class Channel {
         // Dictionary storage of the frequency mappings
         // and their associated
-        var values = [Float: CGFloat]()
+        var values = [Double: CGFloat]()
         
         // Init the channel and add a Zero Hertz
         // mapping and a 20,000 Hertz mapping
@@ -45,23 +46,23 @@ class Palette {
         }
         
         // Map a frequency to a color
-        func addMapping(frequency: Float, value: CGFloat) {
+        func addMapping(frequency: Double, value: CGFloat) {
             values[frequency] = value
         }
         
         // Remap a frequency to a new color
-        func modifyMapping(frequency: Float, value: CGFloat) {
+        func modifyMapping(frequency: Double, value: CGFloat) {
             values.updateValue(value, forKey: frequency)
         }
         
-        func deleteMapping(frequency: Float) {
+        func deleteMapping(frequency: Double) {
             values.removeValueForKey(frequency)
         }
         
         // Return a value unique to the given frequency
-        func getValue(frequency: Float) -> CGFloat {
+        func getValue(frequency: Double) -> CGFloat {
             var val: CGFloat = 0
-            var lastFrequency: Float = 0
+            var lastFrequency: Double = 0
             var lastValue: CGFloat = 0
             
             // Return zero if the
@@ -99,7 +100,7 @@ class Palette {
         
         
         // Return the frequencies mapped to the channel
-        func getFrequencies() -> [Float] {
+        func getFrequencies() -> [Double] {
             let frequencies = Array(values.keys)
             return frequencies
         }
@@ -120,7 +121,7 @@ class Palette {
     }
     
     // Return a mapped UIColor
-    func getColor(frequency: Float) -> UIColor {
+    func getColor(frequency: Double) -> UIColor {
         
         let r = red.getValue(frequency)
         let g = green.getValue(frequency)
@@ -132,7 +133,7 @@ class Palette {
     }
     
     // Private function to handle individual color channels
-    private func addColor(frequency: Float, r: CGFloat, g: CGFloat, b: CGFloat) {
+    private func addColor(frequency: Double, r: CGFloat, g: CGFloat, b: CGFloat) {
         var mappedFrequencies = red.getFrequencies()
         mappedFrequencies.sortInPlace(<)
         var newFreq: Bool = true
@@ -167,7 +168,7 @@ class Palette {
     }
     
     // Function to add color from a UIColor
-    func addColor(frequency: Float, color: UIColor) {
+    func addColor(frequency: Double, color: UIColor) {
 
         let colorComponents = color.components
         let r = colorComponents.red
@@ -177,13 +178,13 @@ class Palette {
         addColor(frequency, r: r, g: g, b: b)
     }
     
-    func getMappings() -> Dictionary<Float, UIColor> {
+    func getMappings() -> Dictionary<Double, UIColor> {
         
         // We only need one set of the frequencies
         // since the keys are the same per channel
         let frequencies = red.getFrequencies()
         
-        var mappings = Dictionary<Float, UIColor>()
+        var mappings = Dictionary<Double, UIColor>()
         
         // Generate all the mapped colors and add them to our Dictionary
         for f in frequencies {
@@ -193,7 +194,7 @@ class Palette {
         return mappings
     }
     
-    func deleteColor(frequency: Float) {
+    func deleteColor(frequency: Double) {
         var mappedFrequencies = red.getFrequencies()
         mappedFrequencies.sortInPlace(<)
         

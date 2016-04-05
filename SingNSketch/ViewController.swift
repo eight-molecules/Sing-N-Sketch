@@ -1,12 +1,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    
     @IBOutlet weak var sketchingView: SketchingView! = nil
     @IBOutlet weak var canvasView: UIImageView! = nil
     @IBOutlet weak var menuView: MenuView! = nil
-    @IBOutlet weak var navView: UIView! = nil
+    @IBOutlet weak var navView: UIView!
     @IBOutlet weak var paletteEditor: PaletteEditorView! = nil
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
@@ -21,17 +19,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
-        
+        self.view.bounds = UIScreen.mainScreen().bounds
+        self.navView.bounds.size.width = UIScreen.mainScreen().bounds.width
         screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self,
             action: "swipeMenu:")
-        
-        
         screenEdgeRecognizer.edges = .Left
         sketchingView.addGestureRecognizer(screenEdgeRecognizer)
             }
     
     override func viewDidAppear(animated: Bool) {
-        sketchingView.audio.start()
         debugPrint("Started Audio")
         sketchingView.audio.update()
         
@@ -40,8 +36,6 @@ class ViewController: UIViewController {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        sketchingView.audio.stop()
-        debugPrint("Stopping Audio")
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,12 +55,15 @@ class ViewController: UIViewController {
     }
     
     // Hide navigation
-    func hide(sender: UIButton) {
+    @IBAction func hide(sender: UIButton) {
         show.hidden = false
+        self.navView.hidden = true
+        closeMenu()
     }
     
     @IBAction func show(sender: UIButton) {
         show.hidden = true
+        self.navView.hidden = false
     }
     
     @IBAction func drawPaletteEditor(sender: UIButton) {
@@ -224,7 +221,7 @@ class ViewController: UIViewController {
             menuView.addGestureRecognizer(menuSwipeGestureRecognizer)
             
             self.view.addSubview(menuView)
-            
+            self.view.bringSubviewToFront(navView)
             
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
@@ -303,14 +300,5 @@ class ViewController: UIViewController {
     @IBAction func widthManipulator(sender: UISlider) {
         sketchingView.brush.width = CGFloat(sender.value)
     }
-    
-    @IBAction func mute(sender: UIButton) {
-        AKSettings.shared().audioInputEnabled = false
-    }
-    
-    @IBAction func unmute(sender: UIButton) {
-        AKSettings.shared().audioInputEnabled = true
-    }
-    
 }
 
