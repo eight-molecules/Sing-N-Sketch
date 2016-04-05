@@ -154,11 +154,11 @@ class SketchingView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
-        multiplier = audio.amplitude.average * 100 + 1;
+        multiplier = audio.amplitude.average * 100;
         
         // Update audio
         audio.update()
-        if (audio.amplitude.average > 0.002) {
+        if (audio.amplitude.average > 0.001) {
             brush.color = palette.getColor(audio.frequency!.average)
         }
     }

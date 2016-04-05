@@ -15,6 +15,7 @@
 		93516B2C1C6DB8E200FD69CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93516B2B1C6DB8E200FD69CE /* Images.xcassets */; };
 		935B21161CB3544600537233 /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935B21101CB353E600537233 /* AudioKit.framework */; };
 		935B21171CB3544600537233 /* AudioKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 935B21101CB353E600537233 /* AudioKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		935B211B1CB3640D00537233 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 935B211A1CB3640D00537233 /* Launch Screen.storyboard */; };
 		936E74AB1BB348C60089757A /* AudioInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E74AA1BB348C60089757A /* AudioInterface.swift */; };
 		938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */; };
 		938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFEF1BA79C5000EAFC7E /* ViewController.swift */; };
@@ -86,6 +87,7 @@
 		9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		93516B2B1C6DB8E200FD69CE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		935B210A1CB353E500537233 /* AudioKit For iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "AudioKit For iOS.xcodeproj"; path = "AudioKit/AudioKit/iOS/AudioKit For iOS.xcodeproj"; sourceTree = "<group>"; };
+		935B211A1CB3640D00537233 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		936E74AA1BB348C60089757A /* AudioInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioInterface.swift; path = ../AudioInterface.swift; sourceTree = "<group>"; };
 		938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		938FBFED1BA79C5000EAFC7E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				930CB0271C652F6A00C3E6B2 /* PaletteEditorViewController.swift */,
 				936E74AA1BB348C60089757A /* AudioInterface.swift */,
 				1D7DBCAF1BB88FC300C85633 /* Main.storyboard */,
+				935B211A1CB3640D00537233 /* Launch Screen.storyboard */,
 				938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */,
 				938FBFED1BA79C5000EAFC7E /* Info.plist */,
 				938FBFEF1BA79C5000EAFC7E /* ViewController.swift */,
@@ -316,6 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				935B211B1CB3640D00537233 /* Launch Screen.storyboard in Resources */,
 				93516B2C1C6DB8E200FD69CE /* Images.xcassets in Resources */,
 				1D7DBCB11BB88FC300C85633 /* Main.storyboard in Resources */,
 			);
@@ -535,6 +539,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -561,6 +567,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
