@@ -41,13 +41,6 @@ class MenuView : UIView {
     }
     
     func drawMenu() {
-        // This is bad. All of this is bad, and will be updated to be better.
-        
-        
-        
-        // Can you just call MenuItem.item as UIButton if you know it's a button?
-        
-        
         width.backgroundColor = UIColor(white: 0.1, alpha: 0)
         width.layer.shadowOffset = CGSize(width: 0, height: 1)
         width.layer.shadowOpacity = 0.7

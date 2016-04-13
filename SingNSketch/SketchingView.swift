@@ -17,7 +17,7 @@ class SketchingView: UIView {
     var brush: Brush = Brush()
     var palette: Palette = Palette()
     var audio: AudioInterface = AudioInterface()
-    var multiplier: Double = 0
+    var multiplier: CGFloat = 1
     
     //###
     var undoArray = [UIImage] ()
@@ -105,7 +105,7 @@ class SketchingView: UIView {
             CGContextSetShouldAntialias(context, true)
             
             CGContextSetLineCap(context, .Round)
-            CGContextSetLineWidth(context, brush.width * CGFloat(multiplier))
+            CGContextSetLineWidth(context, (brush.width * multiplier))
             CGContextSetStrokeColorWithColor(context, brush.color.CGColor)
             CGContextSetBlendMode(context, .Normal)
             
@@ -129,6 +129,10 @@ class SketchingView: UIView {
             
             points.last = currentPoint
         }
+        
+        debugPrint(brush.width)
+        debugPrint(brush.width * multiplier)
+        debugPrint(audio.amplitude.average)
         
         setNeedsDisplay()
     }
@@ -154,12 +158,18 @@ class SketchingView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
-        multiplier = audio.amplitude.average * 100;
-        
         // Update audio
         audio.update()
         if (audio.amplitude.average > 0.001) {
             brush.color = palette.getColor(audio.frequency!.average)
+            multiplier = CGFloat(100 * audio.amplitude.average)
+            
+            if multiplier > 10 {
+                multiplier = 10
+            }
+            if multiplier < 1 {
+                multiplier = 1
+            }
         }
     }
     

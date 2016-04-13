@@ -17,10 +17,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        self.view.bounds = UIScreen.mainScreen().bounds
+        
+        self.navView.bounds.origin = self.view.bounds.origin
+        self.navView.bounds.size.width = self.view.frame.size.width
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
-        self.view.bounds = UIScreen.mainScreen().bounds
-        self.navView.bounds.size.width = UIScreen.mainScreen().bounds.width
+        
         screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self,
             action: "swipeMenu:")
         screenEdgeRecognizer.edges = .Left
@@ -74,7 +78,7 @@ class ViewController: UIViewController {
             paletteEditor.open()
         }
         else {
-            debugPrint("Editor already open!")
+            debugPrint("Palette Editor already open!")
         }
     }
     

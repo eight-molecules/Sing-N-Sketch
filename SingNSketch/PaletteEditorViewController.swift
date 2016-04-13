@@ -30,11 +30,11 @@ class PaletteEditorViewController: UIViewController {
             if 0.0 <= point.x && point.x <= 250{
                 if 39.0 <= point.y && point.y <= 200{
                     let color = paletteEditor.getPixelColorAtPoint(point) // colorAtPosition(point)
-                    paletteEditor.updateColorPicker(color!, view: paletteEditor.gradientView!, isGradient: false)
+                    paletteEditor.updateColorPicker(color, view: paletteEditor.gradientView!, isGradient: false)
                 }
                 else if 200 <= point.y && point.y <= 219 + 30{
                     let color = paletteEditor.getPixelColorAtPoint(point) // colorAtPosition(point)
-                    paletteEditor.updateColorPicker(color!,view: paletteEditor.gradientView!, isGradient: true)
+                    paletteEditor.updateColorPicker(color,view: paletteEditor.gradientView!, isGradient: true)
                 }
             }
         }
@@ -52,11 +52,11 @@ class PaletteEditorViewController: UIViewController {
             if 0.0 <= point.x && point.x <= 250{
                 if 39.0 <= point.y && point.y <= 200{
                     let color = paletteEditor.getPixelColorAtPoint(point) //colorAtPosition(point)
-                    paletteEditor.updateColorPicker(color!,view: paletteEditor.gradientView!, isGradient: false)
+                    paletteEditor.updateColorPicker(color,view: paletteEditor.gradientView!, isGradient: false)
                 }
                 else if 200 <= point.y && point.y <= 219 + 30{
                     let color = paletteEditor.getPixelColorAtPoint(point) //colorAtPosition(point)
-                    paletteEditor.updateColorPicker(color!, view: paletteEditor.gradientView!, isGradient: true)
+                    paletteEditor.updateColorPicker(color, view: paletteEditor.gradientView!, isGradient: true)
                 }
             }
         }

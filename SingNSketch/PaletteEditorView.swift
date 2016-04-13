@@ -12,6 +12,7 @@ class ColorPickerView: UIImageView {
 }
 
 class PaletteEditorView: UIView {
+    var mappingScrollView: UIScrollView!
     var paletteView: UIView = UIView()
     var palette: Palette!
     var audio: AudioInterface!
@@ -65,7 +66,7 @@ class PaletteEditorView: UIView {
         title.textColor = UIColor.whiteColor()
         self.addSubview(title)
         
-        let mappingScrollView = generateColorMappingsView()
+        mappingScrollView = generateColorMappingsView()
         
         colorPicker.image = colorMap
         updateColorPicker(colorPicker.gradientColor, view: gradientView, isGradient: false)
@@ -96,28 +97,6 @@ class PaletteEditorView: UIView {
       //                //
       // Color Picker  //
     ////                // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-
-    // Returns the color data of the pixel at the currently selected point
-    func getPixelColorAtPoint(point: CGPoint) -> UIColor? {
-        // Capture pixel color data from the background image
-        if let pixel = UnsafeMutablePointer<CUnsignedChar>.alloc(4) as UnsafeMutablePointer! {
-        
-            var ret = UIColor.blackColor()
-            let colorSpace = CGColorSpaceCreateDeviceRGB()
-            let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)
-            let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo.rawValue)
-        
-            CGContextTranslateCTM(context, -point.x, -point.y)
-            self.layer.renderInContext(context!)
-            let color: UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
-            pixel.dealloc(4)
-            ret = color
-            return ret
-        }
-        else {
-            debugPrint("Could not generate pixel [PaletteEditorView.swift:81]")
-        }
-    }
     
     // ToDo:
     func updateColorPicker(color: UIColor, view: UIView, isGradient: Bool) {
@@ -184,18 +163,62 @@ class PaletteEditorView: UIView {
         return view
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let point = touches.first?.locationInView(colorPicker) {
+            colorPicker.color = getPixelColorAtPoint(point)
+            let add = self.viewWithTag(2010) as! PaletteButton
+            add.color = colorPicker.color
+            add.backgroundColor = colorPicker.color
+        }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let point = touches.first?.locationInView(colorPicker) {
+            colorPicker.color = getPixelColorAtPoint(point)
+            let add = self.viewWithTag(2010) as! PaletteButton
+            add.color = colorPicker.color
+            add.backgroundColor = colorPicker.color
+        }
+    }
+    
+    // Returns the color data of the pixel at the currently selected point
+    func getPixelColorAtPoint(point: CGPoint) -> UIColor {
+        // Capture pixel color data from the background image
+        var ret = UIColor.blackColor()
+        
+        let pixel = UnsafeMutablePointer<CUnsignedChar>.alloc(4)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)
+        let context = CGBitmapContextCreate(pixel, 1, 1, 8, 4, colorSpace, bitmapInfo.rawValue)
+        
+        CGContextTranslateCTM(context, -point.x, -point.y)
+        self.layer.renderInContext(context!)
+        let color: UIColor = UIColor(red: CGFloat(pixel[0])/255.0, green: CGFloat(pixel[1])/255.0, blue: CGFloat(pixel[2])/255.0, alpha: CGFloat(pixel[3])/255.0)
+        
+        pixel.dealloc(4)
+        ret = color
+        
+        return ret
+    }
+    
     /////////////
     // Actions //
     //         ///////////////////////////////////////////////////////////////////////////////////////////////////////
     func addMapping(sender: PaletteButton) {
+        debugPrint("Adding Mapping")
         palette.addColor(sender.frequency, color: sender.color)
+        mappingScrollView.removeFromSuperview()
+        mappingScrollView = generateColorMappingsView()
+        self.addSubview(mappingScrollView)
     }
     
     
     func deleteMapping(sender: PaletteButton) {
+        debugPrint("Deleting Mapping")
         self.palette.deleteColor(sender.frequency)
-        generateColorMappingsView()
-        
+        mappingScrollView.removeFromSuperview()
+        mappingScrollView = generateColorMappingsView()
+        self.addSubview(mappingScrollView)
     }
     
     func open() {

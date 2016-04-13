@@ -76,9 +76,6 @@ class AudioInterface {
     func update() {
         frequency.addSample(trackedFrequency.frequency)
         amplitude.addSample(trackedFrequency.amplitude)
-    
-        print(frequency.average)
-        print(amplitude.average)
     }
     
     func clearFrequency() -> Double {
