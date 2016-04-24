@@ -17,7 +17,7 @@ player.looping = true
 func multitapDelay(input: AKNode, times: [Double], gains: [Double]) -> AKMixer {
     let mix = AKMixer(input)
     zip(times, gains).forEach { (time, gain) -> () in
-        let delay = AKVariableDelay(input, time: time, feedback: 0.0)
+        let delay = AKVariableDelay(input, time: time)
         mix.connect(AKBooster(delay, gain: gain))
     }
     return mix
@@ -26,7 +26,7 @@ func multitapDelay(input: AKNode, times: [Double], gains: [Double]) -> AKMixer {
 // Delay Properties
 var delayTime = 0.2 // Seconds
 var delayMix  = 0.4 // 0 (dry) - 1 (wet)
-let gains = [0.5, 0.25, 0.15].map { g -> Double in g * delayMix }
+let gains = [0.5, 0.25, 0.15].map { gain -> Double in gain * delayMix }
 let input = player
 
 // Delay Definition

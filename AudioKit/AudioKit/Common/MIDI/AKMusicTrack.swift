@@ -13,7 +13,8 @@ public class AKMusicTrack {
     
     // MARK: - Properties
     
-    internal var internalMusicTrack = MusicTrack()
+    /// The representation of Apple's underlying music track
+    public var internalMusicTrack: MusicTrack = nil
     
     /// Pointer to the Music Track
     public var trackPtr: UnsafeMutablePointer<MusicTrack>
@@ -21,9 +22,12 @@ public class AKMusicTrack {
     /// Total duration of the music track
     public var length: MusicTimeStamp {
         var size: UInt32 = 0
-        var len = MusicTimeStamp(0)
-        MusicTrackGetProperty(internalMusicTrack, kSequenceTrackProperty_TrackLength, &len, &size)
-        return len
+        var lengthFromMusicTimeStamp = MusicTimeStamp(0)
+        MusicTrackGetProperty(internalMusicTrack,
+                              kSequenceTrackProperty_TrackLength,
+                              &lengthFromMusicTimeStamp,
+                              &size)
+        return lengthFromMusicTimeStamp
     }
     
     // MARK: - Initialization
@@ -33,7 +37,6 @@ public class AKMusicTrack {
     /// - parameter musicTrack: An Apple Music Track
     ///
     public init() {
-        internalMusicTrack = MusicTrack()
         trackPtr = UnsafeMutablePointer<MusicTrack>(internalMusicTrack)
     }
     
@@ -61,10 +64,14 @@ public class AKMusicTrack {
     /// - paramter numberOfLoops: how many times to loop. 0 is infinte
     ///
     public func setLoopInfo(duration: Double, numberOfLoops: Int) {
-        let size:UInt32 = 0
-        let len = MusicTimeStamp(duration)
-        var loopInfo = MusicTrackLoopInfo(loopDuration: len, numberOfLoops: Int32(numberOfLoops))
-        MusicTrackSetProperty(internalMusicTrack, kSequenceTrackProperty_LoopInfo, &loopInfo, size)
+        let size: UInt32 = UInt32(sizeof(MusicTrackLoopInfo))
+        let loopDuration = MusicTimeStamp(duration)
+        var loopInfo = MusicTrackLoopInfo(loopDuration: loopDuration,
+                                          numberOfLoops: Int32(numberOfLoops))
+        MusicTrackSetProperty(internalMusicTrack,
+                              kSequenceTrackProperty_LoopInfo,
+                              &loopInfo,
+                              size)
     }
    
     /// Set length
@@ -75,11 +82,11 @@ public class AKMusicTrack {
     ///
     public func setLength(duration: Double) {
         
-        let size:UInt32 = 0
+        let size: UInt32 = 0
         var len = MusicTimeStamp(duration)
-        var tmpSeq:MusicSequence = nil
-        var seqPtr:UnsafeMutablePointer<MusicSequence>
-        var tmpTrack = MusicTrack()
+        var tmpSeq: MusicSequence = nil
+        var seqPtr: UnsafeMutablePointer<MusicSequence>
+        var tmpTrack: MusicTrack = nil
         seqPtr = UnsafeMutablePointer<MusicSequence>(tmpSeq)
         NewMusicSequence(&tmpSeq)
         MusicTrackGetSequence(internalMusicTrack, seqPtr)
@@ -90,25 +97,30 @@ public class AKMusicTrack {
         MusicTrackSetProperty(internalMusicTrack, kSequenceTrackProperty_TrackLength, &len, size)
         MusicTrackCopyInsert(tmpTrack, 0, len, internalMusicTrack, 0)
         MusicSequenceDisposeTrack(tmpSeq, tmpTrack)
+        
         DisposeMusicSequence(tmpSeq)
 
         //now to clean up any notes that are too long
-        var iterator = MusicEventIterator()
+        var iterator: MusicEventIterator = nil
         NewMusicEventIterator(internalMusicTrack, &iterator)
         var eventTime = MusicTimeStamp(0)
         var eventType = MusicEventType()
-        var eventData : UnsafePointer<Void> = nil
-        var eventDataSize : UInt32 = 0;
+        var eventData: UnsafePointer<Void> = nil
+        var eventDataSize: UInt32 = 0;
         var hasNextEvent:DarwinBoolean = false
+        
         MusicEventIteratorHasCurrentEvent(iterator, &hasNextEvent)
+        
         while(hasNextEvent) {
             MusicEventIteratorGetEventInfo(iterator, &eventTime,  &eventType, &eventData, &eventDataSize)
+            
             if eventType == kMusicEventType_MIDINoteMessage {
                 let data = UnsafePointer<MIDINoteMessage>(eventData)
                 let channel = data.memory.channel
                 let note = data.memory.note
                 let velocity = data.memory.velocity
                 let dur = data.memory.duration
+                
                 if Double(eventTime) + Double(dur) > duration {
                     //print("note is too long at \(Double(eventTime) + Double(dur))")
                     //print("newDur should be \(Double(duration) - Double(eventTime))")
@@ -117,6 +129,7 @@ public class AKMusicTrack {
                 }
                 //print("time: \(eventTime) - chan:\(channel) - note:\(note) - vel:\(velocity) - duration:\(dur)")
             }
+            
             MusicEventIteratorNextEvent(iterator)
             MusicEventIteratorHasCurrentEvent(iterator, &hasNextEvent)
             //print(hasNextEvent)
@@ -124,21 +137,42 @@ public class AKMusicTrack {
         DisposeMusicEventIterator(iterator)
     }
     
+    /// A less destructive and simpler way to set the length
+    ///
+    /// - parameter duration: How long the loop will last, from the end of the track backwards
+    ///
+    public func setLengthSoft(duration: Double){
+        let size: UInt32 = 0
+        var len = MusicTimeStamp(duration)
+        MusicTrackSetProperty(internalMusicTrack, kSequenceTrackProperty_TrackLength, &len, size)
+    }
+    
     /// Clear all events from the track
     public func clear() {
         MusicTrackClear(internalMusicTrack, 0, length)
+    }
+    /// Clear some events from the track
+    public func clearRange(start: Double, duration: Double) {
+        MusicTrackClear(internalMusicTrack, start, duration)
     }
     
     /// Add Note to sequence
     ///
     /// - parameter note: The midi note number to insert
-    /// - parameter vel:    The velocity to insert note at
+    /// - parameter velocity: The velocity to insert note at
     /// - parameter position: Where in the sequence to start the note (expressed in beats)
-    /// - parameter dur: How long to hold the note (would be better if they let us just use noteOffs...oh well)
-    /// - parameter chan: MIDI channel for this note
+    /// - parameter duration: How long to hold the note (would be better if they let us just use noteOffs...oh well)
+    /// - parameter channel: MIDI channel for this note
     ///
-    public func addNote(note: Int, vel: Int, position: Double, dur: Double, chan: Int = 0) {
-        var noteMessage = MIDINoteMessage(channel: UInt8(chan), note: UInt8(note), velocity: UInt8(vel), releaseVelocity: 0, duration: Float32(dur))
+    public func addNote(note: Int, velocity: Int, position: Double, duration: Double, channel: Int = 0) {
+        
+        var noteMessage = MIDINoteMessage(
+            channel: UInt8(channel),
+            note: UInt8(note),
+            velocity: UInt8(velocity),
+            releaseVelocity: 0,
+            duration: Float32(duration))
+        
         MusicTrackNewMIDINoteEvent(internalMusicTrack, MusicTimeStamp(position), &noteMessage)
     }
     

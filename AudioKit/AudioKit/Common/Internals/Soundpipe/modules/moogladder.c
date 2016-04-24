@@ -1,12 +1,12 @@
 /*
  * Moogladder
  *
- * This code has been extracted from the Csound opcode "pitchamdf".
+ * This code has been extracted from the Csound opcode "Moogladder".
  * It has been modified to work as a Soundpipe module.
  *
- * Original Author(s): Peter Neubacker
- * Year: 1999
- * Location: Opcodes/pitch.c
+ * Original Author(s): Victor Lazzarini
+ * Year: 2001
+ * Location: Opcodes/newfils.c
  *
  */
 
@@ -16,19 +16,39 @@
 #include "soundpipe.h"
 
 #ifndef M_PI
-#define M_PI		3.14159265358979323846	/* pi */
+#define M_PI		3.14159265358979323846
 #endif
 
 #define SPFLOAT2LONG(x) lrintf(x)
+
+
+/* John ffitch tanh function to speed up inner loop */ 
+
+static double my_tanh(double x)
+{
+    /* use the fact that tanh(-x) = - tanh(x)
+       and if x>~4 tanh is approx constant 1
+       and for small x tanh(x) =~ x
+       So giving a cheap approximation */
+    int sign = 1;
+    if (x<0) sign=-1, x= -x;
+    if (x>=4.0) {
+      return sign;
+    }
+    if (x<0.5) return x*sign;
+    return sign*tanh(x);
+}
 
 int sp_moogladder_create(sp_moogladder **t){
     *t = malloc(sizeof(sp_moogladder));
     return SP_OK;
 }
+
 int sp_moogladder_destroy(sp_moogladder **t){
     free(*t);
     return SP_OK;
 }
+
 int sp_moogladder_init(sp_data *sp, sp_moogladder *p){
     p->istor = 0.0;
     p->res = 0.4;
@@ -85,12 +105,12 @@ int sp_moogladder_compute(sp_data *sp, sp_moogladder *p, SPFLOAT *in, SPFLOAT *o
     for (j = 0; j < 2; j++) {
         /* filter stages  */
         input = *in - res4 /*4.0*res*acr*/ *delay[5];
-        delay[0] = stg[0] = delay[0] + tune*(tanh(input*THERMAL) - tanhstg[0]);
+        delay[0] = stg[0] = delay[0] + tune*(my_tanh(input*THERMAL) - tanhstg[0]);
         for (k = 1; k < 4; k++) {
           input = stg[k-1];
           stg[k] = delay[k]
-            + tune*((tanhstg[k-1] = tanh(input*THERMAL))
-                    - (k != 3 ? tanhstg[k] : tanh(delay[k]*THERMAL)));
+            + tune*((tanhstg[k-1] = my_tanh(input*THERMAL))
+                    - (k != 3 ? tanhstg[k] : my_tanh(delay[k]*THERMAL)));
           delay[k] = stg[k];
         }
         /* 1/2-sample delay for phase compensation  */

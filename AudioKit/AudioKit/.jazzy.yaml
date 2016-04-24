@@ -1,19 +1,22 @@
 module_name: AudioKit
 author_name: Aurelius Prochazka
-author_url: https://audiokit.io/
+author_url: http://audiokit.io/
 github_url: https://github.com/audiokit/AudioKit
 min_acl: public
 readme_path: ../README.md
-swift_version: 2.1.1
+swift_version: 2.2
 
 
 custom_categories:
   - name: AudioKit Core
     children:
     - AudioKit
+    - AKAudioRecorder
+    - AKDevice
     - AKSettings
     - AKTable
     - AKTableType
+    - AKTester
 
   - name: Instruments
     children:
@@ -34,9 +37,13 @@ custom_categories:
     - AKMIDIControl
     - AKMIDIInstrument
     - AKMIDIListener
+    - AKMIDISampler
     - AKMIDIStatus
     - AKMIDISystemCommand
     - AKMusicTrack
+    - MIDIPacket
+    - MIDIPacketList
+    - MIDIPacketListGenerator
 
   - name: Nodes
     children:
@@ -130,6 +137,7 @@ custom_categories:
   - name: Physical Models
     children:
     - AKDrip
+    - AKMetalBar
     - AKPluckedString
 
   - name: Input Node
@@ -151,6 +159,7 @@ custom_categories:
     - AKSampler
     - AKSequencer
     - AKTimePitch
+    - AKVariSpeed
 
   - name: Operations
     children:

@@ -24,7 +24,7 @@ public class AKBandPassFilter: AKNode, AKToggleable {
         componentFlagsMask: 0)
 
     internal var internalEffect = AVAudioUnitEffect()
-    internal var internalAU = AudioUnit()
+    internal var internalAU: AudioUnit = nil
 
     private var mixer: AKMixer
 
@@ -82,6 +82,8 @@ public class AKBandPassFilter: AKNode, AKToggleable {
 
     /// Tells whether the node is processing (ie. started, playing, or active)
     public var isStarted = true
+    
+    // MARK: - Initialization
 
     /// Initialize the band pass filter node
     ///

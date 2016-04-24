@@ -24,7 +24,7 @@ public class AKHighShelfFilter: AKNode, AKToggleable {
         componentFlagsMask: 0)
 
     internal var internalEffect = AVAudioUnitEffect()
-    internal var internalAU = AudioUnit()
+    internal var internalAU: AudioUnit = nil
 
     private var mixer: AKMixer
 
@@ -83,6 +83,8 @@ public class AKHighShelfFilter: AKNode, AKToggleable {
     /// Tells whether the node is processing (ie. started, playing, or active)
     public var isStarted = true
 
+    // MARK: - Initialization
+    
     /// Initialize the high shelf filter node
     ///
     /// - parameter input: Input node to process

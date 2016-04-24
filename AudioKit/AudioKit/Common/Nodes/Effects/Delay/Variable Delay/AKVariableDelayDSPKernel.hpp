@@ -26,14 +26,14 @@ enum {
 class AKVariableDelayDSPKernel : public AKDSPKernel {
 public:
     // MARK: Member Functions
-
+    
     AKVariableDelayDSPKernel() {}
-
+    
     void init(int channelCount, double inSampleRate) {
         channels = channelCount;
-
+        
         sampleRate = float(inSampleRate);
-
+        
         sp_create(&sp);
         sp->sr = sampleRate;
         sp->nchan = channels;
@@ -45,77 +45,77 @@ public:
         plumber_parse_string(&pd, sporthCode);
         plumber_compute(&pd, PLUMBER_INIT);
     }
-
+    
     void start() {
         started = true;
     }
-
+    
     void stop() {
         started = false;
     }
-
+    
     void destroy() {
         plumber_clean(&pd);
         sp_destroy(&sp);
     }
-
+    
     void reset() {
     }
     void setMaxDelayTime(float duration) {
         internalMaxDelay = duration;
     }
-
+    
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case timeAddress:
                 timeRamper.set(clamp(value, (float)0, (float)10));
                 break;
-
+                
             case feedbackAddress:
                 feedbackRamper.set(clamp(value, (float)0, (float)1));
                 break;
-
+                
         }
     }
-
+    
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case timeAddress:
                 return timeRamper.goal();
-
+                
             case feedbackAddress:
                 return feedbackRamper.goal();
-
+                
             default: return 0.0f;
         }
     }
-
+    
     void startRamp(AUParameterAddress address, AUValue value, AUAudioFrameCount duration) override {
         switch (address) {
             case timeAddress:
                 timeRamper.startRamp(clamp(value, (float)0, (float)10), duration);
                 break;
-
+                
             case feedbackAddress:
                 feedbackRamper.startRamp(clamp(value, (float)0, (float)1), duration);
                 break;
-
+                
         }
     }
-
+    
     void setBuffers(AudioBufferList *inBufferList, AudioBufferList *outBufferList) {
         inBufferListPtr = inBufferList;
         outBufferListPtr = outBufferList;
     }
-
+    
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
             double time = double(timeRamper.getStep());
             double feedback = double(feedbackRamper.getStep());
-
+            
             int frameOffset = int(frameIndex + bufferOffset);
-
+            
             if (!started) {
                 outBufferListPtr->mBuffers[0] = inBufferListPtr->mBuffers[0];
                 outBufferListPtr->mBuffers[1] = inBufferListPtr->mBuffers[1];
@@ -133,26 +133,26 @@ public:
             
             for (int channel = 0; channel < channels; ++channel) {
                 float *out = (float *)outBufferListPtr->mBuffers[channel].mData + frameOffset;
-                    *out = sporth_stack_pop_float(&pd.sporth.stack);
+                *out = sporth_stack_pop_float(&pd.sporth.stack);
             }
         }
     }
-
+    
     // MARK: Member Variables
-
+    
 private:
-
+    
     int channels = AKSettings.numberOfChannels;
     float sampleRate = AKSettings.sampleRate;
-
+    
     AudioBufferList *inBufferListPtr = nullptr;
     AudioBufferList *outBufferListPtr = nullptr;
-
+    
     sp_data *sp;
     plumber_data pd;
     
     float internalMaxDelay = 5.0;
-
+    
 public:
     bool started = true;
     AKParameterRamper timeRamper = 1;
