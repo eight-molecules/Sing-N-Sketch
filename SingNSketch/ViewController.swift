@@ -1,6 +1,44 @@
 import UIKit
 
-class ToolBarViewCell: UICollectionViewCell {
+class ToolbarView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
+    @IBOutlet var tools: UICollectionView!
+    @IBOutlet var items: [UIView]! = []
+    
+    override init(frame: CGRect) {
+        
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    // Number of cells to generate
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    // Cell generation function
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        // get a reference to our storyboard cell
+        let cell = tools.dequeueReusableCellWithReuseIdentifier("tool", forIndexPath: indexPath) as! ToolbarViewCell
+        let item = items[indexPath.item]
+        cell.view = item
+        cell.addSubview(cell.view)
+        cell.sizeToFit()
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate protocol
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        // handle tap events
+        print("You selected cell #\(indexPath.item)!")
+    }
+   
+}
+
+class ToolbarViewCell: UICollectionViewCell {
     @IBOutlet weak var view: UIView!
 }
 
@@ -8,8 +46,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView! = nil
     @IBOutlet weak var canvasView: UIImageView! = nil
     @IBOutlet weak var menuView: MenuView! = nil
-    @IBOutlet weak var toolbarView: UICollectionView!
+    @IBOutlet weak var toolbarView: ToolbarView!
     @IBOutlet weak var paletteEditor: PaletteEditorView! = nil
+    
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
     // TODO: These need to be consolidated with the 
@@ -17,29 +56,25 @@ class ViewController: UIViewController {
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
-    @IBOutlet weak var undo: UIButton!
-    @IBOutlet weak var redo: UIButton!
     var navTitle: String = "Sing N' Sketch"
     
-    // This is for the Toolbar Collection View
-    // TODO: Move to Toolbar class after finalizing look
-    let reuseIdentifier = "toolbar"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         self.view.bounds = UIScreen.mainScreen().bounds
         
         self.toolbarView.bounds.origin = self.view.bounds.origin
         self.toolbarView.bounds.size.width = self.view.frame.size.width
+        self.toolbarView.tools.bounds.size.width = self.view.frame.size.width
+        
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
         
-        screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self,
-            action: "swipeMenu:")
+        screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "swipeMenu:")
         screenEdgeRecognizer.edges = .Left
         sketchingView.addGestureRecognizer(screenEdgeRecognizer)
-            }
+    }
     
     override func viewDidAppear(animated: Bool) {
         debugPrint("Started Audio")
@@ -49,8 +84,6 @@ class ViewController: UIViewController {
         show.addGestureRecognizer(longPress)
     }
     
-    override func viewWillDisappear(animated: Bool) {
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -129,55 +162,7 @@ class ViewController: UIViewController {
                 
             }
             let offset = (x: CGFloat(0), y: CGFloat(0))
-            // Can you just call MenuItem.item as UIButton if you know it's a button?
-            let width = UIView(frame: CGRectMake(10, 40 + offset.y, 230, 40))
-            let widthSlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
-            let widthLabel = UILabel(frame: CGRectMake(10, 0, 60, 40))
-            
-            width.backgroundColor = UIColor(white: 0.1, alpha: 0)
-            width.layer.shadowOffset = CGSize(width: 0, height: 1)
-            width.layer.shadowOpacity = 0.7
-            width.layer.shadowRadius = 2
-            
-            widthLabel.text = "Width"
-            widthLabel.textColor = UIColor.whiteColor()
-            widthLabel.textAlignment = NSTextAlignment.Center
-            
-            widthSlider.minimumValue = 1
-            widthSlider.maximumValue = 50
-            widthSlider.continuous = true
-            widthSlider.value = Float(sketchingView.brush.width)
-            widthSlider.addTarget(self, action: "widthManipulator:", forControlEvents: .ValueChanged)
-            
-            width.addSubview(widthSlider)
-            width.addSubview(widthLabel)
-            menuView.addSubview(width)
-            
-            // TODO: Look up generic storage and type checking
-            let opacity = UIView(frame: CGRectMake(10, 90 + offset.y, 230, 40))
-            let opacitySlider = UISlider(frame: CGRectMake(80, 0, 140, 40))
-            let opacityLabel = UILabel(frame: CGRectMake(10, 0, 60, 40))
-            
-            opacity.backgroundColor = UIColor(white: 0.1, alpha: 0)
-            opacity.layer.shadowOffset = CGSize(width: 0, height: 1)
-            opacity.layer.shadowOpacity = 0.7
-            opacity.layer.shadowRadius = 2
-            
-            opacityLabel.text = "Opacity"
-            opacityLabel.textColor = UIColor.whiteColor()
-            opacityLabel.textAlignment = NSTextAlignment.Center
-            
-            opacitySlider.minimumValue = 0
-            opacitySlider.maximumValue = 1
-            opacitySlider.continuous = true
-            opacitySlider.value = Float(sketchingView.brush.opacity)
-            opacitySlider.addTarget(self, action: "opacityManipulator:", forControlEvents: .ValueChanged)
-            
-            opacity.addSubview(opacitySlider)
-            opacity.addSubview(opacityLabel)
-            menuView.addSubview(opacity)
-            
-            // Like look at all this. I'm creating a MenuItem with an embedded derivative of UIView
+        
             let save   = UIButton() as UIButton
             save.frame = CGRectMake(10, 140 + offset.y, 110, 40)
             save.backgroundColor = UIColor(white: 0.1, alpha: 0)
@@ -187,8 +172,8 @@ class ViewController: UIViewController {
             save.layer.shadowOpacity = 0.7
             save.layer.shadowRadius = 2
             menuView.addSubview(save)
-            
-            // This could totally be embedded in a class. MenuItem.item -> UIView?
+        
+        
             let new   = UIButton() as UIButton
             new.frame = CGRectMake(130, 140 + offset.y, 110, 40)
             new.backgroundColor = UIColor(white: 0.1, alpha: 0)
