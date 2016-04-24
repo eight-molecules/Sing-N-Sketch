@@ -1,13 +1,19 @@
 import UIKit
 
+class ToolBarViewCell: UICollectionViewCell {
+    @IBOutlet weak var view: UIView!
+}
+
 class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView! = nil
     @IBOutlet weak var canvasView: UIImageView! = nil
     @IBOutlet weak var menuView: MenuView! = nil
-    @IBOutlet weak var navView: UIView!
+    @IBOutlet weak var toolbarView: UICollectionView!
     @IBOutlet weak var paletteEditor: PaletteEditorView! = nil
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
+    // TODO: These need to be consolidated with the 
+    // menu code after the menu has been storyboarded.
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
@@ -15,13 +21,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var redo: UIButton!
     var navTitle: String = "Sing N' Sketch"
     
+    // This is for the Toolbar Collection View
+    // TODO: Move to Toolbar class after finalizing look
+    let reuseIdentifier = "toolbar"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
         self.view.bounds = UIScreen.mainScreen().bounds
         
-        self.navView.bounds.origin = self.view.bounds.origin
-        self.navView.bounds.size.width = self.view.frame.size.width
+        self.toolbarView.bounds.origin = self.view.bounds.origin
+        self.toolbarView.bounds.size.width = self.view.frame.size.width
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
         
@@ -61,13 +71,13 @@ class ViewController: UIViewController {
     // Hide navigation
     @IBAction func hide(sender: UIButton) {
         show.hidden = false
-        self.navView.hidden = true
+        self.toolbarView.hidden = true
         closeMenu()
     }
     
     @IBAction func show(sender: UIButton) {
         show.hidden = true
-        self.navView.hidden = false
+        self.toolbarView.hidden = false
     }
     
     @IBAction func drawPaletteEditor(sender: UIButton) {
@@ -225,7 +235,7 @@ class ViewController: UIViewController {
             menuView.addGestureRecognizer(menuSwipeGestureRecognizer)
             
             self.view.addSubview(menuView)
-            self.view.bringSubviewToFront(navView)
+            self.view.bringSubviewToFront(toolbarView)
             
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
