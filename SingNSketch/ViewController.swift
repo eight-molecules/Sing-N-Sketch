@@ -127,7 +127,6 @@ class ViewController: UIViewController {
         self.toolbarView.items = self.items
         
         sketchingView.frame = view.bounds
-        sketchingView.autoresizingMask = view.autoresizingMask
         
         screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "swipeMenu:")
         screenEdgeRecognizer.edges = .Left
