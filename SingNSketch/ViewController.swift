@@ -1,11 +1,10 @@
 import UIKit
 
-class ToolbarView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
+class ToolbarView: UIView, UICollectionViewDelegate {
     @IBOutlet var tools: UICollectionView!
-    @IBOutlet var items: [UIView]! = []
+    @IBOutlet var items: [UIView]!
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
     }
     
@@ -15,15 +14,15 @@ class ToolbarView: UIView, UICollectionViewDataSource, UICollectionViewDelegate 
     
     // Number of cells to generate
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return items!.count
     }
     
     // Cell generation function
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         // get a reference to our storyboard cell
         let cell = tools.dequeueReusableCellWithReuseIdentifier("tool", forIndexPath: indexPath) as! ToolbarViewCell
-        let item = items[indexPath.item]
-        cell.view = item
+        let item = items![indexPath.item]
+        cell.view.addSubview(item)
         cell.addSubview(cell.view)
         cell.sizeToFit()
         return cell
@@ -57,7 +56,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
     var navTitle: String = "Sing N' Sketch"
-    
+    var items: [UIView] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,12 +67,27 @@ class ViewController: UIViewController {
         self.toolbarView.bounds.size.width = self.view.frame.size.width
         self.toolbarView.tools.bounds.size.width = self.view.frame.size.width
         
+        let menu = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
+        menu.setTitle("Menu", forState: .Normal)
+        menu.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        menu.addTarget(self, action: "showMenuView:", forControlEvents: .TouchUpInside)
+        
+        let hide = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
+        hide.setTitle("Hide", forState: .Normal)
+        hide.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        hide.addTarget(self, action: "hide:", forControlEvents: .TouchUpInside)
+        
+        items.append(menu)
+        items.append(hide)
+        self.toolbarView.items = self.items
+        
         sketchingView.frame = view.bounds
         sketchingView.autoresizingMask = view.autoresizingMask
         
         screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "swipeMenu:")
         screenEdgeRecognizer.edges = .Left
         sketchingView.addGestureRecognizer(screenEdgeRecognizer)
+        
     }
     
     override func viewDidAppear(animated: Bool) {
