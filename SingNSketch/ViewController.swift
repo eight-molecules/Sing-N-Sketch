@@ -77,8 +77,20 @@ class ViewController: UIViewController {
         hide.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         hide.addTarget(self, action: "hide:", forControlEvents: .TouchUpInside)
         
+        let widthLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
+        widthLabel.text = "Width"
+        widthLabel.textColor = UIColor.whiteColor()
+        
+        let widthSlider = UISlider(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        widthSlider.minimumValue = 1
+        widthSlider.maximumValue = 50
+        widthSlider.addTarget(self, action: "widthManipulator:", forControlEvents: .TouchUpInside)
+        
+        
         items.append(menu)
         items.append(hide)
+        items.append(widthLabel)
+        items.append(widthSlider)
         self.toolbarView.items = self.items
         
         sketchingView.frame = view.bounds
