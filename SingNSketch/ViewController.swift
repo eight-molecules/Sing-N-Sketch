@@ -1,6 +1,6 @@
 import UIKit
 
-class ToolbarView: UIView, UICollectionViewDelegate {
+class ToolbarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet var tools: UICollectionView!
     @IBOutlet var items: [UIView]!
     
@@ -22,7 +22,7 @@ class ToolbarView: UIView, UICollectionViewDelegate {
         // get a reference to our storyboard cell
         let cell = tools.dequeueReusableCellWithReuseIdentifier("tool", forIndexPath: indexPath) as! ToolbarViewCell
         let item = items![indexPath.item]
-        cell.view.addSubview(item)
+        cell.view = item
         cell.addSubview(cell.view)
         cell.sizeToFit()
         return cell
@@ -34,7 +34,28 @@ class ToolbarView: UIView, UICollectionViewDelegate {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
     }
-   
+    
+    //Use for size
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        var size = items[indexPath.item].frame.size
+        size.width = size.width + 10
+        size.height = size.height + 10
+        return size
+    }
+    //Use for interspacing
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout
+        collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 1.0
+    }
 }
 
 class ToolbarViewCell: UICollectionViewCell {
@@ -65,7 +86,6 @@ class ViewController: UIViewController {
         
         self.toolbarView.bounds.origin = self.view.bounds.origin
         self.toolbarView.bounds.size.width = self.view.frame.size.width
-        self.toolbarView.tools.bounds.size.width = self.view.frame.size.width
         
         let menu = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
         menu.setTitle("Menu", forState: .Normal)
@@ -85,7 +105,8 @@ class ViewController: UIViewController {
         widthSlider.minimumValue = 1
         widthSlider.maximumValue = 50
         widthSlider.addTarget(self, action: "widthManipulator:", forControlEvents: .TouchUpInside)
-        
+        widthSlider.continuous = true
+        widthSlider.value = Float(sketchingView.brush.width)
         
         items.append(menu)
         items.append(hide)
