@@ -83,9 +83,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.bounds = UIScreen.mainScreen().bounds
+        self.view.frame = self.view.bounds
         
         self.toolbarView.bounds.origin = self.view.bounds.origin
         self.toolbarView.bounds.size.width = self.view.frame.size.width
+        self.toolbarView.tools.frame.size.width = self.view.frame.width
         
         let menu = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
         menu.setTitle("Menu", forState: .Normal)
@@ -108,10 +110,20 @@ class ViewController: UIViewController {
         widthSlider.continuous = true
         widthSlider.value = Float(sketchingView.brush.width)
         
+        let redo = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
+        redo.setTitle("Redo", forState: .Normal)
+        redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        let undo = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
+        undo.setTitle("Undo", forState: .Normal)
+        undo.addTarget(self, action: "undo:", forControlEvents: UIControlEvents.TouchUpInside)
+        
         items.append(menu)
         items.append(hide)
         items.append(widthLabel)
         items.append(widthSlider)
+        items.append(redo)
+        items.append(undo)
         self.toolbarView.items = self.items
         
         sketchingView.frame = view.bounds
@@ -126,6 +138,8 @@ class ViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         debugPrint("Started Audio")
         sketchingView.audio.update()
+        
+        self.toolbarView.frame.size.height = 50
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -211,7 +225,7 @@ class ViewController: UIViewController {
             let offset = (x: CGFloat(0), y: CGFloat(0))
         
             let save   = UIButton() as UIButton
-            save.frame = CGRectMake(10, 140 + offset.y, 110, 40)
+            save.frame = CGRectMake(10, 60, 110, 40)
             save.backgroundColor = UIColor(white: 0.1, alpha: 0)
             save.setTitle("Save", forState: UIControlState.Normal)
             save.addTarget(self, action: "save:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -222,7 +236,7 @@ class ViewController: UIViewController {
         
         
             let new   = UIButton() as UIButton
-            new.frame = CGRectMake(130, 140 + offset.y, 110, 40)
+            new.frame = CGRectMake(130, 60, 110, 40)
             new.backgroundColor = UIColor(white: 0.1, alpha: 0)
             new.setTitle("New", forState: UIControlState.Normal)
             new.addTarget(self, action: "new:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -232,7 +246,7 @@ class ViewController: UIViewController {
             menuView.addSubview(new)
             
             let undo   = UIButton() as UIButton
-            undo.frame = CGRectMake(10, 190 + offset.y, 110, 40)
+            undo.frame = CGRectMake(10, 110, 110, 40)
             undo.backgroundColor = UIColor(white: 0.1, alpha: 0)
             undo.setTitle("Undo", forState: UIControlState.Normal)
             undo.addTarget(self, action: "undo:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -242,7 +256,7 @@ class ViewController: UIViewController {
             menuView.addSubview(undo)
             
             let redo   = UIButton() as UIButton
-            redo.frame = CGRectMake(130, 190 + offset.y, 110, 40)
+            redo.frame = CGRectMake(130, 110, 110, 40)
             redo.backgroundColor = UIColor(white: 0.1, alpha: 0)
             redo.setTitle("Redo", forState: UIControlState.Normal)
             redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -252,7 +266,7 @@ class ViewController: UIViewController {
             menuView.addSubview(redo)
             
             let openPaletteEditor   = UIButton() as UIButton
-            openPaletteEditor.frame = CGRectMake(10, 240 + offset.y, 230, 40)
+            openPaletteEditor.frame = CGRectMake(10, 160 + offset.y, 230, 40)
             openPaletteEditor.backgroundColor = UIColor(white: 0.1, alpha: 0)
             openPaletteEditor.setTitle("Palette Editor", forState: UIControlState.Normal)
             openPaletteEditor.addTarget(self, action: "drawPaletteEditor:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -272,7 +286,6 @@ class ViewController: UIViewController {
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
                 menuFrame.origin.x += menuFrame.size.width
-                
                 menuView.frame = menuFrame
                 }
             )
@@ -324,10 +337,10 @@ class ViewController: UIViewController {
             UIView.animateWithDuration(0.7, animations: {
                 var menuFrame = menuView.frame
                 menuFrame.origin.x -= menuFrame.size.width
-                
                 menuView.frame = menuFrame
                 }, completion: { finished in
                     menuView.removeFromSuperview()
+                    
                 }
             )
         }
@@ -345,6 +358,14 @@ class ViewController: UIViewController {
     
     @IBAction func widthManipulator(sender: UISlider) {
         sketchingView.brush.width = CGFloat(sender.value)
+    }
+    
+    @IBAction func redo(sender: UIButton) {
+        sketchingView.redo()
+    }
+    
+    @IBAction func undo(sender: UIButton) {
+        sketchingView.undo()
     }
 }
 

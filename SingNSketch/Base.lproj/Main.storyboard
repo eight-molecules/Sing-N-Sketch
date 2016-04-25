@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -50,9 +51,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="odm-nn-5yd"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Dyg-W3-LBd"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="3Nd-oj-hCC">
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="3Nd-oj-hCC">
                                             <size key="itemSize" width="60" height="40"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -66,18 +67,29 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HU3-3a-EN3">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HU3-3a-EN3">
                                                             <rect key="frame" x="10" y="0.0" width="40" height="40"/>
                                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="HU3-3a-EN3" secondAttribute="bottom" id="aSs-GJ-mhm"/>
+                                                    <constraint firstItem="HU3-3a-EN3" firstAttribute="centerX" secondItem="PUs-tN-KFC" secondAttribute="centerX" id="aeN-OD-mWE"/>
+                                                    <constraint firstItem="HU3-3a-EN3" firstAttribute="leading" secondItem="PUs-tN-KFC" secondAttribute="leadingMargin" constant="2" id="sre-ty-9Ws"/>
+                                                    <constraint firstItem="HU3-3a-EN3" firstAttribute="top" secondItem="PUs-tN-KFC" secondAttribute="top" id="uWd-mk-vtc"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="view" destination="HU3-3a-EN3" id="xLQ-an-Ge7"/>
                                                 </connections>
                                             </collectionViewCell>
                                         </cells>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Dyg-W3-LBd"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
                                             <outlet property="dataSource" destination="Xar-JC-OpD" id="2UF-Cy-sS7"/>
                                             <outlet property="delegate" destination="Xar-JC-OpD" id="iDh-IN-Dia"/>

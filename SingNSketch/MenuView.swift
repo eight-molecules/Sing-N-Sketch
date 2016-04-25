@@ -113,16 +113,6 @@ class MenuView : UIView {
         undo.layer.shadowRadius = 2
         self.addSubview(undo)
         
-        let redo   = UIButton() as UIButton
-        redo.frame = CGRectMake(130, 190, 110, 40)
-        redo.backgroundColor = UIColor(white: 0.1, alpha: 0)
-        redo.setTitle("Redo", forState: UIControlState.Normal)
-        redo.addTarget(self, action: "redo:", forControlEvents: UIControlEvents.TouchUpInside)
-        redo.layer.shadowOffset = CGSize(width: 0, height: 1)
-        redo.layer.shadowOpacity = 0.7
-        redo.layer.shadowRadius = 2
-        self.addSubview(redo)
-        
         let openPaletteEditor   = UIButton() as UIButton
         openPaletteEditor.frame = CGRectMake(10, 240, 230, 40)
         openPaletteEditor.backgroundColor = UIColor(white: 0.1, alpha: 0)
