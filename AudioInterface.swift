@@ -51,7 +51,7 @@ class AudioInterface {
     let ampBuffer: Int = 3
     
     required init() {
-        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: 200, maximumFrequency: 2000)
+        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: 300, maximumFrequency: 3000)
         AKSettings.audioInputEnabled = true
         let silence = AKMixer(trackedFrequency)
         silence.volume = 0

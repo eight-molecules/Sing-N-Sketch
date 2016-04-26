@@ -44,7 +44,7 @@
                                     <outlet property="drawView" destination="Hqa-mn-DMK" id="n16-Jn-f6s"/>
                                 </connections>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="Xar-JC-OpD">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xar-JC-OpD">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGl-FG-JV6">
@@ -116,33 +116,31 @@
                                             <action selector="undo:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dbW-C5-VtU"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qt4-bX-WNe" customClass="PaletteButton" customModule="Sing_N_Sketch" customModuleProvider="target">
-                                        <rect key="frame" x="248" y="124" width="30" height="30"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lV4-XR-Fni">
+                                        <rect key="frame" x="255" y="122" width="30" height="30"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="hsv" translatesAutoresizingMaskIntoConstraints="NO" id="HwG-ky-sIj" customClass="ColorMapView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="82" width="225" height="110"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="225" id="7u1-3u-TcA"/>
+                                            <constraint firstAttribute="height" constant="110" id="e3w-LC-q0v"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qt4-bX-WNe">
+                                        <rect key="frame" x="255" y="85" width="30" height="30"/>
                                         <state key="normal" title="Add">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="addMapping:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="AES-kZ-vig"/>
+                                        </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lV4-XR-Fni">
-                                        <rect key="frame" x="241" y="88" width="45" height="28"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sYr-sI-5HW">
-                                        <rect key="frame" x="241" y="162" width="45" height="30"/>
-                                        <state key="normal" title="Delete">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="hsv" translatesAutoresizingMaskIntoConstraints="NO" id="HwG-ky-sIj" customClass="ColorMapView" customModule="Sing_N_Sketch" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="85" width="225" height="107"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="225" id="aPc-Z6-XbC"/>
-                                            <constraint firstAttribute="height" constant="107" id="qDK-OE-6KX"/>
-                                        </constraints>
-                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.24729357547993014" green="0.24729357547993014" blue="0.24729357547993014" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="mdz-4I-cgZ" secondAttribute="trailing" constant="13" id="Cc1-7V-C0i"/>
+                                    <constraint firstItem="qt4-bX-WNe" firstAttribute="centerX" secondItem="lV4-XR-Fni" secondAttribute="centerX" id="LtE-3S-sM0"/>
                                     <constraint firstItem="BV4-zg-Jsh" firstAttribute="leading" secondItem="nyk-Qs-8Xo" secondAttribute="trailing" constant="8" id="XPZ-SR-iBy"/>
                                     <constraint firstAttribute="trailing" secondItem="BV4-zg-Jsh" secondAttribute="trailing" constant="8" id="hBw-dg-Ggo"/>
                                     <constraint firstAttribute="trailing" secondItem="Ljm-Bo-Kqp" secondAttribute="trailing" constant="62" id="iZV-yl-vgm"/>

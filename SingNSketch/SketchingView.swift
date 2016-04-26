@@ -40,42 +40,8 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         palette = Palette()
-        palette.addColor(55, color: UIColor.redColor())
-        palette.addColor(77, color: UIColor.orangeColor())
-        palette.addColor(99, color: UIColor.yellowColor())
-        palette.addColor(121, color: UIColor.greenColor())
-        palette.addColor(143, color: UIColor.blueColor())
-        palette.addColor(165, color: UIColor.purpleColor())
-        palette.addColor(187, color: UIColor.redColor())
-        palette.addColor(209, color: UIColor.orangeColor())
-        palette.addColor(231, color: UIColor.yellowColor())
-        palette.addColor(253, color: UIColor.greenColor())
-        palette.addColor(275, color: UIColor.blueColor())
-        palette.addColor(297, color: UIColor.purpleColor())
-        palette.addColor(319, color: UIColor.redColor())
-        palette.addColor(341, color: UIColor.orangeColor())
-        palette.addColor(363, color: UIColor.yellowColor())
-        palette.addColor(385, color: UIColor.greenColor())
-        palette.addColor(407, color: UIColor.blueColor())
-        palette.addColor(429, color: UIColor.purpleColor())
-        palette.addColor(455, color: UIColor.redColor())
-        palette.addColor(477, color: UIColor.orangeColor())
-        palette.addColor(499, color: UIColor.yellowColor())
-        palette.addColor(521, color: UIColor.greenColor())
-        palette.addColor(543, color: UIColor.blueColor())
-        palette.addColor(565, color: UIColor.purpleColor())
-        palette.addColor(587, color: UIColor.redColor())
-        palette.addColor(609, color: UIColor.orangeColor())
-        palette.addColor(631, color: UIColor.yellowColor())
-        palette.addColor(653, color: UIColor.greenColor())
-        palette.addColor(675, color: UIColor.blueColor())
-        palette.addColor(697, color: UIColor.purpleColor())
-        palette.addColor(719, color: UIColor.redColor())
-        palette.addColor(741, color: UIColor.orangeColor())
-        palette.addColor(763, color: UIColor.yellowColor())
-        palette.addColor(785, color: UIColor.greenColor())
-        palette.addColor(807, color: UIColor.blueColor())
-        palette.addColor(829, color: UIColor.purpleColor())
+        palette.addColor(300, color: UIColor.blueColor())
+        palette.addColor(3000, color: UIColor.orangeColor())
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -130,8 +96,7 @@ class SketchingView: UIView {
             points.last = currentPoint
         }
         
-        debugPrint(brush.width)
-        debugPrint(brush.width * multiplier)
+        debugPrint(audio.frequency.average)
         debugPrint(audio.amplitude.average)
         
         setNeedsDisplay()

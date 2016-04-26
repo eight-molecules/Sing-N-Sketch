@@ -26,11 +26,6 @@ extension CALayer {
     
 }
 
-class PaletteButton: UIButton {
-    var frequency: Double! = 0
-    var color: UIColor! = UIColor.blackColor()
-}
-
 class ColorMapView: UIImageView {
     var color: UIColor! = UIColor.blackColor()
     var gradientColor: UIColor! = UIColor.blackColor()
@@ -46,7 +41,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
-    @IBOutlet weak var add: PaletteButton!
+    @IBOutlet weak var add: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +55,11 @@ class ViewController: UIViewController {
         sketchingView.audio.update()
         
         self.toolbarView.frame.size.height = 50
+        indicator.layer.cornerRadius = indicator.frame.width / 2
+        colormapView.layer.cornerRadius = 2
+        colormapView.layer.borderColor = UIColor.blackColor().CGColor
+        colormapView.layer.borderWidth = 1
+        colormapView.clipsToBounds = true
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -72,26 +72,23 @@ class ViewController: UIViewController {
 
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let point = touches.first?.locationInView(colormapView) {
-            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint(point))
+        if colormapView.bounds.contains((touches.first?.locationInView(colormapView))!) {
+            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint((touches.first?.locationInView(colormapView))!))
             indicator.backgroundColor = colormapView.color
-            add.color = colormapView.color
         }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let point = touches.first?.locationInView(colormapView) {
-            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint(point))
+        if colormapView.bounds.contains((touches.first?.locationInView(colormapView))!) {
+            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint((touches.first?.locationInView(colormapView))!))
             indicator.backgroundColor = colormapView.color
-            add.color = colormapView.color
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let point = touches.first?.locationInView(colormapView) {
-            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint(point))
+        if colormapView.bounds.contains((touches.first?.locationInView(colormapView))!) {
+            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint((touches.first?.locationInView(colormapView))!))
             indicator.backgroundColor = colormapView.color
-            add.color = colormapView.color
         }
     }
     
@@ -118,15 +115,15 @@ class ViewController: UIViewController {
             })
     }
     
-    func addMapping(sender: PaletteButton) {
+    @IBAction func addMapping(sender: UIButton) {
         debugPrint("Adding Mapping")
-        sketchingView.palette.addColor(sender.frequency, color: sender.color)
+        sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colormapView.color)
     }
     
     
-    func deleteMapping(sender: PaletteButton) {
+    @IBAction func deleteMapping(sender: UIButton) {
         debugPrint("Deleting Mapping")
-        sketchingView.palette.deleteColor(sender.frequency)
+        //sketchingView.palette.deleteColor(sender.frequency)
     }
     
     // Save function for the current canvas
