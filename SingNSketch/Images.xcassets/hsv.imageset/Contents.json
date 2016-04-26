@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "colormap.png",
+      "filename" : "hsv.png",
       "scale" : "1x"
     },
     {

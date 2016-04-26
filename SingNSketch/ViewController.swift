@@ -1,20 +1,52 @@
 import UIKit
 
+extension CALayer {
+    
+    func colorOfPoint(point: CGPoint) -> CGColorRef {
+        var pixel: [CUnsignedChar] = [0,0,0,0]
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue)
+        
+        let context = CGBitmapContextCreate(&pixel, 1, 1, 8, 4, colorSpace, bitmapInfo.rawValue)
+        
+        CGContextTranslateCTM(context, -point.x, -point.y)
+        
+        self.renderInContext(context!)
+        
+        let red:CGFloat = CGFloat(pixel[0])/255.0
+        let green:CGFloat = CGFloat(pixel[1])/255.0
+        let blue:CGFloat = CGFloat(pixel[2])/255.0
+        let alpha:CGFloat = CGFloat(pixel[3])/255.0
+        
+        let color = UIColor(red:red, green: green, blue:blue, alpha:alpha)
+        
+        return color.CGColor
+    }
+    
+}
+
+class PaletteButton: UIButton {
+    var frequency: Double! = 0
+    var color: UIColor! = UIColor.blackColor()
+}
+
+class ColorMapView: UIImageView {
+    var color: UIColor! = UIColor.blackColor()
+    var gradientColor: UIColor! = UIColor.blackColor()
+    
+}
+
 class ViewController: UIViewController {
-    @IBOutlet weak var sketchingView: SketchingView! = nil
-    @IBOutlet weak var canvasView: UIImageView! = nil
-    @IBOutlet weak var menuView: MenuView! = nil
+    @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var toolbarView: UIView!
+    @IBOutlet weak var colormapView: ColorMapView!
+    @IBOutlet weak var indicator: UIView!
     
-    var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
-    
-    // TODO: These need to be consolidated with the 
-    // menu code after the menu has been storyboarded.
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
-    var navTitle: String = "Sing N' Sketch"
-    var items: [UIView] = []
+    @IBOutlet weak var add: PaletteButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +65,34 @@ class ViewController: UIViewController {
         show.addGestureRecognizer(longPress)
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let point = touches.first?.locationInView(colormapView) {
+            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint(point))
+            indicator.backgroundColor = colormapView.color
+            add.color = colormapView.color
+        }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let point = touches.first?.locationInView(colormapView) {
+            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint(point))
+            indicator.backgroundColor = colormapView.color
+            add.color = colormapView.color
+        }
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let point = touches.first?.locationInView(colormapView) {
+            colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint(point))
+            indicator.backgroundColor = colormapView.color
+            add.color = colormapView.color
+        }
     }
     
     func handleLongPress(longPress: UILongPressGestureRecognizer) {
@@ -50,8 +106,8 @@ class ViewController: UIViewController {
         }
     }
     
-        @IBAction func showMenuView(sender: UIButton) {
-        var height: CGFloat = 35
+    @IBAction func showMenuView(sender: UIButton) {
+        var height: CGFloat = 150
         if self.toolbarView.frame.height > 50 {
             height = -1 * height
         }
@@ -60,6 +116,17 @@ class ViewController: UIViewController {
             frame.size.height += height
             self.toolbarView.frame = frame
             })
+    }
+    
+    func addMapping(sender: PaletteButton) {
+        debugPrint("Adding Mapping")
+        sketchingView.palette.addColor(sender.frequency, color: sender.color)
+    }
+    
+    
+    func deleteMapping(sender: PaletteButton) {
+        debugPrint("Deleting Mapping")
+        sketchingView.palette.deleteColor(sender.frequency)
     }
     
     // Save function for the current canvas

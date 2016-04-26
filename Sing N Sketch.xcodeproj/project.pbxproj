@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */; };
 		1D7DBCB11BB88FC300C85633 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAF1BB88FC300C85633 /* Main.storyboard */; };
-		930CB0281C652F6A00C3E6B2 /* PaletteEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930CB0271C652F6A00C3E6B2 /* PaletteEditorViewController.swift */; };
 		9341A56E1BB0D35000D6BCB0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56C1BB0D35000D6BCB0 /* Fabric.framework */; };
 		9341A56F1BB0D35000D6BCB0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */; };
 		93516B2C1C6DB8E200FD69CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93516B2B1C6DB8E200FD69CE /* Images.xcassets */; };
@@ -20,9 +19,7 @@
 		938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */; };
 		938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FBFEF1BA79C5000EAFC7E /* ViewController.swift */; };
 		938FC0051BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */; };
-		93B5825A1C6522FE00A11212 /* PaletteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B582591C6522FE00A11212 /* PaletteEditorView.swift */; };
 		9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBF5B91BC5DA33007117F4 /* Palette.swift */; };
-		C3BB7AA51BF04E6300C53C49 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3BB7AA41BF04E6300C53C49 /* MenuView.swift */; };
 		C3EE00861C222EEB0082D3E8 /* Docs in Resources */ = {isa = PBXBuildFile; fileRef = C3EE00851C222EEB0082D3E8 /* Docs */; };
 		F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */; };
 /* End PBXBuildFile section */
@@ -82,7 +79,6 @@
 /* Begin PBXFileReference section */
 		1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchingView.swift; sourceTree = "<group>"; };
 		1D7DBCB01BB88FC300C85633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SingNSketch/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		930CB0271C652F6A00C3E6B2 /* PaletteEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteEditorViewController.swift; sourceTree = "<group>"; };
 		9341A56C1BB0D35000D6BCB0 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		93516B2B1C6DB8E200FD69CE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -95,9 +91,7 @@
 		938FC0001BA79C7F00EAFC7E /* Sing N Sketch Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sing N Sketch Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		938FC0031BA79C7F00EAFC7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		938FC0041BA79C7F00EAFC7E /* Sing_N_Sketch_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sing_N_Sketch_Tests.swift; sourceTree = "<group>"; };
-		93B582591C6522FE00A11212 /* PaletteEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaletteEditorView.swift; sourceTree = "<group>"; };
 		9BFBF5B91BC5DA33007117F4 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Palette.swift; path = ../Palette.swift; sourceTree = "<group>"; };
-		C3BB7AA41BF04E6300C53C49 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		C3EE00851C222EEB0082D3E8 /* Docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Docs; path = "Sing N Sketch Tests/Docs"; sourceTree = "<group>"; };
 		EE43D46D1A14A6F200311C06 /* Sing N Sketch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sing N Sketch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
@@ -136,18 +130,15 @@
 		938FBFE61BA79C5000EAFC7E /* Sing N Sketch */ = {
 			isa = PBXGroup;
 			children = (
+				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 				9BFBF5B91BC5DA33007117F4 /* Palette.swift */,
-				930CB0271C652F6A00C3E6B2 /* PaletteEditorViewController.swift */,
 				936E74AA1BB348C60089757A /* AudioInterface.swift */,
 				1D7DBCAF1BB88FC300C85633 /* Main.storyboard */,
 				935B211A1CB3640D00537233 /* Launch Screen.storyboard */,
 				938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */,
 				938FBFED1BA79C5000EAFC7E /* Info.plist */,
 				938FBFEF1BA79C5000EAFC7E /* ViewController.swift */,
-				C3BB7AA41BF04E6300C53C49 /* MenuView.swift */,
-				93B582591C6522FE00A11212 /* PaletteEditorView.swift */,
 				1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */,
-				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 				93516B2B1C6DB8E200FD69CE /* Images.xcassets */,
 			);
 			name = "Sing N Sketch";
@@ -372,12 +363,9 @@
 				936E74AB1BB348C60089757A /* AudioInterface.swift in Sources */,
 				1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */,
 				938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */,
-				93B5825A1C6522FE00A11212 /* PaletteEditorView.swift in Sources */,
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
-				C3BB7AA51BF04E6300C53C49 /* MenuView.swift in Sources */,
 				9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,
-				930CB0281C652F6A00C3E6B2 /* PaletteEditorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

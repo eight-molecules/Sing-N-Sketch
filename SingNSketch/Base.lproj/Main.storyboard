@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -43,7 +44,7 @@
                                     <outlet property="drawView" destination="Hqa-mn-DMK" id="n16-Jn-f6s"/>
                                 </connections>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="Xar-JC-OpD" customClass="ToolbarView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="Xar-JC-OpD">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGl-FG-JV6">
@@ -115,6 +116,29 @@
                                             <action selector="undo:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dbW-C5-VtU"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qt4-bX-WNe" customClass="PaletteButton" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                        <rect key="frame" x="248" y="124" width="30" height="30"/>
+                                        <state key="normal" title="Add">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lV4-XR-Fni">
+                                        <rect key="frame" x="241" y="88" width="45" height="28"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sYr-sI-5HW">
+                                        <rect key="frame" x="241" y="162" width="45" height="30"/>
+                                        <state key="normal" title="Delete">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="hsv" translatesAutoresizingMaskIntoConstraints="NO" id="HwG-ky-sIj" customClass="ColorMapView" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="85" width="225" height="107"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="225" id="aPc-Z6-XbC"/>
+                                            <constraint firstAttribute="height" constant="107" id="qDK-OE-6KX"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.24729357547993014" green="0.24729357547993014" blue="0.24729357547993014" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -129,6 +153,7 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Hqa-mn-DMK" secondAttribute="width" id="D7P-UX-aNz"/>
+                            <constraint firstItem="HwG-ky-sIj" firstAttribute="leading" secondItem="37g-l9-HxW" secondAttribute="leadingMargin" constant="-12" id="ERM-5W-Rmr"/>
                             <constraint firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="L9O-Z6-r0j"/>
                             <constraint firstAttribute="height" secondItem="jme-l1-KiE" secondAttribute="height" id="YGm-DT-Iw7"/>
                             <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
@@ -140,11 +165,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Sing N' Sketch" id="x1h-l8-JK5">
-                        <barButtonItem key="leftBarButtonItem" title="Menu" id="caW-B7-iqS">
-                            <connections>
-                                <action selector="showMenuView:" destination="vXZ-lx-hvc" id="6hw-2h-e0K"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="caW-B7-iqS"/>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="rRY-uI-4Rw">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Q7-dJ-3vJ">
                                 <rect key="frame" x="548" y="7" width="32" height="30"/>
@@ -152,15 +173,16 @@
                                 <state key="normal" title="Hide">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="hide:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="rgU-JM-R0w"/>
-                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="canvasView" destination="qIa-Kk-11Z" id="Avx-na-fXJ"/>
+                        <outlet property="add" destination="qt4-bX-WNe" id="dwh-Ic-meu"/>
+                        <outlet property="colormapView" destination="HwG-ky-sIj" id="zQ0-zn-rjh"/>
+                        <outlet property="indicator" destination="lV4-XR-Fni" id="667-8s-QYj"/>
+                        <outlet property="new" destination="Vfx-Ir-lG6" id="w9J-pX-H2T"/>
+                        <outlet property="save" destination="1qI-4E-u1u" id="tiO-zG-ggV"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
                         <outlet property="toolbarView" destination="Xar-JC-OpD" id="ZD8-GH-RNq"/>
@@ -172,6 +194,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="hsv" width="1280" height="1024"/>
         <image name="icon" width="50" height="50"/>
     </resources>
 </document>
