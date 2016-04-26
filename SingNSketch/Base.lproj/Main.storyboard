@@ -134,6 +134,7 @@
                             <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
                             <constraint firstItem="qIa-Kk-11Z" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="cLL-Yg-NMk"/>
                             <constraint firstItem="qIa-Kk-11Z" firstAttribute="height" secondItem="37g-l9-HxW" secondAttribute="height" id="lBi-I1-4FQ"/>
+                            <constraint firstItem="Xar-JC-OpD" firstAttribute="width" secondItem="37g-l9-HxW" secondAttribute="width" id="vP7-D5-MOs"/>
                             <constraint firstItem="Xar-JC-OpD" firstAttribute="width" secondItem="jme-l1-KiE" secondAttribute="width" id="vcz-ae-qsL"/>
                         </constraints>
                     </view>

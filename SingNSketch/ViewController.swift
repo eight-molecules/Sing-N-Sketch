@@ -5,7 +5,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var canvasView: UIImageView! = nil
     @IBOutlet weak var menuView: MenuView! = nil
     @IBOutlet weak var toolbarView: UIView!
-    @IBOutlet weak var paletteEditor: PaletteEditorView! = nil
     
     var screenEdgeRecognizer: UIScreenEdgePanGestureRecognizer!
     
@@ -22,16 +21,6 @@ class ViewController: UIViewController {
         
         self.view.bounds = UIScreen.mainScreen().bounds
         self.view.frame = self.view.bounds
-        
-        self.toolbarView.bounds.origin = self.view.bounds.origin
-        self.toolbarView.bounds.size.width = self.view.frame.size.width
-        
-        sketchingView.frame = view.bounds
-        
-        screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "drawPaletteEditor:")
-        screenEdgeRecognizer.edges = .Left
-        sketchingView.addGestureRecognizer(screenEdgeRecognizer)
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -61,29 +50,21 @@ class ViewController: UIViewController {
         }
     }
     
-    // Hide navigation
-    @IBAction func hide(sender: UIButton) {
-        show.hidden = false
-        self.toolbarView.hidden = true
-    }
-    
-    @IBAction func show(sender: UIButton) {
-        show.hidden = true
-        self.toolbarView.hidden = false
-    }
-    
-    @IBAction func drawPaletteEditor(sender: UIScreenEdgePanGestureRecognizer) {
-        if sender.state == .Ended {
-            let paletteEditor = PaletteEditorView(frame: CGRect(x: -250, y: 0, width: 250, height: self.view.frame.height), palette: sketchingView.palette, audio: sketchingView.audio)
-            self.view.addSubview(paletteEditor)
-            
-            paletteEditor.open()
+        @IBAction func showMenuView(sender: UIButton) {
+        var height: CGFloat = 35
+        if self.toolbarView.frame.height > 50 {
+            height = -1 * height
         }
+        UIView.animateWithDuration(0.7, animations: {
+            var frame = self.toolbarView.frame
+            frame.size.height += height
+            self.toolbarView.frame = frame
+            })
     }
     
     // Save function for the current canvas
     @IBAction func save(sender: UIButton) {
-        if let img = canvasView.image {
+        if let img = sketchingView.canvasView.image {
             UIImageWriteToSavedPhotosAlbum(img, self, "image:didFinishSavingWithError:contextInfo:", nil)
         }
     }
@@ -102,25 +83,19 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func showMenuView(sender: UIButton) {
-        var height: CGFloat = 35
-        if self.toolbarView.frame.height > 50 {
-            height = -1 * height
-        }
-        UIView.animateWithDuration(0.7, animations: {
-            var frame = self.toolbarView.frame
-            frame.size.height += height
-            self.toolbarView.frame = frame
-            })
+    // Hide navigation
+    @IBAction func hide(sender: UIButton) {
+        show.hidden = false
+        self.toolbarView.hidden = true
+    }
+    
+    @IBAction func show(sender: UIButton) {
+        show.hidden = true
+        self.toolbarView.hidden = false
     }
     
     @IBAction func new(sender: UIButton) {
         sketchingView.newDrawing()
-    }
-    
-    // Interface slider actions
-    @IBAction func opacityManipulator(sender: UISlider) {
-        sketchingView.brush.opacity = CGFloat(sender.value)
     }
     
     @IBAction func widthManipulator(sender: UISlider) {
