@@ -1,5 +1,6 @@
 import UIKit
 
+
 extension CALayer {
     
     func colorOfPoint(point: CGPoint) -> CGColorRef {
@@ -34,9 +35,11 @@ class ColorMapView: UIImageView {
 
 class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView!
-    @IBOutlet weak var toolbarView: UIView!
+    @IBOutlet weak var toolbarView: UIStackView!
+    @IBOutlet weak var paletteStackView: UIStackView!
     @IBOutlet weak var colormapView: ColorMapView!
     @IBOutlet weak var indicator: UIView!
+    @IBOutlet weak var heightConstant: NSLayoutConstraint!
     
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
@@ -48,13 +51,13 @@ class ViewController: UIViewController {
         
         self.view.bounds = UIScreen.mainScreen().bounds
         self.view.frame = self.view.bounds
+        self.sketchingView.autoresizingMask = .None
     }
     
     override func viewDidAppear(animated: Bool) {
         debugPrint("Started Audio")
         sketchingView.audio.update()
         
-        self.toolbarView.frame.size.height = 50
         indicator.layer.cornerRadius = indicator.frame.width / 2
         colormapView.layer.cornerRadius = 2
         colormapView.layer.borderColor = UIColor.blackColor().CGColor
@@ -104,15 +107,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showMenuView(sender: UIButton) {
-        var height: CGFloat = 150
-        if self.toolbarView.frame.height > 50 {
+        var height: CGFloat = 50 + 200
+        if heightConstant.constant > 50 {
             height = -1 * height
         }
-        UIView.animateWithDuration(0.7, animations: {
-            var frame = self.toolbarView.frame
-            frame.size.height += height
-            self.toolbarView.frame = frame
-            })
+        
+        self.view.layoutIfNeeded()
+        UIView.animateWithDuration(1, animations: {
+            self.heightConstant.constant += height
+            self.view.layoutIfNeeded()
+        })
     }
     
     @IBAction func addMapping(sender: UIButton) {
@@ -150,12 +154,22 @@ class ViewController: UIViewController {
     // Hide navigation
     @IBAction func hide(sender: UIButton) {
         show.hidden = false
-        self.toolbarView.hidden = true
+        
+        self.view.layoutIfNeeded()
+        UIView.animateWithDuration(1, animations: {
+            self.heightConstant.constant = 0
+            self.view.layoutIfNeeded()
+        })
     }
     
     @IBAction func show(sender: UIButton) {
         show.hidden = true
-        self.toolbarView.hidden = false
+        
+        self.view.layoutIfNeeded()
+        UIView.animateWithDuration(1, animations: {
+        self.heightConstant.constant = 50
+        self.view.layoutIfNeeded()
+        })
     }
     
     @IBAction func new(sender: UIButton) {
