@@ -1,5 +1,7 @@
 import UIKit
 
+class SnapSlider: UISlider {
+}
 
 extension CALayer {
     
@@ -27,6 +29,28 @@ extension CALayer {
     
 }
 
+extension CAGradientLayer {
+    
+    func generateGradient(c: [CGColor], f: [Float]) -> CAGradientLayer {
+        let gradientColors: [CGColor] = c
+        let gradientLocations: [Float] = f
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientColors
+        gradientLayer.locations = gradientLocations
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        
+        return gradientLayer
+    }
+}
+extension ViewController: IntervalSliderDelegate {
+    func confirmValue(slider: IntervalSlider, validValue: Float) {
+        indicator.backgroundColor = sketchingView.palette.getColor(Double(validValue))
+    }
+}
+
+
 class ColorMapView: UIImageView {
     var color: UIColor! = UIColor.blackColor()
     var gradientColor: UIColor! = UIColor.blackColor()
@@ -40,6 +64,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var colormapView: ColorMapView!
     @IBOutlet weak var indicator: UIView!
     @IBOutlet weak var heightConstant: NSLayoutConstraint!
+    @IBOutlet weak var mappingView: GradientView!
+    @IBOutlet weak var mappingSlider: SnapSlider!
+    
+    var gradient: CALayer!
     
     @IBOutlet weak var show: UIButton!
     @IBOutlet weak var save: UIButton!
@@ -58,11 +86,20 @@ class ViewController: UIViewController {
         debugPrint("Started Audio")
         sketchingView.audio.update()
         
-        indicator.layer.cornerRadius = indicator.frame.width / 2
+        mappingView.direction = GradientView.Direction.Horizontal
+        updateMappingsGradient()
+        
         colormapView.layer.cornerRadius = 2
         colormapView.layer.borderColor = UIColor.blackColor().CGColor
-        colormapView.layer.borderWidth = 1
+        colormapView.layer.borderWidth = 2
         colormapView.clipsToBounds = true
+        
+        indicator.layer.borderWidth = 1
+        indicator.layer.borderColor = UIColor.blackColor().CGColor
+        indicator.layer.cornerRadius = indicator.frame.height / 2
+        
+        heightConstant.constant = 50
+        
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -73,7 +110,6 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if colormapView.bounds.contains((touches.first?.locationInView(colormapView))!) {
             colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint((touches.first?.locationInView(colormapView))!))
@@ -95,6 +131,7 @@ class ViewController: UIViewController {
         }
     }
     
+    
     func handleLongPress(longPress: UILongPressGestureRecognizer) {
         switch longPress.state {
         case .Changed:
@@ -107,7 +144,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showMenuView(sender: UIButton) {
-        var height: CGFloat = 50 + 200
+        var height: CGFloat = 250
         if heightConstant.constant > 50 {
             height = -1 * height
         }
@@ -121,13 +158,17 @@ class ViewController: UIViewController {
     
     @IBAction func addMapping(sender: UIButton) {
         debugPrint("Adding Mapping")
+        
+        sketchingView.audio.clearFrequency()
         sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colormapView.color)
+        
+        updateMappingsGradient()
     }
     
     
     @IBAction func deleteMapping(sender: UIButton) {
         debugPrint("Deleting Mapping")
-        //sketchingView.palette.deleteColor(sender.frequency)
+        // sketchingView.palette.deleteColor()
     }
     
     // Save function for the current canvas
@@ -187,5 +228,56 @@ class ViewController: UIViewController {
     @IBAction func undo(sender: UIButton) {
         sketchingView.undo()
     }
+    
+    @IBAction func clear(sender: UIButton) {
+        sketchingView.palette = Palette()
+        updateMappingsGradient()
+    }
+    
+    func updateMappingsGradient()  {
+        
+        let mappings = sketchingView.palette.getMappings()
+        var colors: [UIColor] = []
+        var locations: [CGFloat] = []
+        let keys = mappings.keys.sort(<)
+        
+        colors.append(UIColor.blackColor())
+        locations.append(0)
+        for f in keys {
+            if f > 99 && f < 400 {
+                let c = mappings[f] as UIColor!
+                colors.append(c)
+                
+                let loc = (f - 99) / (400 -
+                    99)
+                locations.append(CGFloat(loc))
+                
+            }
+        }
+        colors.append(UIColor.blackColor())
+        locations.append(1)
+        
+        mappingView.colors = colors
+        mappingView.locations = locations
+        
+        
+    }
+    
+    private func createSources(mappings: Dictionary<Double, UIColor>) -> [IntervalSliderSource] {
+        // Sample of equally inttervals
+        var sources = [IntervalSliderSource]()
+        
+        for k in mappings.keys {
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 35, height: 20))
+            label.text = "\(Int(k))"
+            label.font = UIFont.systemFontOfSize(CGFloat(12))
+            label.textColor = mappings[k]
+            label.textAlignment = .Center
+            let source = IntervalSliderSource(validValue: Float(k), appearanceValue: Float(k), label: label)
+            sources.append(source)
+        }
+        return sources
+    }
 }
+
 

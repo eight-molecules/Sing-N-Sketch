@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */; };
-		1D7DBCB11BB88FC300C85633 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAF1BB88FC300C85633 /* Main.storyboard */; };
+		930243FF1CD5122C00CEC38D /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930243FE1CD5122C00CEC38D /* GradientView.swift */; };
+		930634A11CD6B45E0059896A /* IntervalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930634A01CD6B45E0059896A /* IntervalSlider.swift */; };
+		930634A41CD71E310059896A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 930634A21CD71E310059896A /* Main.storyboard */; };
 		9341A56E1BB0D35000D6BCB0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56C1BB0D35000D6BCB0 /* Fabric.framework */; };
 		9341A56F1BB0D35000D6BCB0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */; };
 		93516B2C1C6DB8E200FD69CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93516B2B1C6DB8E200FD69CE /* Images.xcassets */; };
@@ -78,7 +80,9 @@
 
 /* Begin PBXFileReference section */
 		1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchingView.swift; sourceTree = "<group>"; };
-		1D7DBCB01BB88FC300C85633 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SingNSketch/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		930243FE1CD5122C00CEC38D /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		930634A01CD6B45E0059896A /* IntervalSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IntervalSlider.swift; path = ../IntervalSlider.swift; sourceTree = "<group>"; };
+		930634A31CD71E310059896A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9341A56C1BB0D35000D6BCB0 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		93516B2B1C6DB8E200FD69CE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -130,14 +134,16 @@
 		938FBFE61BA79C5000EAFC7E /* Sing N Sketch */ = {
 			isa = PBXGroup;
 			children = (
+				930634A01CD6B45E0059896A /* IntervalSlider.swift */,
 				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 				9BFBF5B91BC5DA33007117F4 /* Palette.swift */,
 				936E74AA1BB348C60089757A /* AudioInterface.swift */,
-				1D7DBCAF1BB88FC300C85633 /* Main.storyboard */,
+				930634A21CD71E310059896A /* Main.storyboard */,
 				935B211A1CB3640D00537233 /* Launch Screen.storyboard */,
 				938FBFE71BA79C5000EAFC7E /* AppDelegate.swift */,
 				938FBFED1BA79C5000EAFC7E /* Info.plist */,
 				938FBFEF1BA79C5000EAFC7E /* ViewController.swift */,
+				930243FE1CD5122C00CEC38D /* GradientView.swift */,
 				1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */,
 				93516B2B1C6DB8E200FD69CE /* Images.xcassets */,
 			);
@@ -310,9 +316,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				930634A41CD71E310059896A /* Main.storyboard in Resources */,
 				935B211B1CB3640D00537233 /* Launch Screen.storyboard in Resources */,
 				93516B2C1C6DB8E200FD69CE /* Images.xcassets in Resources */,
-				1D7DBCB11BB88FC300C85633 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,8 +370,10 @@
 				1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */,
 				938FBFF91BA79C5000EAFC7E /* ViewController.swift in Sources */,
 				F2FF3C3B1BA9FE5E0077FCAC /* Brush.swift in Sources */,
+				930243FF1CD5122C00CEC38D /* GradientView.swift in Sources */,
 				9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,
+				930634A11CD6B45E0059896A /* IntervalSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,13 +398,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1D7DBCAF1BB88FC300C85633 /* Main.storyboard */ = {
+		930634A21CD71E310059896A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1D7DBCB01BB88FC300C85633 /* Base */,
+				930634A31CD71E310059896A /* Base */,
 			);
 			name = Main.storyboard;
-			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

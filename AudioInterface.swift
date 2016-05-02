@@ -30,13 +30,15 @@ class MovingAverage {
     }
     
     func addSample(value: Double) -> Double {
-        let pos = Int(fmodf(Float(sampleCount++), Float(period)))
+        let pos = sampleCount % period
         
         if pos >= samples.count {
             samples.append(value)
         } else {
             samples[pos] = value
         }
+        
+        sampleCount += 1
         
         return average
     }
@@ -51,7 +53,7 @@ class AudioInterface {
     let ampBuffer: Int = 3
     
     required init() {
-        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: 300, maximumFrequency: 3000)
+        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: 100, maximumFrequency: 400)
         AKSettings.audioInputEnabled = true
         let silence = AKMixer(trackedFrequency)
         silence.volume = 0
@@ -82,7 +84,7 @@ class AudioInterface {
         var i = 0
         repeat {
             frequency.addSample(trackedFrequency.frequency)
-            i++
+            i += 1
         }
         while i < freqBuffer
         return frequency.average

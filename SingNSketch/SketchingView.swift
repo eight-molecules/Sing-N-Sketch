@@ -40,8 +40,6 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         palette = Palette()
-        palette.addColor(300, color: UIColor.blueColor())
-        palette.addColor(3000, color: UIColor.orangeColor())
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
