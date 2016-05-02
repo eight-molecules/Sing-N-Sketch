@@ -44,11 +44,6 @@ extension CAGradientLayer {
         return gradientLayer
     }
 }
-extension ViewController: IntervalSliderDelegate {
-    func confirmValue(slider: IntervalSlider, validValue: Float) {
-        indicator.backgroundColor = sketchingView.palette.getColor(Double(validValue))
-    }
-}
 
 
 class ColorMapView: UIImageView {
@@ -66,6 +61,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var heightConstant: NSLayoutConstraint!
     @IBOutlet weak var mappingView: GradientView!
     @IBOutlet weak var mappingSlider: SnapSlider!
+    @IBOutlet weak var freqRangeSlider: RangeSlider!
     
     var gradient: CALayer!
     
@@ -73,6 +69,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var save: UIButton!
     @IBOutlet weak var new: UIButton!
     @IBOutlet weak var add: UIButton!
+    
+    var mappedFreq: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,7 +97,6 @@ class ViewController: UIViewController {
         indicator.layer.cornerRadius = indicator.frame.height / 2
         
         heightConstant.constant = 50
-        
         
         let longPress = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         show.addGestureRecognizer(longPress)
@@ -160,8 +157,13 @@ class ViewController: UIViewController {
         debugPrint("Adding Mapping")
         
         sketchingView.audio.clearFrequency()
+        if mappedFreq == nil {
         sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colormapView.color)
-        
+            mappedFreq = nil
+        }
+        else {
+            sketchingView.palette.addColor(mappedFreq, color: colormapView.color)
+        }
         updateMappingsGradient()
     }
     
@@ -231,7 +233,16 @@ class ViewController: UIViewController {
     
     @IBAction func clear(sender: UIButton) {
         sketchingView.palette = Palette()
+        sketchingView.palette.addColor(sketchingView.minFreq, color: UIColor.blackColor())
+        sketchingView.palette.addColor(sketchingView.maxFreq, color: UIColor.blackColor())
+        
         updateMappingsGradient()
+    }
+    
+    @IBAction func mappingSlider(sender: SnapSlider) {
+        mappedFreq = Double(sender.value)
+        indicator.backgroundColor = sketchingView.palette.getColor(Double(sender.value))
+        mappingSlider.minimumTrackTintColor = indicator.backgroundColor
     }
     
     func updateMappingsGradient()  {
@@ -239,7 +250,11 @@ class ViewController: UIViewController {
         let mappings = sketchingView.palette.getMappings()
         var colors: [UIColor] = []
         var locations: [CGFloat] = []
-        let keys = mappings.keys.sort(<)
+        var keys = mappings.keys.sort(>)
+        keys.popLast()
+        keys = keys.sort(<)
+        keys.popLast()
+    
         
         colors.append(UIColor.blackColor())
         locations.append(0)
@@ -260,23 +275,8 @@ class ViewController: UIViewController {
         mappingView.colors = colors
         mappingView.locations = locations
         
-        
-    }
-    
-    private func createSources(mappings: Dictionary<Double, UIColor>) -> [IntervalSliderSource] {
-        // Sample of equally inttervals
-        var sources = [IntervalSliderSource]()
-        
-        for k in mappings.keys {
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 35, height: 20))
-            label.text = "\(Int(k))"
-            label.font = UIFont.systemFontOfSize(CGFloat(12))
-            label.textColor = mappings[k]
-            label.textAlignment = .Center
-            let source = IntervalSliderSource(validValue: Float(k), appearanceValue: Float(k), label: label)
-            sources.append(source)
-        }
-        return sources
+        mappingSlider.minimumValue = Float(keys.first!)
+        mappingSlider.maximumValue = Float(keys.last!)
     }
 }
 

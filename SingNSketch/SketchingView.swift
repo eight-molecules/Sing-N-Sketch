@@ -16,8 +16,10 @@ class SketchingView: UIView {
     var drawImage: UIImage!
     var brush: Brush = Brush()
     var palette: Palette = Palette()
-    var audio: AudioInterface = AudioInterface()
+    var audio: AudioInterface!
     var multiplier: CGFloat = 1
+    var minFreq: Double = 100
+    var maxFreq: Double = 400
     
     //###
     var undoArray = [UIImage] ()
@@ -40,6 +42,10 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         palette = Palette()
+        palette.addColor(minFreq, color: UIColor.blackColor())
+        palette.addColor(maxFreq, color: UIColor.blackColor())
+        
+        audio = AudioInterface()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

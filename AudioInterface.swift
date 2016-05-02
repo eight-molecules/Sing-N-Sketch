@@ -51,9 +51,11 @@ class AudioInterface {
     var noiseFloor: Double = 0.0005
     var freqBuffer: Int = 25
     let ampBuffer: Int = 3
+    var minFreq: Double = 100
+    var maxFreq: Double = 400
     
     required init() {
-        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: 100, maximumFrequency: 400)
+        trackedFrequency = AKFrequencyTracker(mic, minimumFrequency: minFreq, maximumFrequency: maxFreq)
         AKSettings.audioInputEnabled = true
         let silence = AKMixer(trackedFrequency)
         silence.volume = 0

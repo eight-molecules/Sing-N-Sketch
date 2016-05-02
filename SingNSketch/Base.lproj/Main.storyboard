@@ -55,10 +55,10 @@
                                 </connections>
                             </view>
                             <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bfT-Il-W4D">
-                                <rect key="frame" x="0.0" y="20" width="600" height="300"/>
+                                <rect key="frame" x="4" y="20" width="592" height="300"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZf-B8-nFB">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="592" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Width" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yzL-ua-LHL">
                                                 <rect key="frame" x="418" y="8" width="46" height="42"/>
@@ -75,15 +75,6 @@
                                                     <action selector="hide:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="60x-wA-ING"/>
                                                 </connections>
                                             </button>
-                                            <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="25" translatesAutoresizingMaskIntoConstraints="NO" id="P0b-WV-3c4">
-                                                <rect key="frame" x="470" y="12" width="124" height="35"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="150" id="F24-vF-1cO"/>
-                                                </constraints>
-                                                <connections>
-                                                    <action selector="widthManipulator:" destination="vXZ-lx-hvc" eventType="valueChanged" id="vVL-2h-1KA"/>
-                                                </connections>
-                                            </slider>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wff-7M-Z84">
                                                 <rect key="frame" x="8" y="8" width="46" height="42"/>
                                                 <state key="normal" title="Menu">
@@ -93,6 +84,15 @@
                                                     <action selector="showMenuView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7AQ-SS-81g"/>
                                                 </connections>
                                             </button>
+                                            <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="25" translatesAutoresizingMaskIntoConstraints="NO" id="P0b-WV-3c4">
+                                                <rect key="frame" x="470" y="12" width="124" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="F24-vF-1cO"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="widthManipulator:" destination="vXZ-lx-hvc" eventType="valueChanged" id="vVL-2h-1KA"/>
+                                                </connections>
+                                            </slider>
                                         </subviews>
                                         <color key="backgroundColor" white="0.25" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -117,11 +117,62 @@
                                             </mask>
                                         </variation>
                                     </view>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJP-Qb-Dv8">
+                                        <rect key="frame" x="0.0" y="50" width="592" height="50"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85O-sX-RU6">
+                                                <rect key="frame" x="8" y="0.0" width="50" height="42"/>
+                                                <state key="normal" title="New">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="new:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="n7G-2p-ztc"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yOi-as-aUl">
+                                                <rect key="frame" x="62" y="0.0" width="50" height="42"/>
+                                                <state key="normal" title="Save">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="save:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uMg-pq-t0h"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cy3-2m-VN7">
+                                                <rect key="frame" x="543" y="10" width="36" height="30"/>
+                                                <state key="normal" title="Redo">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aep-EQ-sVD">
+                                                <rect key="frame" x="493" y="10" width="38" height="30"/>
+                                                <state key="normal" title="Undo">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.25" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="yOi-as-aUl" secondAttribute="bottom" constant="8" id="15L-jA-Mew"/>
+                                            <constraint firstAttribute="bottom" secondItem="85O-sX-RU6" secondAttribute="bottom" constant="8" id="6JX-Ez-stv"/>
+                                            <constraint firstItem="yOi-as-aUl" firstAttribute="leading" secondItem="85O-sX-RU6" secondAttribute="trailing" constant="8" id="Hv3-3k-MJH"/>
+                                            <constraint firstAttribute="height" constant="50" id="J81-MZ-uMj"/>
+                                            <constraint firstItem="cy3-2m-VN7" firstAttribute="top" secondItem="sJP-Qb-Dv8" secondAttribute="top" constant="10" id="M7y-7H-pjY"/>
+                                            <constraint firstAttribute="bottom" secondItem="cy3-2m-VN7" secondAttribute="bottom" constant="10" id="MyP-qI-ewq"/>
+                                            <constraint firstItem="85O-sX-RU6" firstAttribute="top" secondItem="sJP-Qb-Dv8" secondAttribute="top" constant="8" id="OZJ-X5-Yvi"/>
+                                            <constraint firstItem="cy3-2m-VN7" firstAttribute="leading" secondItem="aep-EQ-sVD" secondAttribute="trailing" constant="12" id="Te2-G6-Ylc"/>
+                                            <constraint firstAttribute="trailing" secondItem="cy3-2m-VN7" secondAttribute="trailing" constant="13" id="Un6-Es-aMz"/>
+                                            <constraint firstItem="yOi-as-aUl" firstAttribute="top" secondItem="sJP-Qb-Dv8" secondAttribute="top" constant="8" id="VE9-9f-JLJ"/>
+                                            <constraint firstItem="85O-sX-RU6" firstAttribute="leading" secondItem="sJP-Qb-Dv8" secondAttribute="leading" constant="8" id="jgR-5V-Akt"/>
+                                            <constraint firstItem="aep-EQ-sVD" firstAttribute="top" secondItem="sJP-Qb-Dv8" secondAttribute="top" constant="10" id="lpy-Zj-VX8"/>
+                                            <constraint firstAttribute="bottom" secondItem="aep-EQ-sVD" secondAttribute="bottom" constant="10" id="mF9-Zz-EYF"/>
+                                        </constraints>
+                                    </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nXz-1F-VaI">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="104"/>
+                                        <rect key="frame" x="0.0" y="100" width="592" height="104"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B9s-al-xvr" userLabel="Color Controls">
-                                                <rect key="frame" x="492" y="8" width="100" height="88"/>
+                                                <rect key="frame" x="484" y="8" width="100" height="88"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CjM-9A-sAG">
                                                         <rect key="frame" x="8" y="38" width="84" height="38"/>
@@ -149,7 +200,7 @@
                                                 </variation>
                                             </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hsv" translatesAutoresizingMaskIntoConstraints="NO" id="4xV-nD-PrT" customClass="ColorMapView" customModule="Sing_N_Sketch" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="8" width="476" height="88"/>
+                                                <rect key="frame" x="8" y="8" width="468" height="88"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="88" id="mwG-b5-rvk"/>
                                                 </constraints>
@@ -174,7 +225,7 @@
                                         </variation>
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2W-9X-Yl3">
-                                        <rect key="frame" x="0.0" y="154" width="600" height="96"/>
+                                        <rect key="frame" x="0.0" y="204" width="592" height="96"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KaN-vb-dnp">
                                                 <rect key="frame" x="492" y="8" width="100" height="84"/>
@@ -218,60 +269,24 @@
                                                     <constraint firstAttribute="height" constant="50" id="QFK-wM-2Bk"/>
                                                 </constraints>
                                             </view>
+                                            <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="2Ql-kU-XhB" customClass="SnapSlider" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                                <rect key="frame" x="6" y="62" width="480" height="31"/>
+                                                <connections>
+                                                    <action selector="mappingSlider:" destination="vXZ-lx-hvc" eventType="valueChanged" id="8tw-6S-Xvw"/>
+                                                </connections>
+                                            </slider>
                                         </subviews>
                                         <color key="backgroundColor" white="0.25" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="kxH-HR-cc9" firstAttribute="top" secondItem="A2W-9X-Yl3" secondAttribute="top" constant="4" id="9U9-G1-41O"/>
+                                            <constraint firstItem="2Ql-kU-XhB" firstAttribute="top" secondItem="kxH-HR-cc9" secondAttribute="bottom" constant="4" id="AC6-p7-tyu"/>
+                                            <constraint firstItem="2Ql-kU-XhB" firstAttribute="width" secondItem="kxH-HR-cc9" secondAttribute="width" id="CUj-nr-dmb"/>
                                             <constraint firstAttribute="bottom" secondItem="KaN-vb-dnp" secondAttribute="bottom" constant="8" id="Clo-di-78B"/>
+                                            <constraint firstItem="2Ql-kU-XhB" firstAttribute="centerX" secondItem="kxH-HR-cc9" secondAttribute="centerX" id="NNm-Y4-dyy"/>
                                             <constraint firstItem="KaN-vb-dnp" firstAttribute="top" secondItem="A2W-9X-Yl3" secondAttribute="top" constant="4" id="ScP-RM-Nad"/>
                                             <constraint firstAttribute="trailing" secondItem="KaN-vb-dnp" secondAttribute="trailing" constant="8" id="g2T-Vn-voR"/>
                                             <constraint firstItem="kxH-HR-cc9" firstAttribute="leading" secondItem="A2W-9X-Yl3" secondAttribute="leading" constant="8" id="jgb-59-bbd"/>
                                             <constraint firstItem="KaN-vb-dnp" firstAttribute="leading" secondItem="kxH-HR-cc9" secondAttribute="trailing" constant="8" id="w7I-dZ-vM9"/>
-                                        </constraints>
-                                    </view>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJP-Qb-Dv8">
-                                        <rect key="frame" x="0.0" y="250" width="600" height="50"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Tc-06-z6S">
-                                                <rect key="frame" x="542" y="0.0" width="50" height="42"/>
-                                                <state key="normal" title="Redo">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="redo:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="B65-cH-aeO"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85O-sX-RU6">
-                                                <rect key="frame" x="8" y="0.0" width="50" height="42"/>
-                                                <state key="normal" title="New">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="new:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="n7G-2p-ztc"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yOi-as-aUl">
-                                                <rect key="frame" x="62" y="0.0" width="50" height="42"/>
-                                                <state key="normal" title="Save">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="save:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uMg-pq-t0h"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZS-ox-WLJ">
-                                                <rect key="frame" x="484" y="0.0" width="50" height="42"/>
-                                                <state key="normal" title="Undo">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="undo:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="DaF-9w-2J4"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.25" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="J81-MZ-uMj"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -286,9 +301,9 @@
                         <constraints>
                             <constraint firstItem="bfT-Il-W4D" firstAttribute="top" secondItem="80x-P8-Tp7" secondAttribute="bottom" id="Eh9-43-JpY"/>
                             <constraint firstItem="bfT-Il-W4D" firstAttribute="top" secondItem="80x-P8-Tp7" secondAttribute="bottom" id="GXD-N3-UGr"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="bfT-Il-W4D" secondAttribute="trailing" constant="-20" id="Lds-rd-GKs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bfT-Il-W4D" secondAttribute="trailing" constant="-16" id="Lds-rd-GKs"/>
                             <constraint firstItem="jme-l1-KiE" firstAttribute="centerX" secondItem="37g-l9-HxW" secondAttribute="centerX" id="O2i-0z-JCP"/>
-                            <constraint firstItem="bfT-Il-W4D" firstAttribute="leading" secondItem="37g-l9-HxW" secondAttribute="leadingMargin" constant="-20" id="SYw-lJ-2Ej"/>
+                            <constraint firstItem="bfT-Il-W4D" firstAttribute="leading" secondItem="37g-l9-HxW" secondAttribute="leadingMargin" constant="-16" id="SYw-lJ-2Ej"/>
                             <constraint firstItem="jme-l1-KiE" firstAttribute="centerY" secondItem="37g-l9-HxW" secondAttribute="centerY" id="T2O-hL-3AB"/>
                             <constraint firstAttribute="height" secondItem="jme-l1-KiE" secondAttribute="height" id="YGm-DT-Iw7"/>
                             <constraint firstAttribute="height" secondItem="Hqa-mn-DMK" secondAttribute="height" id="Zn9-E7-Lvj"/>
@@ -303,6 +318,7 @@
                         <outlet property="colormapView" destination="4xV-nD-PrT" id="28L-V6-agd"/>
                         <outlet property="heightConstant" destination="nYc-6G-MCK" id="6gT-gp-uqs"/>
                         <outlet property="indicator" destination="CjM-9A-sAG" id="e5p-x2-7GL"/>
+                        <outlet property="mappingSlider" destination="2Ql-kU-XhB" id="YJ0-my-JGa"/>
                         <outlet property="mappingView" destination="kxH-HR-cc9" id="fVk-ol-fEm"/>
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
