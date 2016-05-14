@@ -55,13 +55,13 @@ class ColorMapView: UIImageView {
 class ViewController: UIViewController {
     @IBOutlet weak var sketchingView: SketchingView!
     @IBOutlet weak var toolbarView: UIStackView!
+    @IBOutlet weak var widthSlider: UISlider!
     @IBOutlet weak var paletteStackView: UIStackView!
     @IBOutlet weak var colormapView: ColorMapView!
     @IBOutlet weak var indicator: UIView!
     @IBOutlet weak var heightConstant: NSLayoutConstraint!
     @IBOutlet weak var mappingView: GradientView!
     @IBOutlet weak var mappingSlider: SnapSlider!
-    @IBOutlet weak var freqRangeSlider: RangeSlider!
     
     var gradient: CALayer!
     
@@ -78,6 +78,10 @@ class ViewController: UIViewController {
         self.view.bounds = UIScreen.mainScreen().bounds
         self.view.frame = self.view.bounds
         self.sketchingView.autoresizingMask = .None
+        
+        let t = 0.2
+        let audioTracker = NSTimer.scheduledTimerWithTimeInterval(t, target: self, selector: #selector(updateFreqIndicator), userInfo: nil, repeats: true)
+        widthSlider.minimumTrackTintColor = UIColor.whiteColor()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -106,7 +110,7 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if colormapView.bounds.contains((touches.first?.locationInView(colormapView))!) {
             colormapView.color = UIColor(CGColor: colormapView.layer.colorOfPoint((touches.first?.locationInView(colormapView))!))
@@ -158,11 +162,11 @@ class ViewController: UIViewController {
         
         sketchingView.audio.clearFrequency()
         if mappedFreq == nil {
-        sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colormapView.color)
+            sketchingView.palette.addColor(sketchingView.audio.frequency.average, color: colormapView.color, exact: false)
             mappedFreq = nil
         }
         else {
-            sketchingView.palette.addColor(mappedFreq, color: colormapView.color)
+            sketchingView.palette.addColor(mappedFreq, color: colormapView.color, exact: false)
         }
         updateMappingsGradient()
     }
@@ -170,7 +174,21 @@ class ViewController: UIViewController {
     
     @IBAction func deleteMapping(sender: UIButton) {
         debugPrint("Deleting Mapping")
-        // sketchingView.palette.deleteColor()
+        let mappings = sketchingView.palette.getMappings()
+        var keys = mappings.keys.sort(<)
+        for f in keys {
+            if f > sketchingView.minFreq && f < sketchingView.maxFreq {
+                
+                let snap = fabs(mappingSlider.value - Float(f)) / Float(f)
+                print (snap)
+                if snap < 0.05 && snap >= 0 {
+                    mappingSlider.setValue(Float(f), animated: false)
+                    sketchingView.palette.deleteColor(f)
+                    updateMappingsGradient()
+                    break
+                }
+            }
+        }
     }
     
     // Save function for the current canvas
@@ -210,8 +228,8 @@ class ViewController: UIViewController {
         
         self.view.layoutIfNeeded()
         UIView.animateWithDuration(1, animations: {
-        self.heightConstant.constant = 50
-        self.view.layoutIfNeeded()
+            self.heightConstant.constant = 50
+            self.view.layoutIfNeeded()
         })
     }
     
@@ -233,8 +251,8 @@ class ViewController: UIViewController {
     
     @IBAction func clear(sender: UIButton) {
         sketchingView.palette = Palette()
-        sketchingView.palette.addColor(sketchingView.minFreq, color: UIColor.blackColor())
-        sketchingView.palette.addColor(sketchingView.maxFreq, color: UIColor.blackColor())
+        sketchingView.palette.addColor(sketchingView.minFreq, color: UIColor.blackColor(), exact: true)
+        sketchingView.palette.addColor(sketchingView.maxFreq, color: UIColor.blackColor(), exact: true)
         
         updateMappingsGradient()
     }
@@ -254,17 +272,17 @@ class ViewController: UIViewController {
         keys.popLast()
         keys = keys.sort(<)
         keys.popLast()
-    
+        
         
         colors.append(UIColor.blackColor())
         locations.append(0)
         for f in keys {
-            if f > 99 && f < 400 {
+            if f > sketchingView.minFreq && f < sketchingView.maxFreq {
                 let c = mappings[f] as UIColor!
                 colors.append(c)
                 
-                let loc = (f - 99) / (400 -
-                    99)
+                let loc = (f - sketchingView.minFreq) / (sketchingView.maxFreq -
+                    sketchingView.minFreq)
                 locations.append(CGFloat(loc))
                 
             }
@@ -277,6 +295,27 @@ class ViewController: UIViewController {
         
         mappingSlider.minimumValue = Float(keys.first!)
         mappingSlider.maximumValue = Float(keys.last!)
+    }
+    
+    @IBAction func share(sender: UIButton) {
+        
+        if let img =  sketchingView.canvasView.image {
+            let shareItems:Array = [img, "I painted this with my voice!  Check out Sing N' Sketch on the App Store!"]
+            let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+            self.presentViewController(activityViewController, animated: true, completion: nil)
+        }
+            
+        else {
+            let alert = UIAlertController(title: "Error!", message: "Nothing has been drawn!", preferredStyle: .Alert)
+            self.presentViewController(alert, animated: true) {
+                
+            }
+        }
+    }
+    
+    @IBAction func updateFreqIndicator() {
+        sketchingView.audio.update()
+        widthSlider.thumbTintColor = sketchingView.palette.getColor(sketchingView.audio.frequency.average)
     }
 }
 

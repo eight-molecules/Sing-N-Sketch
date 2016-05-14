@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1D7DBCAC1BB880FD00C85633 /* SketchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */; };
 		930243FF1CD5122C00CEC38D /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930243FE1CD5122C00CEC38D /* GradientView.swift */; };
-		930634A11CD6B45E0059896A /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930634A01CD6B45E0059896A /* RangeSlider.swift */; };
 		930634A41CD71E310059896A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 930634A21CD71E310059896A /* Main.storyboard */; };
 		9341A56E1BB0D35000D6BCB0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56C1BB0D35000D6BCB0 /* Fabric.framework */; };
 		9341A56F1BB0D35000D6BCB0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */; };
@@ -81,7 +80,6 @@
 /* Begin PBXFileReference section */
 		1D7DBCAB1BB880FD00C85633 /* SketchingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SketchingView.swift; sourceTree = "<group>"; };
 		930243FE1CD5122C00CEC38D /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
-		930634A01CD6B45E0059896A /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RangeSlider.swift; path = ../RangeSlider.swift; sourceTree = "<group>"; };
 		930634A31CD71E310059896A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9341A56C1BB0D35000D6BCB0 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		9341A56D1BB0D35000D6BCB0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 		938FBFE61BA79C5000EAFC7E /* Sing N Sketch */ = {
 			isa = PBXGroup;
 			children = (
-				930634A01CD6B45E0059896A /* RangeSlider.swift */,
 				F2FF3C3A1BA9FE5E0077FCAC /* Brush.swift */,
 				9BFBF5B91BC5DA33007117F4 /* Palette.swift */,
 				936E74AA1BB348C60089757A /* AudioInterface.swift */,
@@ -373,7 +370,6 @@
 				930243FF1CD5122C00CEC38D /* GradientView.swift in Sources */,
 				9BFBF5BA1BC5DA33007117F4 /* Palette.swift in Sources */,
 				938FBFF31BA79C5000EAFC7E /* AppDelegate.swift in Sources */,
-				930634A11CD6B45E0059896A /* RangeSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

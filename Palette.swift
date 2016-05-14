@@ -116,6 +116,8 @@ class Palette {
     var red: Channel = Channel()
     var green: Channel  = Channel()
     var blue: Channel  = Channel()
+    var minFreq = 100.0
+    var maxFreq = 400.0
     
     required init() {
     }
@@ -133,7 +135,7 @@ class Palette {
     }
     
     // Private function to handle individual color channels
-    private func addColor(frequency: Double, r: CGFloat, g: CGFloat, b: CGFloat) {
+    private func addColor(frequency: Double, r: CGFloat, g: CGFloat, b: CGFloat, exact: Bool) {
         var mappedFrequencies = red.getFrequencies()
         mappedFrequencies.sortInPlace(<)
         var newFreq: Bool = true
@@ -147,20 +149,23 @@ class Palette {
         // Seriously, 2% of 1000hz is a very wide range to call for a remap
         if mappedFrequencies.count > 1 {
             for f in mappedFrequencies {
-                let diff = fabs(f - frequency)
-                if diff < (f / 50) {
-                    newFreq = false
+                if f > minFreq && f < maxFreq {
+                    let diff = fabs(f - frequency) / f
                     
-                    red.modifyMapping(f, value: r)
-                    green.modifyMapping(f, value: g)
-                    blue.modifyMapping(f, value: b)
-                    break
+                    if diff < 0.05 {
+                        newFreq = false
+                        
+                        red.modifyMapping(f, value: r)
+                        green.modifyMapping(f, value: g)
+                        blue.modifyMapping(f, value: b)
+                        break
+                    }
                 }
             }
         }
         
         // If the frequency wasn't found, add it as a new one.
-        if newFreq != false {
+        if newFreq != false || exact == true {
             red.addMapping(frequency, value: r)
             green.addMapping(frequency, value: g)
             blue.addMapping(frequency, value: b)
@@ -168,14 +173,14 @@ class Palette {
     }
     
     // Function to add color from a UIColor
-    func addColor(frequency: Double, color: UIColor) {
-
+    func addColor(frequency: Double, color: UIColor, exact: Bool) {
+        
         let colorComponents = color.components
         let r = colorComponents.red
         let g = colorComponents.green
         let b = colorComponents.blue
-
-        addColor(frequency, r: r, g: g, b: b)
+        
+        addColor(frequency, r: r, g: g, b: b, exact: exact)
     }
     
     func getMappings() -> Dictionary<Double, UIColor> {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -149,6 +149,15 @@
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wFP-BP-yyO">
+                                                <rect key="frame" x="123" y="8" width="40" height="30"/>
+                                                <state key="normal" title="Share">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="share:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="vOe-bJ-Ouu"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.25" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -162,9 +171,11 @@
                                             <constraint firstItem="cy3-2m-VN7" firstAttribute="leading" secondItem="aep-EQ-sVD" secondAttribute="trailing" constant="12" id="Te2-G6-Ylc"/>
                                             <constraint firstAttribute="trailing" secondItem="cy3-2m-VN7" secondAttribute="trailing" constant="13" id="Un6-Es-aMz"/>
                                             <constraint firstItem="yOi-as-aUl" firstAttribute="top" secondItem="sJP-Qb-Dv8" secondAttribute="top" constant="8" id="VE9-9f-JLJ"/>
+                                            <constraint firstItem="wFP-BP-yyO" firstAttribute="leading" secondItem="yOi-as-aUl" secondAttribute="trailing" constant="8" id="gpY-RU-nUP"/>
                                             <constraint firstItem="85O-sX-RU6" firstAttribute="leading" secondItem="sJP-Qb-Dv8" secondAttribute="leading" constant="8" id="jgR-5V-Akt"/>
                                             <constraint firstItem="aep-EQ-sVD" firstAttribute="top" secondItem="sJP-Qb-Dv8" secondAttribute="top" constant="10" id="lpy-Zj-VX8"/>
                                             <constraint firstAttribute="bottom" secondItem="aep-EQ-sVD" secondAttribute="bottom" constant="10" id="mF9-Zz-EYF"/>
+                                            <constraint firstItem="wFP-BP-yyO" firstAttribute="centerY" secondItem="yOi-as-aUl" secondAttribute="centerY" id="zvl-K0-LMe"/>
                                         </constraints>
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nXz-1F-VaI">
@@ -249,6 +260,9 @@
                                                         <state key="normal" title="Delete">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="deleteMapping:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9tw-Jm-HTn"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.29999999999999999" alpha="1" colorSpace="calibratedWhite"/>
@@ -268,7 +282,7 @@
                                                     <constraint firstAttribute="height" constant="50" id="QFK-wM-2Bk"/>
                                                 </constraints>
                                             </view>
-                                            <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="2Ql-kU-XhB" customClass="SnapSlider" customModule="Sing_N_Sketch" customModuleProvider="target">
+                                            <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="250" minValue="100" maxValue="400" translatesAutoresizingMaskIntoConstraints="NO" id="2Ql-kU-XhB" customClass="SnapSlider" customModule="Sing_N_Sketch" customModuleProvider="target">
                                                 <rect key="frame" x="6" y="62" width="480" height="31"/>
                                                 <connections>
                                                     <action selector="mappingSlider:" destination="vXZ-lx-hvc" eventType="valueChanged" id="8tw-6S-Xvw"/>
@@ -322,6 +336,7 @@
                         <outlet property="show" destination="XwK-x4-01C" id="dyc-dL-5Ia"/>
                         <outlet property="sketchingView" destination="jme-l1-KiE" id="Wc6-fc-iut"/>
                         <outlet property="toolbarView" destination="bfT-Il-W4D" id="SfG-MH-P5c"/>
+                        <outlet property="widthSlider" destination="P0b-WV-3c4" id="HgB-nZ-Ekh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

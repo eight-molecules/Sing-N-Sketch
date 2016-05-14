@@ -42,8 +42,9 @@ class SketchingView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         palette = Palette()
-        palette.addColor(minFreq, color: UIColor.blackColor())
-        palette.addColor(maxFreq, color: UIColor.blackColor())
+        palette.addColor(minFreq, color: UIColor.blackColor(), exact: true)
+        palette.addColor(maxFreq - 1, color: UIColor.whiteColor(), exact: true)
+        palette.addColor(maxFreq, color: UIColor.blackColor(), exact: true)
         
         audio = AudioInterface()
     }
