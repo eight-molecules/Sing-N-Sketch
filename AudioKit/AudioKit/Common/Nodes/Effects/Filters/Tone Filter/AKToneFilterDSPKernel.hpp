@@ -9,8 +9,8 @@
 #ifndef AKToneFilterDSPKernel_hpp
 #define AKToneFilterDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -22,7 +22,7 @@ enum {
     halfPowerPointAddress = 0
 };
 
-class AKToneFilterDSPKernel : public AKDSPKernel {
+class AKToneFilterDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -55,12 +55,19 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setHalfPowerPoint(float hp) {
+        halfPowerPoint = hp;
+        halfPowerPointRamper.setImmediate(hp);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case halfPowerPointAddress:
-                halfPowerPointRamper.set(clamp(value, (float)12.0, (float)20000.0));
+                halfPowerPointRamper.setUIValue(clamp(value, (float)12.0, (float)20000.0));
                 break;
 
         }
@@ -69,7 +76,7 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case halfPowerPointAddress:
-                return halfPowerPointRamper.goal();
+                return halfPowerPointRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -92,10 +99,10 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double halfPowerPoint = double(halfPowerPointRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            halfPowerPoint = halfPowerPointRamper.getAndStep();
             tone->hp = (float)halfPowerPoint;
 
             if (!started) {
@@ -125,9 +132,12 @@ private:
     sp_data *sp;
     sp_tone *tone;
 
+    float halfPowerPoint = 1000;
+
 public:
     bool started = true;
-    AKParameterRamper halfPowerPointRamper = 1000;
+    bool resetted = false;
+    ParameterRamper halfPowerPointRamper = 1000;
 };
 
 #endif /* AKToneFilterDSPKernel_hpp */

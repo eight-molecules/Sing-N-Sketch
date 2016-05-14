@@ -10,7 +10,7 @@
 #import "AKSquareWaveOscillatorDSPKernel.hpp"
 
 #import <AVFoundation/AVFoundation.h>
-#import "AKBufferedAudioBus.hpp"
+#import "BufferedAudioBus.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -59,6 +59,10 @@
 
 - (BOOL)isPlaying {
     return _kernel.started;
+}
+
+- (BOOL)isSetUp {
+    return _kernel.resetted;
 }
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription

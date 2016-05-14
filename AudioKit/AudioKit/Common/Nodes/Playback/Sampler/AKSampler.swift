@@ -46,11 +46,10 @@ public class AKSampler: AKNode {
         guard let url = NSBundle.mainBundle().URLForResource(file, withExtension: "wav") else {
                 fatalError("file not found.")
         }
-        let files: [NSURL] = [url]
         do {
-            try samplerUnit.loadAudioFilesAtURLs(files)
+            try samplerUnit.loadAudioFilesAtURLs([url])
         } catch {
-            print("error")
+            print("Error loading wav file at the given file location.")
         }
     }
     
@@ -66,7 +65,7 @@ public class AKSampler: AKNode {
     ///
     /// - parameter file: Name of the SoundFont SF2 file without the .sf2 extension
     ///
-    public func loadSoundfont(file: String) {
+    public func loadSoundFont(file: String) {
         loadInstrument(file, type: "sf2")
     }
     
@@ -78,7 +77,7 @@ public class AKSampler: AKNode {
         do {
             try samplerUnit.loadInstrumentAtURL(NSURL(fileURLWithPath: filePath))
         } catch {
-            print("error")
+            print("Error loading file at given file path.")
         }
     }
     
@@ -94,24 +93,6 @@ public class AKSampler: AKNode {
         }
     }
     
-    /* createAUPresetFromDict
-     was moved to AKAUPresetBuilder
-    */
-    static public func createAUPresetFromDict(dict:NSDictionary, path:String, instName:String, attack:Double? = 0, release:Double? = 0){
-        NSException(name: "Deprecated", reason: "createAUPresetFromDict was moved to AKAUPresetBuilder. You can safely replace all instances of AKSampler.createAUPresetFromDict with AKAUPresetBuilder.createAUPresetFromDict. Thank you.", userInfo: nil).raise()
-    }//end func createAUPresetFromDict
-    
-    // This functions returns 1 dictionary entry for a particular sample zone. You then add this to an array, and feed that
-    // into createAUPresetFromDict
-    public static func generateTemplateDictionary(
-        rootNote: Int,
-        filename: String,
-        startNote: Int,
-        endNote: Int) -> NSMutableDictionary {
-        NSException(name: "Deprecated", reason: "generateTemplateDictionary was moved to AKAUPresetBuilder. You can safely replace all instances of AKSampler.generateTemplateDictionary with AKAUPresetBuilder.generateTemplateDictionary. Thank you.", userInfo: nil).raise()
-        return NSMutableDictionary()
-    }
-    
     /// Output Amplitude.
     /// Range: -90.0 -> +12 db
     /// Default: 0 db
@@ -120,7 +101,8 @@ public class AKSampler: AKNode {
             samplerUnit.masterGain = Float(amplitude)
         }
     }
-    /// Normalised Output Volume.
+    
+    /// Normalized Output Volume.
     /// Range:   0 - 1
     /// Default: 1
     public var volume: Double = 1 {
@@ -150,7 +132,7 @@ public class AKSampler: AKNode {
         samplerUnit.stopNote(UInt8(note), onChannel: UInt8(channel))
     }
     
-    static func getAUPresetXML()->String{
+    static func getAUPresetXML() -> String{
         var templateStr:String
         templateStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         templateStr.appendContentsOf("<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n")
@@ -482,5 +464,26 @@ public class AKSampler: AKNode {
         templateStr.appendContentsOf("    </dict>\n")
         templateStr.appendContentsOf("</plist>\n")
         return templateStr
+    }
+    
+    // MARK: - Deprecated
+    
+    
+    /* createAUPresetFromDict
+     was moved to AKAUPresetBuilder
+     */
+    static public func createAUPresetFromDict(dict: NSDictionary, path: String, instName: String, attack: Double? = 0, release: Double? = 0){
+        NSException(name: "Deprecated", reason: "createAUPresetFromDict was moved to AKAUPresetBuilder. You can safely replace all instances of AKSampler.createAUPresetFromDict with AKAUPresetBuilder.createAUPresetFromDict. Thank you.", userInfo: nil).raise()
+    }//end func createAUPresetFromDict
+    
+    // This functions returns 1 dictionary entry for a particular sample zone. You then add this to an array, and feed that
+    // into createAUPresetFromDict
+    public static func generateTemplateDictionary(
+        rootNote: Int,
+        filename: String,
+        startNote: Int,
+        endNote: Int) -> NSMutableDictionary {
+        NSException(name: "Deprecated", reason: "generateTemplateDictionary was moved to AKAUPresetBuilder. You can safely replace all instances of AKSampler.generateTemplateDictionary with AKAUPresetBuilder.generateDictionary. Thank you.", userInfo: nil).raise()
+        return NSMutableDictionary()
     }
 }

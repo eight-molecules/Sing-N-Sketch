@@ -9,8 +9,8 @@
 #ifndef AKBitCrusherDSPKernel_hpp
 #define AKBitCrusherDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -23,7 +23,7 @@ enum {
     sampleRateAddress = 1
 };
 
-class AKBitCrusherDSPKernel : public AKDSPKernel {
+class AKBitCrusherDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -32,10 +32,10 @@ public:
     void init(int channelCount, double inSampleRate) {
         channels = channelCount;
 
-        sampleRate = float(inSampleRate);
+        globalSampleRate = float(inSampleRate);
 
         sp_create(&sp);
-        sp->sr = sampleRate;
+        sp->sr = globalSampleRate;
         sp->nchan = channels;
         sp_bitcrush_create(&bitcrush);
         sp_bitcrush_init(sp, bitcrush);
@@ -57,16 +57,28 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setBitDepth(float bitdepth) {
+        bitDepth = bitdepth;
+        bitDepthRamper.setImmediate(bitdepth);
+    }
+
+    void setSampleRate(float srate) {
+        sampleRate = srate;
+        sampleRateRamper.setImmediate(srate);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case bitDepthAddress:
-                bitDepthRamper.set(clamp(value, (float)1, (float)24));
+                bitDepthRamper.setUIValue(clamp(value, (float)1, (float)24));
                 break;
 
             case sampleRateAddress:
-                sampleRateRamper.set(clamp(value, (float)0.0, (float)20000.0));
+                sampleRateRamper.setUIValue(clamp(value, (float)0.0, (float)20000.0));
                 break;
 
         }
@@ -75,10 +87,10 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case bitDepthAddress:
-                return bitDepthRamper.goal();
+                return bitDepthRamper.getUIValue();
 
             case sampleRateAddress:
-                return sampleRateRamper.goal();
+                return sampleRateRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -105,12 +117,12 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double bitDepth = double(bitDepthRamper.getStep());
-            double sampleRate = double(sampleRateRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            bitDepth = bitDepthRamper.getAndStep();
             bitcrush->bitdepth = (float)bitDepth;
+            sampleRate = sampleRateRamper.getAndStep();
             bitcrush->srate = (float)sampleRate;
 
             if (!started) {
@@ -132,7 +144,7 @@ public:
 private:
 
     int channels = AKSettings.numberOfChannels;
-    float sampleRate = AKSettings.sampleRate;
+    float globalSampleRate = AKSettings.sampleRate;
 
     AudioBufferList *inBufferListPtr = nullptr;
     AudioBufferList *outBufferListPtr = nullptr;
@@ -140,10 +152,14 @@ private:
     sp_data *sp;
     sp_bitcrush *bitcrush;
 
+    float bitDepth = 8;
+    float sampleRate = 10000;
+
 public:
     bool started = true;
-    AKParameterRamper bitDepthRamper = 8;
-    AKParameterRamper sampleRateRamper = 10000;
+    bool resetted = false;
+    ParameterRamper bitDepthRamper = 8;
+    ParameterRamper sampleRateRamper = 10000;
 };
 
 #endif /* AKBitCrusherDSPKernel_hpp */

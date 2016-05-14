@@ -9,8 +9,8 @@
 #ifndef AKModalResonanceFilterDSPKernel_hpp
 #define AKModalResonanceFilterDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -23,7 +23,7 @@ enum {
     qualityFactorAddress = 1
 };
 
-class AKModalResonanceFilterDSPKernel : public AKDSPKernel {
+class AKModalResonanceFilterDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -57,16 +57,28 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setFrequency(float freq) {
+        frequency = freq;
+        frequencyRamper.setImmediate(freq);
+    }
+
+    void setQualityFactor(float q) {
+        qualityFactor = q;
+        qualityFactorRamper.setImmediate(q);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case frequencyAddress:
-                frequencyRamper.set(clamp(value, (float)12.0, (float)20000.0));
+                frequencyRamper.setUIValue(clamp(value, (float)12.0, (float)20000.0));
                 break;
 
             case qualityFactorAddress:
-                qualityFactorRamper.set(clamp(value, (float)0.0, (float)100.0));
+                qualityFactorRamper.setUIValue(clamp(value, (float)0.0, (float)100.0));
                 break;
 
         }
@@ -75,10 +87,10 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case frequencyAddress:
-                return frequencyRamper.goal();
+                return frequencyRamper.getUIValue();
 
             case qualityFactorAddress:
-                return qualityFactorRamper.goal();
+                return qualityFactorRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -105,12 +117,12 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double frequency = double(frequencyRamper.getStep());
-            double qualityFactor = double(qualityFactorRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            frequency = frequencyRamper.getAndStep();
             mode->freq = (float)frequency;
+            qualityFactor = qualityFactorRamper.getAndStep();
             mode->q = (float)qualityFactor;
 
             if (!started) {
@@ -140,10 +152,14 @@ private:
     sp_data *sp;
     sp_mode *mode;
 
+    float frequency = 500.0;
+    float qualityFactor = 50.0;
+
 public:
     bool started = true;
-    AKParameterRamper frequencyRamper = 500.0;
-    AKParameterRamper qualityFactorRamper = 50.0;
+    bool resetted = false;
+    ParameterRamper frequencyRamper = 500.0;
+    ParameterRamper qualityFactorRamper = 50.0;
 };
 
 #endif /* AKModalResonanceFilterDSPKernel_hpp */

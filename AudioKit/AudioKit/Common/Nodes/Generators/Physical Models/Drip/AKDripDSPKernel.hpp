@@ -9,8 +9,8 @@
 #ifndef AKDripDSPKernel_hpp
 #define AKDripDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -28,7 +28,7 @@ enum {
     amplitudeAddress = 6
 };
 
-class AKDripDSPKernel : public AKDSPKernel {
+class AKDripDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -53,7 +53,6 @@ public:
         drip->amp = 0.3;
     }
 
-
     void start() {
         started = true;
     }
@@ -68,41 +67,42 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
 
     void setIntensity(float num_tubes) {
         intensity = num_tubes;
-        intensityRamper.set(clamp(num_tubes, (float)0, (float)100));
+        intensityRamper.setImmediate(num_tubes);
     }
 
-    void setDampingfactor(float damp) {
+    void setDampingFactor(float damp) {
         dampingFactor = damp;
-        dampingFactorRamper.set(clamp(damp, (float)0.0, (float)2.0));
+        dampingFactorRamper.setImmediate(damp);
     }
 
-    void setEnergyreturn(float shake_max) {
+    void setEnergyReturn(float shake_max) {
         energyReturn = shake_max;
-        energyReturnRamper.set(clamp(shake_max, (float)0, (float)100));
+        energyReturnRamper.setImmediate(shake_max);
     }
 
-    void setMainresonantfrequency(float freq) {
+    void setMainResonantFrequency(float freq) {
         mainResonantFrequency = freq;
-        mainResonantFrequencyRamper.set(clamp(freq, (float)0, (float)22000));
+        mainResonantFrequencyRamper.setImmediate(freq);
     }
 
-    void setFirstresonantfrequency(float freq1) {
+    void setFirstResonantFrequency(float freq1) {
         firstResonantFrequency = freq1;
-        firstResonantFrequencyRamper.set(clamp(freq1, (float)0, (float)22000));
+        firstResonantFrequencyRamper.setImmediate(freq1);
     }
 
-    void setSecondresonantfrequency(float freq2) {
+    void setSecondResonantFrequency(float freq2) {
         secondResonantFrequency = freq2;
-        secondResonantFrequencyRamper.set(clamp(freq2, (float)0, (float)22000));
+        secondResonantFrequencyRamper.setImmediate(freq2);
     }
 
     void setAmplitude(float amp) {
         amplitude = amp;
-        amplitudeRamper.set(clamp(amp, (float)0, (float)1));
+        amplitudeRamper.setImmediate(amp);
     }
 
     void trigger() {
@@ -112,31 +112,31 @@ public:
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case intensityAddress:
-                intensityRamper.set(clamp(value, (float)0, (float)100));
+                intensityRamper.setUIValue(clamp(value, (float)0, (float)100));
                 break;
 
             case dampingFactorAddress:
-                dampingFactorRamper.set(clamp(value, (float)0.0, (float)2.0));
+                dampingFactorRamper.setUIValue(clamp(value, (float)0.0, (float)2.0));
                 break;
 
             case energyReturnAddress:
-                energyReturnRamper.set(clamp(value, (float)0, (float)100));
+                energyReturnRamper.setUIValue(clamp(value, (float)0, (float)100));
                 break;
 
             case mainResonantFrequencyAddress:
-                mainResonantFrequencyRamper.set(clamp(value, (float)0, (float)22000));
+                mainResonantFrequencyRamper.setUIValue(clamp(value, (float)0, (float)22000));
                 break;
 
             case firstResonantFrequencyAddress:
-                firstResonantFrequencyRamper.set(clamp(value, (float)0, (float)22000));
+                firstResonantFrequencyRamper.setUIValue(clamp(value, (float)0, (float)22000));
                 break;
 
             case secondResonantFrequencyAddress:
-                secondResonantFrequencyRamper.set(clamp(value, (float)0, (float)22000));
+                secondResonantFrequencyRamper.setUIValue(clamp(value, (float)0, (float)22000));
                 break;
 
             case amplitudeAddress:
-                amplitudeRamper.set(clamp(value, (float)0, (float)1));
+                amplitudeRamper.setUIValue(clamp(value, (float)0, (float)1));
                 break;
 
         }
@@ -145,25 +145,25 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case intensityAddress:
-                return intensityRamper.goal();
+                return intensityRamper.getUIValue();
 
             case dampingFactorAddress:
-                return dampingFactorRamper.goal();
+                return dampingFactorRamper.getUIValue();
 
             case energyReturnAddress:
-                return energyReturnRamper.goal();
+                return energyReturnRamper.getUIValue();
 
             case mainResonantFrequencyAddress:
-                return mainResonantFrequencyRamper.goal();
+                return mainResonantFrequencyRamper.getUIValue();
 
             case firstResonantFrequencyAddress:
-                return firstResonantFrequencyRamper.goal();
+                return firstResonantFrequencyRamper.getUIValue();
 
             case secondResonantFrequencyAddress:
-                return secondResonantFrequencyRamper.goal();
+                return secondResonantFrequencyRamper.getUIValue();
 
             case amplitudeAddress:
-                return amplitudeRamper.goal();
+                return amplitudeRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -209,23 +209,23 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
+
             int frameOffset = int(frameIndex + bufferOffset);
 
-            intensity = double(intensityRamper.getStep());
-            dampingFactor = double(dampingFactorRamper.getStep());
-            energyReturn = double(energyReturnRamper.getStep());
-            mainResonantFrequency = double(mainResonantFrequencyRamper.getStep());
-            firstResonantFrequency = double(firstResonantFrequencyRamper.getStep());
-            secondResonantFrequency = double(secondResonantFrequencyRamper.getStep());
-            amplitude = double(amplitudeRamper.getStep());
-
-            drip->num_tubes = intensity;
-            drip->damp = dampingFactor;
-            drip->shake_max = energyReturn;
-            drip->freq = mainResonantFrequency;
-            drip->freq1 = firstResonantFrequency;
-            drip->freq2 = secondResonantFrequency;
-            drip->amp = amplitude;
+            intensity = intensityRamper.getAndStep();
+            drip->num_tubes = (float)intensity;
+            dampingFactor = dampingFactorRamper.getAndStep();
+            drip->damp = (float)dampingFactor;
+            energyReturn = energyReturnRamper.getAndStep();
+            drip->shake_max = (float)energyReturn;
+            mainResonantFrequency = mainResonantFrequencyRamper.getAndStep();
+            drip->freq = (float)mainResonantFrequency;
+            firstResonantFrequency = firstResonantFrequencyRamper.getAndStep();
+            drip->freq1 = (float)firstResonantFrequency;
+            secondResonantFrequency = secondResonantFrequencyRamper.getAndStep();
+            drip->freq2 = (float)secondResonantFrequency;
+            amplitude = amplitudeRamper.getAndStep();
+            drip->amp = (float)amplitude;
 
             for (int channel = 0; channel < channels; ++channel) {
                 float *out = (float *)outBufferListPtr->mBuffers[channel].mData + frameOffset;
@@ -255,7 +255,6 @@ private:
     sp_data *sp;
     sp_drip *drip;
 
-
     float intensity = 10;
     float dampingFactor = 0.2;
     float energyReturn = 0;
@@ -266,13 +265,14 @@ private:
 
 public:
     bool started = false;
-    AKParameterRamper intensityRamper = 10;
-    AKParameterRamper dampingFactorRamper = 0.2;
-    AKParameterRamper energyReturnRamper = 0;
-    AKParameterRamper mainResonantFrequencyRamper = 450;
-    AKParameterRamper firstResonantFrequencyRamper = 600;
-    AKParameterRamper secondResonantFrequencyRamper = 750;
-    AKParameterRamper amplitudeRamper = 0.3;
+    bool resetted = false;
+    ParameterRamper intensityRamper = 10;
+    ParameterRamper dampingFactorRamper = 0.2;
+    ParameterRamper energyReturnRamper = 0;
+    ParameterRamper mainResonantFrequencyRamper = 450;
+    ParameterRamper firstResonantFrequencyRamper = 600;
+    ParameterRamper secondResonantFrequencyRamper = 750;
+    ParameterRamper amplitudeRamper = 0.3;
 };
 
 #endif /* AKDripDSPKernel_hpp */

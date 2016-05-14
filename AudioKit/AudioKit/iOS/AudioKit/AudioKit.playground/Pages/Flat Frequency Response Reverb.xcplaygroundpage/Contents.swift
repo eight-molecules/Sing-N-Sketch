@@ -27,14 +27,14 @@ class PlaygroundView: AKPlaygroundView {
     var durationLabel: Label?
 
     override func setup() {
-        addTitle("Comb Filter Reverb")
+        addTitle("Flat Frequency Response Reverb")
 
         addLabel("Audio Playback")
-        addButton("Start", action: #selector(self.start))
-        addButton("Stop", action: #selector(self.stop))
+        addButton("Start", action: #selector(start))
+        addButton("Stop", action: #selector(stop))
 
         durationLabel = addLabel("Duration: \(reverb.reverbDuration)")
-        addSlider(#selector(self.setDuration(_:)), value: reverb.reverbDuration, minimum: 0, maximum: 5)
+        addSlider(#selector(setDuration), value: reverb.reverbDuration, minimum: 0, maximum: 5)
     }
 
     func start() {

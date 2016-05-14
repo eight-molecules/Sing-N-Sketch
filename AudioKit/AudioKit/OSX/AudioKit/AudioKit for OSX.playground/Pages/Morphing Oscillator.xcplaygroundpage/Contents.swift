@@ -30,21 +30,21 @@ class PlaygroundView: AKPlaygroundView {
 
         addTitle("Morphing Oscillator")
 
-        addButton("Start", action: #selector(self.start))
-        addButton("Stop", action: #selector(self.stop))
+        addButton("Start", action: #selector(start))
+        addButton("Stop", action: #selector(stop))
 
         frequencyLabel = addLabel("Frequency: 440")
-        addSlider(#selector(self.setFrequency(_:)), value: 440, minimum: 200, maximum: 800)
+        addSlider(#selector(setFrequency), value: 440, minimum: 200, maximum: 800)
 
         amplitudeLabel = addLabel("Amplitude: 0.1")
-        addSlider(#selector(self.setAmplitude(_:)), value: 0.1)
+        addSlider(#selector(setAmplitude), value: 0.1)
 
         morphIndexLabel = addLabel("Morph Index: \(morph.index)")
         addLabel("Sine = 0")
         addLabel("Triangle = 1")
         addLabel("Sawtooth = 2")
         addLabel("Square = 3")
-        addSlider(#selector(self.setMorphIndex(_:)), value: morph.index, minimum: 0, maximum: 3)
+        addSlider(#selector(setMorphIndex), value: morph.index, minimum: 0, maximum: 3)
     }
 
     func start() {
@@ -55,13 +55,13 @@ class PlaygroundView: AKPlaygroundView {
     }
 
     func setFrequency(slider: Slider) {
-        morph.ramp(frequency: Double(slider.value))
+        morph.frequency = Double(slider.value)
         let frequency = String(format: "%0.1f", morph.frequency)
         frequencyLabel!.text = "Frequency: \(frequency)"
     }
 
     func setAmplitude(slider: Slider) {
-        morph.ramp(amplitude: Double(slider.value))
+        morph.amplitude = Double(slider.value)
         let amp = String(format: "%0.3f", morph.amplitude)
         amplitudeLabel!.text = "Amplitude: \(amp)"
     }

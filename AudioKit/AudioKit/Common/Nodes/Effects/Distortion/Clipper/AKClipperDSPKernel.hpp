@@ -9,8 +9,8 @@
 #ifndef AKClipperDSPKernel_hpp
 #define AKClipperDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -22,7 +22,7 @@ enum {
     limitAddress = 0
 };
 
-class AKClipperDSPKernel : public AKDSPKernel {
+class AKClipperDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -37,7 +37,8 @@ public:
         sp->sr = sampleRate;
         sp->nchan = channels;
         sp_clip_create(&clip);
-
+        sp_clip_init(sp, clip);
+        clip->lim = 1.0;
     }
 
     void start() {
@@ -54,22 +55,28 @@ public:
     }
 
     void reset() {
-        sp_clip_init(sp, clip);
-        clip->lim = 1.0;
+        resetted = true;
     }
+
+    void setLimit(float lim) {
+        limit = lim;
+        limitRamper.setImmediate(lim);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case limitAddress:
-                limitRamper.set(clamp(value, (float)0.0, (float)1.0));
+                limitRamper.setUIValue(clamp(value, (float)0.0, (float)1.0));
                 break;
+
         }
     }
 
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case limitAddress:
-                return limitRamper.goal();
+                return limitRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -80,6 +87,7 @@ public:
             case limitAddress:
                 limitRamper.startRamp(clamp(value, (float)0.0, (float)1.0), duration);
                 break;
+
         }
     }
 
@@ -91,10 +99,10 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double limit = double(limitRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            limit = limitRamper.getAndStep();
             clip->lim = (float)limit;
 
             if (!started) {
@@ -105,6 +113,7 @@ public:
             for (int channel = 0; channel < channels; ++channel) {
                 float *in  = (float *)inBufferListPtr->mBuffers[channel].mData  + frameOffset;
                 float *out = (float *)outBufferListPtr->mBuffers[channel].mData + frameOffset;
+
                 sp_clip_compute(sp, clip, in, out);
             }
         }
@@ -123,9 +132,12 @@ private:
     sp_data *sp;
     sp_clip *clip;
 
+    float limit = 1.0;
+
 public:
     bool started = true;
-    AKParameterRamper limitRamper = 1.0;
+    bool resetted = false;
+    ParameterRamper limitRamper = 1.0;
 };
 
 #endif /* AKClipperDSPKernel_hpp */

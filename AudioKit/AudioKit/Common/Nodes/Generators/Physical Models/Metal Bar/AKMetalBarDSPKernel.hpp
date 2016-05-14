@@ -9,8 +9,8 @@
 #ifndef AKMetalBarDSPKernel_hpp
 #define AKMetalBarDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -28,7 +28,7 @@ enum {
     strikeWidthAddress = 6
 };
 
-class AKMetalBarDSPKernel : public AKDSPKernel {
+class AKMetalBarDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -40,6 +40,8 @@ public:
         sampleRate = float(inSampleRate);
 
         sp_create(&sp);
+        sp->sr = sampleRate;
+        sp->nchan = channels;
         sp_bar_create(&bar);
         sp_bar_init(sp, bar, 3, 0.0001);
 //        bar->bcL = 2;
@@ -50,7 +52,6 @@ public:
 //        bar->vel = 1500;
 //        bar->wid = 0.02;
     }
-
 
     void start() {
         started = true;
@@ -66,75 +67,76 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
 
-    void setLeftboundarycondition(float bcL) {
+    void setLeftBoundaryCondition(float bcL) {
         leftBoundaryCondition = bcL;
-        leftBoundaryConditionRamper.set(clamp(bcL, (float)1, (float)3));
+        leftBoundaryConditionRamper.setImmediate(bcL);
     }
 
-    void setRightboundarycondition(float bcR) {
+    void setRightBoundaryCondition(float bcR) {
         rightBoundaryCondition = bcR;
-        rightBoundaryConditionRamper.set(clamp(bcR, (float)1, (float)3));
+        rightBoundaryConditionRamper.setImmediate(bcR);
     }
 
-    void setDecayduration(float T30) {
+    void setDecayDuration(float T30) {
         decayDuration = T30;
-        decayDurationRamper.set(clamp(T30, (float)0, (float)10));
+        decayDurationRamper.setImmediate(T30);
     }
 
-    void setScanspeed(float scan) {
+    void setScanSpeed(float scan) {
         scanSpeed = scan;
-        scanSpeedRamper.set(clamp(scan, (float)0, (float)100));
+        scanSpeedRamper.setImmediate(scan);
     }
 
     void setPosition(float pos) {
         position = pos;
-        positionRamper.set(clamp(pos, (float)0, (float)1));
+        positionRamper.setImmediate(pos);
     }
 
-    void setStrikevelocity(float vel) {
+    void setStrikeVelocity(float vel) {
         strikeVelocity = vel;
-        strikeVelocityRamper.set(clamp(vel, (float)0, (float)1000));
+        strikeVelocityRamper.setImmediate(vel);
     }
 
-    void setStrikewidth(float wid) {
+    void setStrikeWidth(float wid) {
         strikeWidth = wid;
-        strikeWidthRamper.set(clamp(wid, (float)0, (float)1));
+        strikeWidthRamper.setImmediate(wid);
     }
+
     void trigger() {
         internalTrigger = 1;
     }
 
-
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case leftBoundaryConditionAddress:
-                leftBoundaryConditionRamper.set(clamp(value, (float)1, (float)3));
+                leftBoundaryConditionRamper.setUIValue(clamp(value, (float)1, (float)3));
                 break;
 
             case rightBoundaryConditionAddress:
-                rightBoundaryConditionRamper.set(clamp(value, (float)1, (float)3));
+                rightBoundaryConditionRamper.setUIValue(clamp(value, (float)1, (float)3));
                 break;
 
             case decayDurationAddress:
-                decayDurationRamper.set(clamp(value, (float)0, (float)10));
+                decayDurationRamper.setUIValue(clamp(value, (float)0, (float)10));
                 break;
 
             case scanSpeedAddress:
-                scanSpeedRamper.set(clamp(value, (float)0, (float)100));
+                scanSpeedRamper.setUIValue(clamp(value, (float)0, (float)100));
                 break;
 
             case positionAddress:
-                positionRamper.set(clamp(value, (float)0, (float)1));
+                positionRamper.setUIValue(clamp(value, (float)0, (float)1));
                 break;
 
             case strikeVelocityAddress:
-                strikeVelocityRamper.set(clamp(value, (float)0, (float)1000));
+                strikeVelocityRamper.setUIValue(clamp(value, (float)0, (float)1000));
                 break;
 
             case strikeWidthAddress:
-                strikeWidthRamper.set(clamp(value, (float)0, (float)1));
+                strikeWidthRamper.setUIValue(clamp(value, (float)0, (float)1));
                 break;
 
         }
@@ -143,25 +145,25 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case leftBoundaryConditionAddress:
-                return leftBoundaryConditionRamper.goal();
+                return leftBoundaryConditionRamper.getUIValue();
 
             case rightBoundaryConditionAddress:
-                return rightBoundaryConditionRamper.goal();
+                return rightBoundaryConditionRamper.getUIValue();
 
             case decayDurationAddress:
-                return decayDurationRamper.goal();
+                return decayDurationRamper.getUIValue();
 
             case scanSpeedAddress:
-                return scanSpeedRamper.goal();
+                return scanSpeedRamper.getUIValue();
 
             case positionAddress:
-                return positionRamper.goal();
+                return positionRamper.getUIValue();
 
             case strikeVelocityAddress:
-                return strikeVelocityRamper.goal();
+                return strikeVelocityRamper.getUIValue();
 
             case strikeWidthAddress:
-                return strikeWidthRamper.goal();
+                return strikeWidthRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -207,17 +209,24 @@ public:
 
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
-
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
+
             int frameOffset = int(frameIndex + bufferOffset);
 
-//            bar->bcL = leftBoundaryConditionRamper.getStep();
-//            bar->bcR = rightBoundaryConditionRamper.getStep();
-//            bar->T30 = decayDurationRamper.getStep();
-//            bar->scan = scanSpeedRamper.getStep();
-//            bar->pos = positionRamper.getStep();
-//            bar->vel = strikeVelocityRamper.getStep();
-//            bar->wid = strikeWidthRamper.getStep();
+            leftBoundaryCondition = leftBoundaryConditionRamper.getAndStep();
+            bar->bcL = (float)leftBoundaryCondition;
+            rightBoundaryCondition = rightBoundaryConditionRamper.getAndStep();
+            bar->bcR = (float)rightBoundaryCondition;
+            decayDuration = decayDurationRamper.getAndStep();
+            bar->T30 = (float)decayDuration;
+            scanSpeed = scanSpeedRamper.getAndStep();
+            bar->scan = (float)scanSpeed;
+            position = positionRamper.getAndStep();
+            bar->pos = (float)position;
+            strikeVelocity = strikeVelocityRamper.getAndStep();
+            bar->vel = (float)strikeVelocity;
+            strikeWidth = strikeWidthRamper.getAndStep();
+            bar->wid = (float)strikeWidth;
 
             for (int channel = 0; channel < channels; ++channel) {
                 float *out = (float *)outBufferListPtr->mBuffers[channel].mData + frameOffset;
@@ -247,7 +256,6 @@ private:
     sp_data *sp;
     sp_bar *bar;
 
-
     float leftBoundaryCondition = 1;
     float rightBoundaryCondition = 1;
     float decayDuration = 3;
@@ -258,13 +266,14 @@ private:
 
 public:
     bool started = false;
-    AKParameterRamper leftBoundaryConditionRamper = 1;
-    AKParameterRamper rightBoundaryConditionRamper = 1;
-    AKParameterRamper decayDurationRamper = 3;
-    AKParameterRamper scanSpeedRamper = 0.25;
-    AKParameterRamper positionRamper = 0.2;
-    AKParameterRamper strikeVelocityRamper = 500;
-    AKParameterRamper strikeWidthRamper = 0.05;
+    bool resetted = false;
+    ParameterRamper leftBoundaryConditionRamper = 1;
+    ParameterRamper rightBoundaryConditionRamper = 1;
+    ParameterRamper decayDurationRamper = 3;
+    ParameterRamper scanSpeedRamper = 0.25;
+    ParameterRamper positionRamper = 0.2;
+    ParameterRamper strikeVelocityRamper = 500;
+    ParameterRamper strikeWidthRamper = 0.05;
 };
 
 #endif /* AKMetalBarDSPKernel_hpp */

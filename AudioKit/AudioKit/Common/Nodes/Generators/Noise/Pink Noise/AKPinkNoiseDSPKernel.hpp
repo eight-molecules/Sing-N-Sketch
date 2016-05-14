@@ -9,8 +9,8 @@
 #ifndef AKPinkNoiseDSPKernel_hpp
 #define AKPinkNoiseDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -22,7 +22,7 @@ enum {
     amplitudeAddress = 0
 };
 
-class AKPinkNoiseDSPKernel : public AKDSPKernel {
+class AKPinkNoiseDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -55,17 +55,19 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
-    
+
     void setAmplitude(float amp) {
         amplitude = amp;
-        amplitudeRamper.set(clamp(amp, (float)0, (float)10));
+        amplitudeRamper.setImmediate(amp);
     }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case amplitudeAddress:
-                amplitudeRamper.set(clamp(value, (float)0, (float)1));
+                amplitudeRamper.setUIValue(clamp(value, (float)0, (float)1));
                 break;
 
         }
@@ -74,7 +76,7 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case amplitudeAddress:
-                return amplitudeRamper.goal();
+                return amplitudeRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -96,10 +98,10 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double amplitude = double(amplitudeRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            amplitude = amplitudeRamper.getAndStep();
             *pinknoise->amp = (float)amplitude;
 
             float temp = 0;
@@ -128,12 +130,13 @@ private:
 
     sp_data *sp;
     sp_pinknoise *pinknoise;
-    
+
     float amplitude = 1;
 
 public:
     bool started = false;
-    AKParameterRamper amplitudeRamper = 1;
+    bool resetted = false;
+    ParameterRamper amplitudeRamper = 1;
 };
 
 #endif /* AKPinkNoiseDSPKernel_hpp */

@@ -9,8 +9,8 @@
 #ifndef AKMoogLadderDSPKernel_hpp
 #define AKMoogLadderDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -23,7 +23,7 @@ enum {
     resonanceAddress = 1
 };
 
-class AKMoogLadderDSPKernel : public AKDSPKernel {
+class AKMoogLadderDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -57,16 +57,28 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setCutoffFrequency(float freq) {
+        cutoffFrequency = freq;
+        cutoffFrequencyRamper.setImmediate(freq);
+    }
+
+    void setResonance(float res) {
+        resonance = res;
+        resonanceRamper.setImmediate(res);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case cutoffFrequencyAddress:
-                cutoffFrequencyRamper.set(clamp(value, (float)12.0, (float)20000.0));
+                cutoffFrequencyRamper.setUIValue(clamp(value, (float)12.0, (float)20000.0));
                 break;
 
             case resonanceAddress:
-                resonanceRamper.set(clamp(value, (float)0.0, (float)2.0));
+                resonanceRamper.setUIValue(clamp(value, (float)0.0, (float)2.0));
                 break;
 
         }
@@ -75,10 +87,10 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case cutoffFrequencyAddress:
-                return cutoffFrequencyRamper.goal();
+                return cutoffFrequencyRamper.getUIValue();
 
             case resonanceAddress:
-                return resonanceRamper.goal();
+                return resonanceRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -105,12 +117,12 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double cutoffFrequency = double(cutoffFrequencyRamper.getStep());
-            double resonance = double(resonanceRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            cutoffFrequency = cutoffFrequencyRamper.getAndStep();
             moogladder->freq = (float)cutoffFrequency;
+            resonance = resonanceRamper.getAndStep();
             moogladder->res = (float)resonance;
 
             if (!started) {
@@ -140,10 +152,14 @@ private:
     sp_data *sp;
     sp_moogladder *moogladder;
 
+    float cutoffFrequency = 1000;
+    float resonance = 0.5;
+
 public:
     bool started = true;
-    AKParameterRamper cutoffFrequencyRamper = 1000;
-    AKParameterRamper resonanceRamper = 0.5;
+    bool resetted = false;
+    ParameterRamper cutoffFrequencyRamper = 1000;
+    ParameterRamper resonanceRamper = 0.5;
 };
 
 #endif /* AKMoogLadderDSPKernel_hpp */

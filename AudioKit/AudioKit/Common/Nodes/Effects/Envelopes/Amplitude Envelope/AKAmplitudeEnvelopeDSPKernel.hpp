@@ -9,8 +9,8 @@
 #ifndef AKAmplitudeEnvelopeDSPKernel_hpp
 #define AKAmplitudeEnvelopeDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -25,7 +25,7 @@ enum {
     releaseDurationAddress = 3
 };
 
-class AKAmplitudeEnvelopeDSPKernel : public AKDSPKernel {
+class AKAmplitudeEnvelopeDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -40,6 +40,7 @@ public:
         sp->sr = sampleRate;
         sp->nchan = channels;
         sp_adsr_create(&adsr);
+
     }
 
     void start() {
@@ -68,24 +69,46 @@ public:
         adsr->dec = 0.1;
         adsr->sus = 1.0;
         adsr->rel = 0.1;
+        resetted = true;
     }
+
+    void setAttackDuration(float atk) {
+        attackDuration = atk;
+        attackDurationRamper.setImmediate(atk);
+    }
+
+    void setDecayDuration(float dec) {
+        decayDuration = dec;
+        decayDurationRamper.setImmediate(dec);
+    }
+
+    void setSustainLevel(float sus) {
+        sustainLevel = sus;
+        sustainLevelRamper.setImmediate(sus);
+    }
+
+    void setReleaseDuration(float rel) {
+        releaseDuration = rel;
+        releaseDurationRamper.setImmediate(rel);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case attackDurationAddress:
-                attackDurationRamper.set(clamp(value, (float)0, (float)99));
+                attackDurationRamper.setUIValue(clamp(value, (float)0, (float)99));
                 break;
 
             case decayDurationAddress:
-                decayDurationRamper.set(clamp(value, (float)0, (float)99));
+                decayDurationRamper.setUIValue(clamp(value, (float)0, (float)99));
                 break;
 
             case sustainLevelAddress:
-                sustainLevelRamper.set(clamp(value, (float)0, (float)99));
+                sustainLevelRamper.setUIValue(clamp(value, (float)0, (float)99));
                 break;
 
             case releaseDurationAddress:
-                releaseDurationRamper.set(clamp(value, (float)0, (float)99));
+                releaseDurationRamper.setUIValue(clamp(value, (float)0, (float)99));
                 break;
 
         }
@@ -94,16 +117,16 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case attackDurationAddress:
-                return attackDurationRamper.goal();
+                return attackDurationRamper.getUIValue();
 
             case decayDurationAddress:
-                return decayDurationRamper.goal();
+                return decayDurationRamper.getUIValue();
 
             case sustainLevelAddress:
-                return sustainLevelRamper.goal();
+                return sustainLevelRamper.getUIValue();
 
             case releaseDurationAddress:
-                return releaseDurationRamper.goal();
+                return releaseDurationRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -138,17 +161,20 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
+
             int frameOffset = int(frameIndex + bufferOffset);
-            
-            adsr->atk = attackDurationRamper.getStep();
-            adsr->dec = decayDurationRamper.getStep();
-            adsr->sus = sustainLevelRamper.getStep();
-            adsr->rel = releaseDurationRamper.getStep();
-            
-//            NSLog(@"%f %f", adsr->atk, adsr->rel);
+
+            attackDuration = attackDurationRamper.getAndStep();
+            adsr->atk = (float)attackDuration;
+            decayDuration = decayDurationRamper.getAndStep();
+            adsr->dec = (float)decayDuration;
+            sustainLevel = sustainLevelRamper.getAndStep();
+            adsr->sus = (float)sustainLevel;
+            releaseDuration = releaseDurationRamper.getAndStep();
+            adsr->rel = (float)releaseDuration;
 
             sp_adsr_compute(sp, adsr, &internalGate, &amp);
-
+            
             for (int channel = 0; channel < channels; ++channel) {
                 float *in  = (float *)inBufferListPtr->mBuffers[channel].mData  + frameOffset;
                 float *out = (float *)outBufferListPtr->mBuffers[channel].mData + frameOffset;
@@ -172,12 +198,18 @@ private:
     sp_data *sp;
     sp_adsr *adsr;
 
+    float attackDuration = 0.1;
+    float decayDuration = 0.1;
+    float sustainLevel = 1.0;
+    float releaseDuration = 0.1;
+
 public:
     bool started = false;
-    AKParameterRamper attackDurationRamper = 0.1;
-    AKParameterRamper decayDurationRamper = 0.1;
-    AKParameterRamper sustainLevelRamper = 1.0;
-    AKParameterRamper releaseDurationRamper = 0.1;
+    bool resetted = false;
+    ParameterRamper attackDurationRamper = 0.1;
+    ParameterRamper decayDurationRamper = 0.1;
+    ParameterRamper sustainLevelRamper = 1.0;
+    ParameterRamper releaseDurationRamper = 0.1;
 };
 
 #endif /* AKAmplitudeEnvelopeDSPKernel_hpp */

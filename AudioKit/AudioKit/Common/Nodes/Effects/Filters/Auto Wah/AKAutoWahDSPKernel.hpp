@@ -9,8 +9,8 @@
 #ifndef AKAutoWahDSPKernel_hpp
 #define AKAutoWahDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -24,7 +24,7 @@ enum {
     amplitudeAddress = 2
 };
 
-class AKAutoWahDSPKernel : public AKDSPKernel {
+class AKAutoWahDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -59,20 +59,37 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setWah(float wah) {
+        wah = wah;
+        wahRamper.setImmediate(wah);
+    }
+
+    void setMix(float mix) {
+        mix = mix;
+        mixRamper.setImmediate(mix);
+    }
+
+    void setAmplitude(float level) {
+        amplitude = level;
+        amplitudeRamper.setImmediate(level);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case wahAddress:
-                wahRamper.set(clamp(value, (float)0, (float)1));
+                wahRamper.setUIValue(clamp(value, (float)0, (float)1));
                 break;
 
             case mixAddress:
-                mixRamper.set(clamp(value, (float)0, (float)100));
+                mixRamper.setUIValue(clamp(value, (float)0, (float)100));
                 break;
 
             case amplitudeAddress:
-                amplitudeRamper.set(clamp(value, (float)0, (float)1));
+                amplitudeRamper.setUIValue(clamp(value, (float)0, (float)1));
                 break;
 
         }
@@ -81,13 +98,13 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case wahAddress:
-                return wahRamper.goal();
+                return wahRamper.getUIValue();
 
             case mixAddress:
-                return mixRamper.goal();
+                return mixRamper.getUIValue();
 
             case amplitudeAddress:
-                return amplitudeRamper.goal();
+                return amplitudeRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -118,14 +135,14 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double wah = double(wahRamper.getStep());
-            double mix = double(mixRamper.getStep());
-            double amplitude = double(amplitudeRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            wah = wahRamper.getAndStep();
             *autowah->wah = (float)wah;
+            mix = mixRamper.getAndStep();
             *autowah->mix = (float)mix;
+            amplitude = amplitudeRamper.getAndStep();
             *autowah->level = (float)amplitude;
 
             if (!started) {
@@ -155,11 +172,16 @@ private:
     sp_data *sp;
     sp_autowah *autowah;
 
+    float wah = 0;
+    float mix = 100;
+    float amplitude = 0.1;
+
 public:
     bool started = true;
-    AKParameterRamper wahRamper = 0;
-    AKParameterRamper mixRamper = 100;
-    AKParameterRamper amplitudeRamper = 0.1;
+    bool resetted = false;
+    ParameterRamper wahRamper = 0;
+    ParameterRamper mixRamper = 100;
+    ParameterRamper amplitudeRamper = 0.1;
 };
 
 #endif /* AKAutoWahDSPKernel_hpp */

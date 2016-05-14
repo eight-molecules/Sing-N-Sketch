@@ -11,13 +11,13 @@ import AVFoundation
 /// This is an oscillator with linear interpolation that is capable of morphing
 /// between an arbitrary number of wavetables.
 ///
-/// - parameter frequency: Frequency (in Hz)
-/// - parameter amplitude: Amplitude (typically a value between 0 and 1).
-/// - parameter index: Index of the wavetable to use (fractional are okay).
-/// - parameter detuningOffset: Frequency offset in Hz.
+/// - parameter waveformArray:      An array of exactly four waveforms
+/// - parameter frequency:          Frequency (in Hz)
+/// - parameter amplitude:          Amplitude (typically a value between 0 and 1).
+/// - parameter index:              Index of the wavetable to use (fractional are okay).
+/// - parameter detuningOffset:     Frequency offset in Hz.
 /// - parameter detuningMultiplier: Frequency detuning multiplier
-/// - parameter waveformCount: Number of waveforms.
-/// - parameter phase: Initial phase of waveform, expects a value 0-1
+/// - parameter phase:              Initial phase of waveform, expects a value 0-1
 ///
 public class AKMorphingOscillator: AKVoice {
 
@@ -26,7 +26,7 @@ public class AKMorphingOscillator: AKVoice {
     internal var internalAU: AKMorphingOscillatorAudioUnit?
     internal var token: AUParameterObserverToken?
 
-    private var waveformArray: [AKTable] = []
+    private var waveformArray = [AKTable]()
     private var phase: Double
 
     private var frequencyParameter: AUParameter?
@@ -49,7 +49,11 @@ public class AKMorphingOscillator: AKVoice {
     public var frequency: Double = 440 {
         willSet(newValue) {
             if frequency != newValue {
-                frequencyParameter?.setValue(Float(newValue), originator: token!)
+                if internalAU!.isSetUp() {
+                    frequencyParameter?.setValue(Float(newValue), originator: token!)
+                } else {
+                    internalAU?.frequency = Float(newValue)
+                }
             }
         }
     }
@@ -58,15 +62,25 @@ public class AKMorphingOscillator: AKVoice {
     public var amplitude: Double = 1 {
         willSet(newValue) {
             if amplitude != newValue {
-                amplitudeParameter?.setValue(Float(newValue), originator: token!)
+                if internalAU!.isSetUp() {
+                    amplitudeParameter?.setValue(Float(newValue), originator: token!)
+                } else {
+                    internalAU?.amplitude = Float(newValue)
+                }
             }
         }
     }
 
+
     /// Index of the wavetable to use (fractional are okay).
     public var index: Double = 0.0 {
         willSet(newValue) {
-            internalAU?.index = Float(newValue) / Float(waveformArray.count - 1)
+            let transformedValue = Float(newValue) / Float(waveformArray.count - 1)
+//            if internalAU!.isSetUp() {
+//                indexParameter?.setValue(Float(transformedValue), originator: token!)
+//            } else {
+                internalAU?.index = Float(transformedValue)
+//            }
         }
     }
 
@@ -74,7 +88,11 @@ public class AKMorphingOscillator: AKVoice {
     public var detuningOffset: Double = 0 {
         willSet(newValue) {
             if detuningOffset != newValue {
-                detuningOffsetParameter?.setValue(Float(newValue), originator: token!)
+                if internalAU!.isSetUp() {
+                    detuningOffsetParameter?.setValue(Float(newValue), originator: token!)
+                } else {
+                    internalAU?.detuningOffset = Float(newValue)
+                }
             }
         }
     }
@@ -83,7 +101,11 @@ public class AKMorphingOscillator: AKVoice {
     public var detuningMultiplier: Double = 1 {
         willSet(newValue) {
             if detuningMultiplier != newValue {
-                detuningMultiplierParameter?.setValue(Float(newValue), originator: token!)
+                if internalAU!.isSetUp() {
+                    detuningMultiplierParameter?.setValue(Float(newValue), originator: token!)
+                } else {
+                    internalAU?.detuningMultiplier = Float(newValue)
+                }
             }
         }
     }
@@ -99,16 +121,16 @@ public class AKMorphingOscillator: AKVoice {
     public convenience override init() {
         self.init(waveformArray: [AKTable(.Triangle), AKTable(.Square), AKTable(.Sine), AKTable(.Sawtooth)])
     }
-
+    
     /// Initialize this Morpher node
     ///
-    /// - parameter frequency: Frequency (in Hz)
-    /// - parameter amplitude: Amplitude (typically a value between 0 and 1).
-    /// - parameter index: Index of the wavetable to use (fractional are okay).
-    /// - parameter detuningOffset: Frequency offset in Hz.
+    /// - parameter waveformArray:      An array of exactly four waveforms
+    /// - parameter frequency:          Frequency (in Hz)
+    /// - parameter amplitude:          Amplitude (typically a value between 0 and 1).
+    /// - parameter index:              Index of the wavetable to use (fractional are okay).
+    /// - parameter detuningOffset:     Frequency offset in Hz.
     /// - parameter detuningMultiplier: Frequency detuning multiplier
-    /// - parameter waveformCount: Number of waveforms.
-    /// - parameter phase: Initial phase of waveform, expects a value 0-1
+    /// - parameter phase:              Initial phase of waveform, expects a value 0-1
     ///
     public init(
         waveformArray: [AKTable],

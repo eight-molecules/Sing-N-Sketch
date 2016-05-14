@@ -9,8 +9,8 @@
 #ifndef AKPannerDSPKernel_hpp
 #define AKPannerDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -22,7 +22,7 @@ enum {
     panAddress = 0
 };
 
-class AKPannerDSPKernel : public AKDSPKernel {
+class AKPannerDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -55,12 +55,19 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setPan(float pan) {
+        pan = pan;
+        panRamper.setImmediate(pan);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case panAddress:
-                panRamper.set(clamp(value, (float)-1, (float)1));
+                panRamper.setUIValue(clamp(value, (float)-1, (float)1));
                 break;
 
         }
@@ -69,7 +76,7 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case panAddress:
-                return panRamper.goal();
+                return panRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -90,20 +97,19 @@ public:
     }
 
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
-        
-        if (!started) {
-            outBufferListPtr->mBuffers[0] = inBufferListPtr->mBuffers[0];
-            outBufferListPtr->mBuffers[1] = inBufferListPtr->mBuffers[1];
-            return;
-        }
-        
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double pan = double(panRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            pan = panRamper.getAndStep();
             panst->pan = (float)pan;
+
+            if (!started) {
+                outBufferListPtr->mBuffers[0] = inBufferListPtr->mBuffers[0];
+                outBufferListPtr->mBuffers[1] = inBufferListPtr->mBuffers[1];
+                return;
+            }
             
             float *tmpin[2];
             float *tmpout[2];
@@ -132,10 +138,13 @@ private:
 
     sp_data *sp;
     sp_panst *panst;
+    
+    float pan = 0.0;
 
 public:
     bool started = true;
-    AKParameterRamper panRamper = 0;
+    bool resetted = false;
+    ParameterRamper panRamper = 0;
 };
 
 #endif /* AKPannerDSPKernel_hpp */

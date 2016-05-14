@@ -9,8 +9,8 @@
 #ifndef AKHighShelfParametricEqualizerFilterDSPKernel_hpp
 #define AKHighShelfParametricEqualizerFilterDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -24,7 +24,7 @@ enum {
     qAddress = 2
 };
 
-class AKHighShelfParametricEqualizerFilterDSPKernel : public AKDSPKernel {
+class AKHighShelfParametricEqualizerFilterDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -60,20 +60,37 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setCenterFrequency(float fc) {
+        centerFrequency = fc;
+        centerFrequencyRamper.setImmediate(fc);
+    }
+
+    void setGain(float v) {
+        gain = v;
+        gainRamper.setImmediate(v);
+    }
+
+    void setQ(float q) {
+        q = q;
+        qRamper.setImmediate(q);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case centerFrequencyAddress:
-                centerFrequencyRamper.set(clamp(value, (float)12.0, (float)20000.0));
+                centerFrequencyRamper.setUIValue(clamp(value, (float)12.0, (float)20000.0));
                 break;
 
             case gainAddress:
-                gainRamper.set(clamp(value, (float)0.0, (float)10.0));
+                gainRamper.setUIValue(clamp(value, (float)0.0, (float)10.0));
                 break;
 
             case qAddress:
-                qRamper.set(clamp(value, (float)0.0, (float)2.0));
+                qRamper.setUIValue(clamp(value, (float)0.0, (float)2.0));
                 break;
 
         }
@@ -82,13 +99,13 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case centerFrequencyAddress:
-                return centerFrequencyRamper.goal();
+                return centerFrequencyRamper.getUIValue();
 
             case gainAddress:
-                return gainRamper.goal();
+                return gainRamper.getUIValue();
 
             case qAddress:
-                return qRamper.goal();
+                return qRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -119,14 +136,14 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double centerFrequency = double(centerFrequencyRamper.getStep());
-            double gain = double(gainRamper.getStep());
-            double q = double(qRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            centerFrequency = centerFrequencyRamper.getAndStep();
             pareq->fc = (float)centerFrequency;
+            gain = gainRamper.getAndStep();
             pareq->v = (float)gain;
+            q = qRamper.getAndStep();
             pareq->q = (float)q;
 
             if (!started) {
@@ -156,11 +173,16 @@ private:
     sp_data *sp;
     sp_pareq *pareq;
 
+    float centerFrequency = 1000;
+    float gain = 1.0;
+    float q = 0.707;
+
 public:
     bool started = true;
-    AKParameterRamper centerFrequencyRamper = 1000;
-    AKParameterRamper gainRamper = 1.0;
-    AKParameterRamper qRamper = 0.707;
+    bool resetted = false;
+    ParameterRamper centerFrequencyRamper = 1000;
+    ParameterRamper gainRamper = 1.0;
+    ParameterRamper qRamper = 0.707;
 };
 
 #endif /* AKHighShelfParametricEqualizerFilterDSPKernel_hpp */

@@ -9,8 +9,8 @@
 #ifndef AKHighPassButterworthFilterDSPKernel_hpp
 #define AKHighPassButterworthFilterDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -22,7 +22,7 @@ enum {
     cutoffFrequencyAddress = 0
 };
 
-class AKHighPassButterworthFilterDSPKernel : public AKDSPKernel {
+class AKHighPassButterworthFilterDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -55,12 +55,19 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setCutoffFrequency(float freq) {
+        cutoffFrequency = freq;
+        cutoffFrequencyRamper.setImmediate(freq);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case cutoffFrequencyAddress:
-                cutoffFrequencyRamper.set(clamp(value, (float)12.0, (float)20000.0));
+                cutoffFrequencyRamper.setUIValue(clamp(value, (float)12.0, (float)20000.0));
                 break;
 
         }
@@ -69,7 +76,7 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case cutoffFrequencyAddress:
-                return cutoffFrequencyRamper.goal();
+                return cutoffFrequencyRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -92,10 +99,10 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double cutoffFrequency = double(cutoffFrequencyRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            cutoffFrequency = cutoffFrequencyRamper.getAndStep();
             buthp->freq = (float)cutoffFrequency;
 
             if (!started) {
@@ -125,9 +132,12 @@ private:
     sp_data *sp;
     sp_buthp *buthp;
 
+    float cutoffFrequency = 500;
+
 public:
     bool started = true;
-    AKParameterRamper cutoffFrequencyRamper = 500;
+    bool resetted = false;
+    ParameterRamper cutoffFrequencyRamper = 500;
 };
 
 #endif /* AKHighPassButterworthFilterDSPKernel_hpp */

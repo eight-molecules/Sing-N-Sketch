@@ -9,8 +9,8 @@
 #ifndef AKFormantFilterDSPKernel_hpp
 #define AKFormantFilterDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -24,7 +24,7 @@ enum {
     decayDurationAddress = 2
 };
 
-class AKFormantFilterDSPKernel : public AKDSPKernel {
+class AKFormantFilterDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -59,20 +59,37 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setCenterFrequency(float freq) {
+        centerFrequency = freq;
+        centerFrequencyRamper.setImmediate(freq);
+    }
+
+    void setAttackDuration(float atk) {
+        attackDuration = atk;
+        attackDurationRamper.setImmediate(atk);
+    }
+
+    void setDecayDuration(float dec) {
+        decayDuration = dec;
+        decayDurationRamper.setImmediate(dec);
+    }
+
 
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case centerFrequencyAddress:
-                centerFrequencyRamper.set(clamp(value, (float)12.0, (float)20000.0));
+                centerFrequencyRamper.setUIValue(clamp(value, (float)12.0, (float)20000.0));
                 break;
 
             case attackDurationAddress:
-                attackDurationRamper.set(clamp(value, (float)0.0, (float)0.1));
+                attackDurationRamper.setUIValue(clamp(value, (float)0.0, (float)0.1));
                 break;
 
             case decayDurationAddress:
-                decayDurationRamper.set(clamp(value, (float)0.0, (float)0.1));
+                decayDurationRamper.setUIValue(clamp(value, (float)0.0, (float)0.1));
                 break;
 
         }
@@ -81,13 +98,13 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case centerFrequencyAddress:
-                return centerFrequencyRamper.goal();
+                return centerFrequencyRamper.getUIValue();
 
             case attackDurationAddress:
-                return attackDurationRamper.goal();
+                return attackDurationRamper.getUIValue();
 
             case decayDurationAddress:
-                return decayDurationRamper.goal();
+                return decayDurationRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -118,14 +135,14 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double centerFrequency = double(centerFrequencyRamper.getStep());
-            double attackDuration = double(attackDurationRamper.getStep());
-            double decayDuration = double(decayDurationRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            centerFrequency = centerFrequencyRamper.getAndStep();
             fofilt->freq = (float)centerFrequency;
+            attackDuration = attackDurationRamper.getAndStep();
             fofilt->atk = (float)attackDuration;
+            decayDuration = decayDurationRamper.getAndStep();
             fofilt->dec = (float)decayDuration;
 
             if (!started) {
@@ -155,11 +172,16 @@ private:
     sp_data *sp;
     sp_fofilt *fofilt;
 
+    float centerFrequency = 1000;
+    float attackDuration = 0.007;
+    float decayDuration = 0.04;
+
 public:
     bool started = true;
-    AKParameterRamper centerFrequencyRamper = 1000;
-    AKParameterRamper attackDurationRamper = 0.007;
-    AKParameterRamper decayDurationRamper = 0.04;
+    bool resetted = false;
+    ParameterRamper centerFrequencyRamper = 1000;
+    ParameterRamper attackDurationRamper = 0.007;
+    ParameterRamper decayDurationRamper = 0.04;
 };
 
 #endif /* AKFormantFilterDSPKernel_hpp */

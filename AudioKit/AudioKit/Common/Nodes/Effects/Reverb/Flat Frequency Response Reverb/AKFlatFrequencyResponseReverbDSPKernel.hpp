@@ -9,8 +9,8 @@
 #ifndef AKFlatFrequencyResponseReverbDSPKernel_hpp
 #define AKFlatFrequencyResponseReverbDSPKernel_hpp
 
-#import "AKDSPKernel.hpp"
-#import "AKParameterRamper.hpp"
+#import "DSPKernel.hpp"
+#import "ParameterRamper.hpp"
 
 #import <AudioKit/AudioKit-Swift.h>
 
@@ -22,7 +22,7 @@ enum {
     reverbDurationAddress = 0
 };
 
-class AKFlatFrequencyResponseReverbDSPKernel : public AKDSPKernel {
+class AKFlatFrequencyResponseReverbDSPKernel : public DSPKernel {
 public:
     // MARK: Member Functions
 
@@ -55,14 +55,22 @@ public:
     }
 
     void reset() {
+        resetted = true;
     }
+
+    void setReverbDuration(float revtime) {
+        reverbDuration = revtime;
+        reverbDurationRamper.setImmediate(revtime);
+    }
+
     void setLoopDuration(float duration) {
         internalLoopDuration = duration;
     }
+
     void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
             case reverbDurationAddress:
-                reverbDurationRamper.set(clamp(value, (float)0, (float)10));
+                reverbDurationRamper.setUIValue(clamp(value, (float)0, (float)10));
                 break;
 
         }
@@ -71,7 +79,7 @@ public:
     AUValue getParameter(AUParameterAddress address) {
         switch (address) {
             case reverbDurationAddress:
-                return reverbDurationRamper.goal();
+                return reverbDurationRamper.getUIValue();
 
             default: return 0.0f;
         }
@@ -94,10 +102,10 @@ public:
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
         // For each sample.
         for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
-            double reverbDuration = double(reverbDurationRamper.getStep());
 
             int frameOffset = int(frameIndex + bufferOffset);
 
+            reverbDuration = reverbDurationRamper.getAndStep();
             allpass->revtime = (float)reverbDuration;
 
             if (!started) {
@@ -126,12 +134,14 @@ private:
 
     sp_data *sp;
     sp_allpass *allpass;
-    
+
+    float reverbDuration = 0.5;
     float internalLoopDuration = 0.1;
 
 public:
     bool started = true;
-    AKParameterRamper reverbDurationRamper = 0.5;
+    bool resetted = false;
+    ParameterRamper reverbDurationRamper = 0.5;
 };
 
 #endif /* AKFlatFrequencyResponseReverbDSPKernel_hpp */

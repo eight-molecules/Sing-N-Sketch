@@ -47,13 +47,13 @@ public class AKPolyphonicInstrument: AKNode {
     }
     
     /// Array of available voices
-    public var availableVoices: [AKVoice] = []
+    public var availableVoices = [AKVoice]()
     
     /// Array of only voices currently playing
-    public var activeVoices: [AKVoice] = []
+    public var activeVoices = [AKVoice]()
     
     /// Array of notes being played on the active instruments
-    public var activeNotes: [Int] = []
+    public var activeNotes = [Int]()
     
     var voiceCount: Int
     
@@ -105,7 +105,7 @@ public class AKPolyphonicInstrument: AKNode {
     /// - parameter velocity: MIDI Velocity (0-127)
     ///
     public func playNote(note: Int, velocity: Int) {
-        if let voice = availableVoices.popLast()  {
+        if let voice = availableVoices.popLast() {
             activeVoices.append(voice)
             activeNotes.append(note)
             playVoice(voice, note: note, velocity: velocity)
